@@ -1,0 +1,10 @@
+@import 'reset.css';
+
+.layout-header {
+    height: 80px;
+    background-color: #f00;
+}
+.layout-footer {
+    height: 80px;
+    background-color: #f90;
+}
