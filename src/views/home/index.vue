@@ -1,19 +1,31 @@
 <template>
     <div class="main">
-        <h1>登录</h1>
-        <input class="form-control" placeholder="账号">
-        <input class="form-control" placeholder="密码">
-        <button class="btn btn-primary" @click="login">登录</button>
+        <header class="layout-header">
+            <h1>欢迎访问企业官网</h1>
+            <a href="/login">登录</a>
+            <a href="/admin">后台管理</a>
+        </header>
+        <div class="layout-body">
+            <h2>文章列表</h2>
+            <li><router-link to="/articles/1">文章1</router-link></li>
+            <li><router-link to="/articles/2">文章2</router-link></li>
+        </div>
+        <lc-footer></lc-footer>
     </div>
 </template>
 
 <script>
+    import Footer from '@/components/lcFooter'
+
     export default {
         name: 'login',
         data () {
             return {
                 msg: 'Welcome to Your Vue.js App'
             }
+        },
+        components: {
+            'lc-footer': Footer
         },
         methods: {
             login: function () {

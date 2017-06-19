@@ -1,9 +1,19 @@
 <template>
     <div class="main">
-        <h1>登录</h1>
-        <input class="form-control" placeholder="账号">
-        <input class="form-control" placeholder="密码">
-        <button class="btn btn-primary" @click="login">登录</button>
+        <header class="layout-header">
+            <h1>欢迎访问企业官网</h1>
+            <a href="/admin">登录</a>
+        </header>
+        <div class="layout-body">
+            <h2>文章列表</h2>
+            <li><router-link to="/articles/1">文章1</router-link></li>
+            <li><router-link to="/articles/2">文章2</router-link></li>
+        </div>
+        <footer class="layout-footer">
+            <a href="/about">关于我们</a>
+            <a href="/contact">联系我们</a>
+            <div>这是页脚</div>
+        </footer>
     </div>
 </template>
 

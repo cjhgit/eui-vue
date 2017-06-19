@@ -1,7 +1,7 @@
 <template>
   <div class="about">
-    <Tag :message="121212" type="primary">asd</Tag>
-    <h1>关于</h1>
+    <h1>文章详情</h1>
+      <div>{{ $route.params.id }}</div>
   </div>
 </template>
 

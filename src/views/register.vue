@@ -1,9 +1,9 @@
 <template>
     <div class="main">
-        <h1>登录</h1>
+        <h1>注册</h1>
         <input class="form-control" placeholder="账号">
         <input class="form-control" placeholder="密码">
-        <button class="btn btn-primary" @click="login">登录</button>
+        <button class="btn btn-success" @click="login">注册</button>
     </div>
 </template>
 
@@ -21,8 +21,7 @@
                 localStorage.token = '123456';
                 localStorage.username = '陈建杭';
 
-                //location.href = '/home';
-//                this.$router.push('/home');
+                this.$router.push('/home');
             }
         }
     }
