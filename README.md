@@ -1,6 +1,6 @@
 # eui-vue
 
-> eui for vue
+> EUI for vue
 
 ## Build Setup
 
