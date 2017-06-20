@@ -1,8 +1,10 @@
 <template>
     <footer class="layout-footer">
-        <a href="/about">关于我们</a>
-        <a href="/contact">联系我们</a>
-        <div>这是页脚</div>
+        <div class="container">
+            <router-link to="/about">关于我们</router-link>
+            <router-link to="/contact">联系我们</router-link>
+            <div>版权所有</div>
+        </div>
     </footer>
 </template>
 

@@ -12,8 +12,7 @@
                 token: null,
                 username: '',
                 uid: '1231212',
-                appKey: 'asd123456',
-                editor: null
+                appKey: 'asd123456'
             }
         },
         methods: {
@@ -26,6 +25,7 @@
 
                 //window.open('/login');
             },
+
         },
         components: {
             //'Tag': Tag,

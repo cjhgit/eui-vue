@@ -1,75 +1,6 @@
 <template>
-    <div height="100%">
-        <div class="layout-side">
-            <h2>导航</h2>
-            <ul>
-                {{ $t("message.hello") }}
-                <li><router-link to="/admin">首页</router-link></li>
-                <li><router-link to="/admin/setting">我的设置</router-link></li>
-                <li><router-link to="/info">我的信息</router-link></li>
-                <li><router-link to="/about">关于</router-link></li>
-
-                <hr>
-                <li><router-link to="/articles">文章列表</router-link></li>
-                <li><router-link to="/articles/">添加文章</router-link></li>
-
-                <hr>
-                <li><router-link to="/">首页</router-link></li>
-                <li><router-link to="/asd">测试404</router-link></li>
-                <li><a href="/login">登陆a</a> </li>
-                <li><router-link to="/register">注册</router-link></li>
-
-                <li><router-link to="/login">登陆页面</router-link></li>
-                <li><router-link to="/foo">Go to Foo</router-link></li>
-                <li><router-link to="/bar">Go to Bar</router-link></li>
-
-                <li><router-link to="/test">测试</router-link></li>
-                <li><router-link to="/user/1">用户1</router-link></li>
-                <li><router-link to="/user/2/">用户2</router-link></li>
-                <li><router-link to="/user/1/profile">用户1信息</router-link></li>
-                <li><router-link to="/user/1/posts">用户1文章</router-link></li>
-                <li><router-link to="/components/button">按钮</router-link></li>
-                <li><router-link to="/components/aside">Aside（侧栏）</router-link></li>
-            </ul>
-        </div>
-        <div class="layout-content">
-            <header class="layout-header">
-                <div class="container">
-                    <div class="container">
-                        <h1>EUI-vue 做最好的VUE UI</h1>
-
-                        <button @click="loginout">退出登录</button>
-                    </div>
-                </div>
-            </header>
-            <div class="layout-body">
-                <div class="container">
-                    <div class="col-sm-4">
-
-                    </div>
-                    <div class="col-sm-8">
-                        <h1>内容</h1>
-                        <div>
-                            <!--<Tag :message="121212" type="primary">asd</Tag>-->
-                            <!--<Asd :message="121212" type="primary">asd</Asd>-->
-                            <!--<Icon type="start"/>-->
-                            <!--<Alert type="success">123</Alert>-->
-
-                        </div>
-                        <router-view></router-view>
-                    </div>
-                </div>
-            </div>
-            <script id="editor" type="text/plain"></script>
-            <footer class="layout-footer">
-                <div class="container">
-                    <div @click="getEditorContent">获取编辑器内容</div>
-                    这是页脚
-                    <div>我们强烈建议您<a href="#" @click="showNotification">开启浏览器通知</a></div>
-
-                </div>
-            </footer>
-        </div>
+    <div class="about">
+        <h1>这是后台控制面板</h1>
     </div>
 </template>
 
@@ -90,14 +21,12 @@
 
 
     export default {
-        name: 'admin',
         data: function () {
             return {
                 token: null,
                 username: '',
                 uid: '1231212',
-                appKey: 'asd123456',
-                editor: null
+                appKey: 'asd123456'
             }
         },
         mounted: function () {
@@ -134,9 +63,6 @@
                     console.log('不支持');
                     // 不支持
                 }
-            },
-            getEditorContent: function() {
-                console.log(this.editor.getContent());
             }
         },
         components: {

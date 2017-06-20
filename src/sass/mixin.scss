@@ -1,0 +1,27 @@
+@mixin prefix($property, $value) {
+	-webkit-#{$property}: $value;
+	-moz-#{$property}: $value;
+	-ms-#{$property}: $value;
+	-o-#{$property}: $value;
+	#{$property}: $value;	
+}
+
+@mixin transform($value) {
+	@include prefix(transform, #{$value});
+}
+
+@mixin boxSizing($value) {
+	-webkit-box-sizing: $value;
+	-moz-box-sizing: $value;
+	box-sizing: $value;
+}
+
+@mixin animation($value) {
+	-webkit-animation: $value;
+	animation: $value;
+}
+
+@mixin boxShadow($value) {
+	-webkit-box-shadow: $value;
+	box-shadow: $value;
+}

@@ -1,0 +1,72 @@
+@mixin keyframes($animationName) {
+	@-webkit-keyframes #{$animationName} {
+		@content;
+	}
+	@-moz-keyframes #{$animationName} {
+		@content;
+	}
+	@-o-keyframes #{$animationName} {
+		@content;
+	}
+	@keyframes #{$animationName} {
+		@content;
+	}
+};
+
+@include keyframes(MoveUpIn) {
+	0% {
+		transform-origin: 0 0;
+		transform: translateY(-100%);
+		opacity: 0;
+	}
+	100% {
+		transform-origin: 0 0;
+        transform: translateY(0%);
+        opacity: 1;
+	}
+};
+@include keyframes(MoveUpOut) {
+	0% {
+        transform-origin: 0 0;
+        transform: translateY(0%);
+        opacity: 1;
+    }
+    100% {
+        transform-origin: 0 0;
+        transform: translateY(-100%);
+        opacity: 0;
+    }
+};
+
+@mixin make-cls($className, $keyframeName) {
+	.#{$className}-enter, 
+	.#{$className}-enter-active,
+	.#{$className}-leave-active {
+		animation-duration: 30s;
+		animation-fill-mode: both;
+		animation-play-state: running;
+	}
+	.#{$className}-enter-acitve, .#{$className}-enter {
+		animation-name: #{$keyframeName}Out;
+		animation-name: "MoveUpOut";
+		animation-play-state: running;
+		animation-timing-function: ease-in-out;
+	}
+	.#{$className}-leave-active {
+		animation-name: #{$keyframeName}In;
+		animation-name: "MoveUpIn";
+		animation-play-state: running;
+		animation-timing-function: ease-in-out;
+	}
+};
+
+@include make-cls(move-up, MoveUp);
+
+@include keyframes(scrollToLeft) {
+	0%{
+		@include transform(translateX(46px));
+	}
+	100%{
+		@include transform(translateX(-100%));	
+	}
+};

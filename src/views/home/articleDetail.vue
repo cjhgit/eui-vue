@@ -3,10 +3,9 @@
         <div class="container">
             <div class="row">
                 <div class="col-sm-12">
-                    <article class="article">
-                        <h1>404</h1>
-                        <p>这个页面找不到了</p>
-                    </article>
+                    <router-link to="/articles">返回文章列表</router-link>
+                    <h1>文章详情</h1>
+                    <div>{{ $route.params.id }}</div>
                 </div>
             </div>
         </div>

@@ -27,11 +27,12 @@ module.exports = {
   },
   module: {
     rules: [
-      {
-        test: /\.vue$/,
-        loader: 'vue-loader',
-        options: vueLoaderConfig
-      },
+
+        {
+            test: /\.vue$/,
+            loader: 'vue-loader',
+            options: vueLoaderConfig
+        },
       {
         test: /\.js$/,
         loader: 'babel-loader',
@@ -53,6 +54,18 @@ module.exports = {
           name: utils.assetsPath('fonts/[name].[hash:7].[ext]')
         }
       }
+      /*,
+        {
+            test: /\.vue$/,
+            loader: 'vue-loader',
+            options: {
+                loaders: {
+                    'scss': 'style-loader!css-loader!sass-loader'
+                }
+            }
+        }*/
     ]
+
   }
+
 }

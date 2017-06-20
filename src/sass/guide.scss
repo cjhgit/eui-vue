@@ -1,0 +1,77 @@
+.vue-guide-wrap{
+	.overlay{
+		position: fixed;
+		top: 0;
+		bottom: 0;
+		left: 0;
+		right: 0;
+		z-index: 9999;
+		background-color: #000;
+		opacity: .5;
+	}
+	.target-wrap{
+		position: absolute;
+		z-index: 99999;
+		.guide-arrow{
+			position: absolute;			
+			display: inline-block;
+			background: url(/static/images/guide/arrow-long.png) no-repeat;
+			background-size: 100% 100%;
+			.hand{
+				position: absolute;
+				top: 30px;
+				left: 35px;
+				float: left;
+				width: 76px;
+				height: 68px;
+				background: url(/static/images/guide/hand.png) no-repeat;
+				background-size: 100% 100%;
+			}
+			.drag-move{
+				@include animation(DragMove linear 2s infinite);
+			}
+		}
+		.guide-content{
+			position: absolute;
+			font-size: 18px;
+			line-height: 24px;
+			color: #fff;
+			text-align: center;
+			white-space: nowrap;
+		}
+
+	}
+	.guide-button{
+		position: absolute;
+		z-index: 99999;
+		width: 200px;
+		button{
+			width: 94px;
+			height: 36px;
+			font-size: 18px;
+			color: #fff;
+			border: 2px solid #fff;
+			background: transparent;
+			border-radius: 8px;
+			&.goon{
+				width: 140px
+			}
+		}
+		.ivu-checkbox-wrapper{
+			font-size: 16px;
+			color: #fff;
+		}
+	}
+}
+
+@include keyframes(DragMove){
+	0%{
+		top: 30px;
+		left: 35px;
+	}
+	100%{
+		top: 130px;
+		left: 12px;
+		@include transform(rotate(-40deg));
+	}
+};
