@@ -1,8 +1,8 @@
 
 import App from './App'
 import Vue from 'vue'
-//import Vuex from 'vuex'
-import VueI18n from 'vue-i18n'
+
+
 import router from './router/router.js'
 import VueResource from 'vue-resource'
 import VeeValidate from 'vee-validate'
@@ -24,8 +24,10 @@ import './assets/utf8-php/ueditor.parse.min.js'
 
 import dictionary from './i18n/dictionary'
 
-//Vue.use(vuex)
-Vue.use(VueI18n)
+import VueI18n from 'vue-i18n'
+Vue.use(VueI18n);
+
+
 Vue.use(VueResource);
 Vue.use(liangchuanUi)
 /*Vue.use(VeeValidate, {
@@ -35,32 +37,13 @@ Vue.use(liangchuanUi)
     }
 });*/
 
+
+
+
 // 全局注册指令
 //Vue.directive('auth', auth)
 
-const messages = {
-    cn: {
-        message: {
-            hello: '你好，世界'
-        }
-    },
-    en: {
-        message: {
-            hello: 'hello world'
-        }
-    },
-    ja: {
-        message: {
-            hello: 'こんにちは、世界'
-        }
-    }
-}
 
-// Create VueI18n instance with options
-const i18n = new VueI18n({
-    locale: 'cn', // set locale
-    messages, // set locale messages
-})
 
 
 // 全局消息组件, copy自element
@@ -80,11 +63,13 @@ const Foo = { template: '<div>foo</div>' }
 const Bar = { template: '<div>bar</div>' }
 
 
+
+
 //Vue.config.productionTip = false
 
 /* eslint-disable no-new */
 new Vue({
-    i18n,
+
     el: '#app',
     router,
     template: '<App/>',
@@ -96,3 +81,5 @@ new Vue({
 
     }
 })
+
+

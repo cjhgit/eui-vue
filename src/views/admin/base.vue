@@ -41,10 +41,7 @@
             </header>
             <div class="layout-body">
                 <div class="container">
-                    <div class="col-sm-4">
-
-                    </div>
-                    <div class="col-sm-8">
+                    <div class="col-sm-12">
                         <h1>内容</h1>
                         <div>
                             <!--<Tag :message="121212" type="primary">asd</Tag>-->
@@ -158,8 +155,10 @@
         left: 0;
         top: 0;
         bottom: 0;
-        width: 320px;
-        background-color: #fff;
+        width: 240px;
+        padding: 16px;
+        background-color: #f9f9f9;
+        border-right: 1px solid #ccc;
     }
     .layout-header {
         height: 80px;
@@ -172,7 +171,7 @@
 
     .layout-content {
         position: absolute;
-        left: 320px;
+        left: 240px;
         top: 0;
         bottom: 0;
         right: 0;

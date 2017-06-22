@@ -3,6 +3,11 @@
         <div class="container">
             <div class="row">
                 <div class="col-sm-12">
+
+                    <div id="app2">
+
+                    </div>
+
                     <article class="article">
                         <h1>关于</h1>
                         <p>量川科技是一间XXX的公司，balabala</p>
@@ -21,7 +26,11 @@
                         <button class="btn btn-blue" @click="openMessage">打开$message</button>
                     </div>
 
-                    <!--<vue-table :columns="columns" :tableData="tableData"></vue-table>-->
+                    <p>{{count}}
+                        <button @click="inc">+</button>
+                        <button @click="dec">-</button>
+                    </p>
+
 
                     <vue-confirm-modal
                             :content="confirmContent"
@@ -73,9 +82,36 @@
 
 
 <script>
+    import Vue from 'vue'
+    import Vuex from 'vuex'
+
+    Vue.use(Vuex);
+
+    //Vue.use(vuex)
+
+    const store = new Vuex.Store({
+        state: {
+            count: 0
+        },
+        mutations: {
+            inc: state => state.count++,
+            dec: state => state.count--
+        }
+    })
+
+
+
     export default {
+        computed: {
+            count () {
+                return store.state.count
+            }
+        },
         data () {
             return {
+                //count: 0,
+
+
                 msg: 'Welcome to Your Vue.js App',
                 radioStr: "{'obj': 2}",
                 radio: 1,
@@ -118,85 +154,18 @@
 
                 testDate: '',
 
-                columns: [
-                    {
-                        name: '__checkbox',
-                        title: ''
-                    },{
-                        name: 'id',
-                        title: '角色名称'
-                    }, {
-                        name: 'car_no',
-                        title: '权限',
-                    }, {
-                        name: 'car_type',
-                        title: '备注'
-                    }, {
-                        name: '__actions',
-                        title: '操作',
-                        actions: [{
-                            name: 'delete',
-                            label: '查看',
-                            callback: function (row) {
-                                if (row.car_type === 2) {
-                                    return true;
-                                }
-                                return false;
-                            }
-                        },{
-                            name: 'edit',
-                            label: '编辑',
-                            hasAuth: 'read&noauth'
-                        }]
-                    }, {
-                        name: '__actions',
-                        title: '操作',
-                        actions: [{
-                            name: 'delete',
-                            label: '删除',
-                            type: 'select',
-                            actions: [{
-                                name: 'aaaa',
-                                label: 'aaaa'
-                            },{
-                                name: 'bbbb',
-                                label: 'bbbbb'
-                            }]
-                        },{
-                            name: 'edit',
-                            label: '编辑'
-                        },{
-                            name: 'delete',
-                            label: '删除',
-                            type: 'select',
-                            actions: [{
-                                name: 'aaaa',
-                                label: 'aaaa'
-                            },{
-                                name: 'bbbb',
-                                label: 'bbbbb'
-                            }]
-                        }]
-                    }
-                ],
-                tableData: [
-                    {
-                        "id": 1,
-                        "car_no": "粤A123",
-                        "car_type": 1
-                    },{
-                        "id": 3,
-                        "car_no": "粤A123",
-                        "car_type": 2
-                    },{
-                        "id": 4,
-                        "car_no": "粤A123",
-                        "car_type": 1
-                    }
-                ],
             }
         },
         methods: {
+            inc () {
+                store.commit('inc')
+//                this.count++
+            },
+            dec () {
+                store.commit('dec')
+//                this.count--
+            },
+
             openModal () {
                 this.confirmContent = '重写提示消息'
                 this.isShowModal = true;

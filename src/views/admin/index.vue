@@ -1,6 +1,7 @@
 <template>
     <div class="about">
         <h1>这是后台控制面板</h1>
+        <div>$t("message.hello")</div>
     </div>
 </template>
 

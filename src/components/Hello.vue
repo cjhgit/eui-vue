@@ -4,6 +4,7 @@
         <h2>这是 Hello 组件</h2>
         <!--<Tag :message="121212" type="primary">asd</Tag>-->
         <!--<Alert type="success">123</Alert>-->
+        {{$t('你好')}}
     </div>
 </template>
 
