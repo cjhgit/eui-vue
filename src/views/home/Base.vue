@@ -2,9 +2,15 @@
     <div class="main">
         <header id="app2" class="layout-header">
             <div class="container">
-                <h1>欢迎访问企业官网</h1>
-                <router-link to="/">首页</router-link>
-                <router-link to="/articles">文章列表</router-link>
+                <h1>{{ $t("welcome") }}</h1>
+                <router-link to="/">{{ $t('home') }}</router-link>
+                <router-link to="/courses">课程介绍</router-link>
+                <router-link to="/toturs">导师介绍</router-link>
+                <router-link to="/playground">场地展示</router-link>
+                <router-link to="/order">预约评估</router-link>
+                <router-link to="/articles">行业资讯</router-link>
+                <router-link to="/contact">联系我们</router-link>
+
                 <router-link to="/login">登录</router-link>
                 <router-link to="/admin">后台管理</router-link>
                 <p>{{ $t("message.hello") }}</p>
@@ -20,34 +26,8 @@
 <script>
     import Vue from 'vue'
     import Footer from '@/components/lcFooter'
+    import i18n from '@/i18n'
 
-    import VueI18n from 'vue-i18n'
-    Vue.use(VueI18n);
-
-    const messages = {
-        cn: {
-            message: {
-                hello: '你好，世界'
-            }
-        },
-        en: {
-            message: {
-                hello: 'hello world'
-            }
-        },
-        ja: {
-            message: {
-                hello: 'こんにちは、世界'
-            }
-        }
-    }
-    // Create VueI18n instance with options
-    const i18n = new VueI18n({
-        locale: 'cn', // set locale
-        messages, // set locale messages
-    })
-
-    //new Vue({ i18n }).$mount('#app2')
 
     export default {
         i18n,
@@ -77,7 +57,8 @@
 <style scoped>
     .layout-header {
         height: 80px;
-        background-color: #f00;
+        background-color: #fff;
+        border-bottom: 1px solid #ccc;
     }
     .layout-footer {
         height: 80px;

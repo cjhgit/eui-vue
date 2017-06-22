@@ -1,7 +1,7 @@
 <template>
 
     <div class="about">
-        <h1>文章列表</h1>
+        <h1>课程列表</h1>
         <ul>
             <li><router-link to="/admin/articles/1">文章1</router-link></li>
             <li><router-link to="/admin/articles/2">文章2</router-link></li>
@@ -13,7 +13,6 @@
                 </button>
             </vue-tooltip>
         </div>
-        <router-link to="/admin/articles/add">添加文章</router-link>
         <vue-filter-panel>
             <div slot="search-btn">
                 <input type="text" class="form-control" v-model="key" placeholder="标题/内容关键字">
@@ -69,18 +68,21 @@
                         title: '操作',
                         actions: [
                             {
-                                name: 'delete',
-                                label: '查看'
-                            },
-                            {
                                 name: 'edit',
                                 label: '编辑',
                                 hasAuth: 'read&noauth'
                             },
                             {
+                                name: 'onSale',
+                                label: '上架'
+                            },
+                            {
+                                name: 'offSale',
+                                label: '下架'
+                            },
+                            {
                                 name: 'delete',
                                 label: '删除',
-                                //type: 'select'
                             }
                         ]
                     }
@@ -102,9 +104,7 @@
             }
         },
         methods: {
-            edit: function () {
-                alert('编辑');
-            }
+
         }
     }
 </script>

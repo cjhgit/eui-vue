@@ -9,6 +9,8 @@ import VeeValidate from 'vee-validate'
 
 //import auth from 'directives/auth'
 
+import './validators/validators'
+
 // UI
 import liangchuanUi from '@liangchuan/liangchuan-ui'
 import { Message, Loading, Tree, Dropdown, DropdownMenu, DropdownItem } from 'element-ui'
@@ -30,12 +32,12 @@ Vue.use(VueI18n);
 
 Vue.use(VueResource);
 Vue.use(liangchuanUi)
-/*Vue.use(VeeValidate, {
-    locale: 'cn',
+Vue.use(VeeValidate, {
+    locale: 'zh_CN',
     dictionary: {
-        cn: { messages: dictionary }
+        'zh_CN': { messages: dictionary }
     }
-});*/
+});
 
 
 
@@ -54,8 +56,6 @@ Vue.prototype.$message = Message;
 
 
 // 全局注册组件
-import Tag from './components/tag';
-Vue.component('Tag', Tag);
 
 const Home = { template: '<p>home page</p>' }
 const About = { template: '<p>about page</p>' }

@@ -4,9 +4,15 @@
             <div class="row">
                 <div class="col-sm-12">
                     <div class="layout-body">
+                        教室环境图片、导师信息、课程等基本信息的展示
+
+
                         <h2>文章列表</h2>
                         <li><router-link to="/articles/1">文章1</router-link></li>
                         <li><router-link to="/articles/2">文章2</router-link></li>
+                        <div>
+                            {{ $t('welcome') }}
+                        </div>
                     </div>
                     <div>
                         <router-link to="/404">404页面</router-link>
@@ -19,3 +25,13 @@
         </div>
     </div>
 </template>
+
+
+<script>
+    import i18n from '@/i18n'
+
+    export default {
+        i18n
+    }
+
+</script>

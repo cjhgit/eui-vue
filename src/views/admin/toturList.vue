@@ -1,7 +1,7 @@
 <template>
 
     <div class="about">
-        <h1>文章列表</h1>
+        <h1>导师列表</h1>
         <ul>
             <li><router-link to="/admin/articles/1">文章1</router-link></li>
             <li><router-link to="/admin/articles/2">文章2</router-link></li>
@@ -13,7 +13,6 @@
                 </button>
             </vue-tooltip>
         </div>
-        <router-link to="/admin/articles/add">添加文章</router-link>
         <vue-filter-panel>
             <div slot="search-btn">
                 <input type="text" class="form-control" v-model="key" placeholder="标题/内容关键字">
@@ -53,25 +52,25 @@
                         title: ''
                     },
                     {
-                        name: 'title',
-                        title: '文章标题'
+                        name: 'name',
+                        title: '姓名'
                     },
                     {
-                        name: 'createTime',
-                        title: '创建时间',
+                        name: 'sex',
+                        title: '性别',
                     },
                     {
-                        name: 'car_type',
-                        title: '备注'
+                        name: 'tel',
+                        title: '电话'
+                    },
+                    {
+                        name: 'desc',
+                        title: '介绍'
                     },
                     {
                         name: '__actions',
                         title: '操作',
                         actions: [
-                            {
-                                name: 'delete',
-                                label: '查看'
-                            },
                             {
                                 name: 'edit',
                                 label: '编辑',
@@ -80,7 +79,6 @@
                             {
                                 name: 'delete',
                                 label: '删除',
-                                //type: 'select'
                             }
                         ]
                     }
@@ -88,23 +86,23 @@
                 tableData: [
                     {
                         "id": 1,
-                        'title': '文章标题一',
-                        "createTime": "2016-12-09",
-                        "car_type": 1
+                        'name': 'ANN',
+                        'sex': '男',
+                        'tel': '15602221234',
+                        'desc': '紫然肌身活馆、加拿大身活馆总教练 台湾普拉提协会创办人以及第一届会长'
                     },
                     {
-                        "id": 3,
-                        'title': '文章标题二',
-                        "createTime": "2016-12-09",
-                        "car_type": 2
+                        "id": 1,
+                        'name': 'STN',
+                        'sex': '女',
+                        'tel': '15602221234',
+                        'desc': '紫然肌身活馆、加拿大身活馆总教练 台湾普拉提协会创办人以及第一届会长'
                     }
                 ]
             }
         },
         methods: {
-            edit: function () {
-                alert('编辑');
-            }
+
         }
     }
 </script>

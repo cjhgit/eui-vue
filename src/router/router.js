@@ -1,13 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Hello from '@/components/Hello'
-
-
-
-
 //const About = resolve => require(['VIEW/about'], resolve);
-
-
 
 //
 import Error404 from '@/views/error404'
@@ -19,11 +12,16 @@ import Main from '@/views/home/base'
 import Home from '@/views/home/base'
 import HomeIndex from '@/views/home/index'
 import About from '@/views/home/About'
+import Course from '@/views/home/Course'
+import Totur from '@/views/home/Totur'
+import Playground from '@/views/home/Playground'
+import Order from '@/views/home/Order'
 import Contact from '@/views/home/Contact'
 import Login from '@/views/login'
 // 前台文章模块
 import ArticleList from '@/views/home/articleList'
 import ArticleDetail from '@/views/home/articleDetail'
+
 // 后台模块
 import Admin from '@/views/admin/base'
 import AdminIndex from '@/views/admin/index'
@@ -34,6 +32,12 @@ import UserInfo from '@/views/user/userInfo'
 import AdminArticle from '@/views/admin/articleList'
 import AdminArticleDetail from '@/views/admin/articleDetail'
 import AdminArticleAdd from '@/views/admin/articleAdd'
+
+import AdminCourse from '@/views/admin/courseList'
+
+import AdminTotur from '@/views/admin/toturList'
+
+import AdminOrder from '@/views/admin/orderList'
 
 Vue.use(Router);
 
@@ -68,6 +72,44 @@ let routerMap = [
             {
                 path: '',
                 component: HomeIndex
+            },
+            {
+                path: '/courses',
+                component: Course
+            },
+            {
+                path: '/courses/:id',
+                component: Course,
+                children: [
+                   /* {
+                        path: '',
+                        component: Course
+                    },*/
+                    {
+                        // 当 /user/:id/profile 匹配成功，
+                        // UserProfile 会被渲染在 User 的 <router-view> 中
+                        path: 'profile',
+                        component: UserProfile
+                    },
+                    {
+                        // 当 /user/:id/posts 匹配成功
+                        // UserPosts 会被渲染在 User 的 <router-view> 中
+                        path: 'posts',
+                        component: UserPosts
+                    }
+                ]
+            },
+            {
+                path: '/toturs',
+                component: Totur
+            },
+            {
+                path: '/playground',
+                component: Playground
+            },
+            {
+                path: '/Order',
+                component: Order
             },
             {
                 path: '/about',
@@ -130,6 +172,21 @@ let routerMap = [
                 path: 'articles/:id',
                 component: AdminArticleDetail
             },
+            // 后台课程模块
+            {
+                path: 'courses',
+                component: AdminCourse,
+            },
+            // 后台导师模块
+            {
+                path: 'toturs',
+                component: AdminTotur,
+            },
+            // 后台预约模块
+            {
+                path: 'orders',
+                component: AdminOrder,
+            },
 
         ]
     },
@@ -142,7 +199,7 @@ let routerMap = [
         children: [
             {
                 path: '/',
-                component: Hello
+                component: HomeIndex
             }
         ]
     },

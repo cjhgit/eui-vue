@@ -1,32 +1,15 @@
 <template>
     <div height="100%">
         <div class="layout-side">
-            <h2>导航</h2>
             <ul>
-                {{ $t("message.hello") }}
-                <li><router-link to="/">网站首页</router-link></li>
                 <li><router-link to="/admin">后台首页</router-link></li>
                 <li><router-link to="/admin/setting">我的设置</router-link></li>
                 <li><router-link to="/admin/info">我的信息</router-link></li>
-                <hr>
-                <li><router-link to="/admin/articles">文章列表</router-link></li>
-                <li><router-link to="/admin/articles/add">添加文章</router-link></li>
 
-                <hr>
-                <li><a href="/login">登陆a</a> </li>
-                <li><router-link to="/register">注册</router-link></li>
-
-                <li><router-link to="/login">登陆页面</router-link></li>
-                <li><router-link to="/foo">Go to Foo</router-link></li>
-                <li><router-link to="/bar">Go to Bar</router-link></li>
-
-
-                <li><router-link to="/user/1">用户1</router-link></li>
-                <li><router-link to="/user/2/">用户2</router-link></li>
-                <li><router-link to="/user/1/profile">用户1信息</router-link></li>
-                <li><router-link to="/user/1/posts">用户1文章</router-link></li>
-                <li><router-link to="/components/button">按钮</router-link></li>
-                <li><router-link to="/components/aside">Aside（侧栏）</router-link></li>
+                <li><router-link to="/admin/courses">课程内容管理</router-link></li>
+                <li><router-link to="/admin/toturs">导师信息管理</router-link></li>
+                <li><router-link to="/admin/articles">行业讯息发布</router-link></li>
+                <li><router-link to="/admin/orders">预约信息管理</router-link></li>
             </ul>
         </div>
         <div class="layout-content">
@@ -34,7 +17,7 @@
                 <div class="container">
                     <div class="container">
                         <h1>EUI-vue 做最好的VUE UI</h1>
-
+                        <li><router-link to="/">网站首页</router-link></li>
                         <button @click="loginout">退出登录</button>
                     </div>
                 </div>

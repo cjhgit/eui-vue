@@ -1,7 +1,7 @@
 <template>
 
     <div class="about">
-        <h1>文章列表</h1>
+        <h1>预约列表</h1>
         <ul>
             <li><router-link to="/admin/articles/1">文章1</router-link></li>
             <li><router-link to="/admin/articles/2">文章2</router-link></li>
@@ -102,9 +102,7 @@
             }
         },
         methods: {
-            edit: function () {
-                alert('编辑');
-            }
+
         }
     }
 </script>

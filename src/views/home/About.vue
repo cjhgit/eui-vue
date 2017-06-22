@@ -84,12 +84,12 @@
 <script>
     import Vue from 'vue'
     import Vuex from 'vuex'
-
+    import store from '@/store'
     Vue.use(Vuex);
 
     //Vue.use(vuex)
 
-    const store = new Vuex.Store({
+    /*const store = new Vuex.Store({
         state: {
             count: 0
         },
@@ -97,9 +97,7 @@
             inc: state => state.count++,
             dec: state => state.count--
         }
-    })
-
-
+    })*/
 
     export default {
         computed: {
