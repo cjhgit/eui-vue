@@ -9,7 +9,6 @@
         name: 'app',
         data: function () {
             return {
-                token: null,
                 username: '',
                 uid: '1231212',
                 appKey: 'asd123456'
@@ -19,6 +18,7 @@
             loginout: function () {
                 console.log('退出登录');
                 localStorage.token = '';
+                localStorage.asd = '';
                 localStorage.username = '';
 
                 this.$router.push('/login');

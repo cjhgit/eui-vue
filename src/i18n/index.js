@@ -4,6 +4,7 @@ Vue.use(VueI18n);
 
 const messages = {
     cn: {
+        courseDesc: '课程介绍',
         home: '首页',
         message: {
             hello: '你好，世界'
@@ -11,6 +12,7 @@ const messages = {
         welcome: '欢迎访问企业官网'
     },
     en: {
+        courseDesc: 'Courses',
         home: 'Home',
         message: {
             hello: 'hello world'
@@ -19,10 +21,10 @@ const messages = {
     }
 }
 
-// Create VueI18n instance with options
 const i18n = new VueI18n({
-    locale: 'cn', // set locale
-    messages, // set locale messages
+    locale: 'cn',
+    fallbackLocale: 'cn',
+    messages
 })
 
 export default i18n;

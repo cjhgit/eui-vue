@@ -52,19 +52,6 @@
 
 <script>
     import Vue from 'vue'
-//    import Tag from './components/tag'
-//    import Asd from './components/asd'
-    //import Tag from './components/icon'
-    //import Icon from './components/icon/index.js'
-//    import Alert from './components/Alert'
-//    import Tab from './components/Alert'
-
-
-//    Vue.use(Tag);
-    //Vue.use(Asd);
-    //Vue.use(Icon);
-//    Vue.use(Alert);
-
 
     export default {
         data: function () {
@@ -78,13 +65,10 @@
         },
         methods: {
             loginout: function () {
-                console.log('退出登录');
-                localStorage.token = null;
+                localStorage.mytoken = '';
                 localStorage.username = '';
 
                 this.$router.push('/login');
-
-               // window.open('/login');
             },
             showNotification: function () {
                 if (window.Notification) {
@@ -108,19 +92,14 @@
             getEditorContent: function() {
                 console.log(this.editor.getContent());
             }
-        },
-        components: {
-//            Alert,
-//            Asd,
-//            Tab,
-            //'Tag': Tag,
-            //'Icon': Icon
-        },
+        }
     }
 
     if(window.Notification && Notification.permission !== "denied") {
 
     }
+
+    console.log('后台权限', localStorage.token)
 
 
 </script>

@@ -4,7 +4,7 @@
             <div class="row">
                 <div class="col-sm-6">
                     <article class="article">
-                        <h1>课程介绍</h1>
+                        <h1>{{ $t('courseDesc') }}</h1>
                         小菜单
                         <ul>
                             <li><router-link to="/courses/1">（1）  肩颈酸痛改善班</router-link></li>
@@ -38,3 +38,20 @@
         </div>
     </div>
 </template>
+
+
+<script>
+    import i18n from '@/i18n'
+
+    export default {
+        i18n,
+        created: function () {
+            console.log(this.$i18n);
+            console.log('create')
+        }
+    }
+
+    console.log(this)
+    console.log(this.$i18n)
+
+</script>

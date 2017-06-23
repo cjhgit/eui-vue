@@ -43,6 +43,12 @@
                 tip: ''
             }
         },
+        mounted: function () {
+            document.addEventListener('keydown', this.handlerEnter)
+        },
+        beforeDestroy () {
+            document.removeEventListener('keydown', this.handlerEnter);
+        },
         methods: {
             login: function () {
                 if (!this.password) {
@@ -57,10 +63,16 @@
 
                 this.tip = '登录成功'
 
-                localStorage.token = '123456';
+                localStorage.mytoken = '123456';
                 localStorage.username = '陈建杭';
                 this.$router.push('/admin');
-            }
+            },
+            handlerEnter (e) {
+                e = e || event;
+                if (e.keyCode === 13) {
+                    this.login();
+                }
+            },
         }
     }
 </script>

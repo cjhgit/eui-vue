@@ -7,6 +7,7 @@ import Error404 from '@/views/error404'
 import Test from '@/views/tmp/Test' // 测试页面
 import Demo from '@/views/tmp/Demo' // demo 页面
 import Main from '@/views/home/base'
+import MainCn from '@/views/home/baseCn'
 
 // 前台模块
 import Home from '@/views/home/base'
@@ -56,84 +57,106 @@ const UserPosts = { template: '<div>Posts</div>' }
 
 const ComponentHome = { template: '<div>组件首页Home</div>' }
 
-const Components = {
-    template: `
-        <div>{{ $route.params.id }}
-            <router-view></router-view>
-        </div>
-    `
-};
+let adminMap = [
+    {
+        path: '',
+        component: AdminIndex,
+    },
+    // 后台用户模块
+    {
+        path: 'info',
+        component: UserInfo,
+    },
+    {
+        path: 'setting',
+        component: UserSetting,
+    },
+    // 后台文章模块
+    {
+        path: 'articles',
+        component: AdminArticle,
+    },
+    {
+        path: 'articles/add',
+        component: AdminArticleAdd
+    },
+    {
+        path: 'articles/:id',
+        component: AdminArticleDetail
+    },
+    // 后台课程模块
+    {
+        path: 'courses',
+        component: AdminCourse,
+    },
+    // 后台导师模块
+    {
+        path: 'toturs',
+        component: AdminTotur,
+    },
+    // 后台预约模块
+    {
+        path: 'orders',
+        component: AdminOrder,
+    },
+
+];
+
+let homeMap = [
+    {
+        path: '',
+        component: HomeIndex
+    },
+    {
+        path: 'courses',
+        component: Course
+    },
+    {
+        path: 'courses/:id',
+        component: Course,
+    },
+    {
+        path: 'toturs',
+        component: Totur
+    },
+    {
+        path: 'playground',
+        component: Playground
+    },
+    {
+        path: 'order',
+        component: Order
+    },
+    {
+        path: 'about',
+        component: About
+    },
+    {
+        path: 'contact',
+        component: Contact
+    },
+    // 前台文章模块
+    {
+        path: 'articles',
+        component: ArticleList,
+    },
+    {
+        path: 'articles/:id',
+        component: ArticleDetail
+    },
+    {
+        path: '404',
+        component: Error404
+    },
+
+];
 
 let routerMap = [
     {
         path: '/',
-        component: Main,
-        children: [
-            {
-                path: '',
-                component: HomeIndex
-            },
-            {
-                path: '/courses',
-                component: Course
-            },
-            {
-                path: '/courses/:id',
-                component: Course,
-                children: [
-                   /* {
-                        path: '',
-                        component: Course
-                    },*/
-                    {
-                        // 当 /user/:id/profile 匹配成功，
-                        // UserProfile 会被渲染在 User 的 <router-view> 中
-                        path: 'profile',
-                        component: UserProfile
-                    },
-                    {
-                        // 当 /user/:id/posts 匹配成功
-                        // UserPosts 会被渲染在 User 的 <router-view> 中
-                        path: 'posts',
-                        component: UserPosts
-                    }
-                ]
-            },
-            {
-                path: '/toturs',
-                component: Totur
-            },
-            {
-                path: '/playground',
-                component: Playground
-            },
-            {
-                path: '/Order',
-                component: Order
-            },
-            {
-                path: '/about',
-                component: About
-            },
-            {
-                path: '/contact',
-                component: Contact
-            },
-            // 前台文章模块
-            {
-                path: '/articles',
-                component: ArticleList,
-            },
-            {
-                path: '/articles/:id',
-                component: ArticleDetail
-            },
-            {
-                path: '/404',
-                component: Error404
-            },
-
-        ]
+        redirect: '/cn'
+        //component: Main,
+        //children: homeMap
     },
     {
         path: '/login',
@@ -145,50 +168,7 @@ let routerMap = [
         meta: {
             requiresAuth: true
         },
-        children: [
-            {
-                path: '',
-                component: AdminIndex,
-            },
-            // 后台用户模块
-            {
-                path: 'info',
-                component: UserInfo,
-            },
-            {
-                path: 'setting',
-                component: UserSetting,
-            },
-            // 后台文章模块
-            {
-                path: 'articles',
-                component: AdminArticle,
-            },
-            {
-                path: 'articles/add',
-                component: AdminArticleAdd
-            },
-            {
-                path: 'articles/:id',
-                component: AdminArticleDetail
-            },
-            // 后台课程模块
-            {
-                path: 'courses',
-                component: AdminCourse,
-            },
-            // 后台导师模块
-            {
-                path: 'toturs',
-                component: AdminTotur,
-            },
-            // 后台预约模块
-            {
-                path: 'orders',
-                component: AdminOrder,
-            },
-
-        ]
+        children: adminMap
     },
     {
         path: '/admin/:branch',
@@ -204,35 +184,19 @@ let routerMap = [
         ]
     },
     {
-        path: '/components',
-        component: Components,
-    },
-    {
-        path: '/user/:id',
-        component: User,
-        children: [
-            {
-                path: '',
-                component: UserHome
-            },
-            {
-                // 当 /user/:id/profile 匹配成功，
-                // UserProfile 会被渲染在 User 的 <router-view> 中
-                path: 'profile',
-                component: UserProfile
-            },
-            {
-                // 当 /user/:id/posts 匹配成功
-                // UserPosts 会被渲染在 User 的 <router-view> 中
-                path: 'posts',
-                component: UserPosts
-            }
-        ]
-    },
-    {
         path: '/demo',
         components: Demo
     },
+    {
+        path: '/:lang',
+        component: MainCn,
+        children: homeMap
+    },
+    /*{
+        path: '/:lang',
+        component: Main,
+        children: homeMap
+    },*/
     {
         path: '*',
         component: Error404
@@ -269,12 +233,10 @@ let router = new Router({
 });
 
 router.beforeEach((to, from, next) => {
-    next();
+    console.log('直接权限',localStorage.mytoken)
 
     if (/login/.test(to.path)) {
-        console.log(localStorage.token.length);
-        console.log(localStorage.token)
-        if (localStorage.token !== 'null') {
+        if (localStorage.mytoken) {
             router.push('/admin');
             console.log('跳转了')
         } else {
@@ -282,11 +244,11 @@ router.beforeEach((to, from, next) => {
             next();
         }
     } else if (to.matched.some(record => record.meta.requiresAuth)) {
-        console.log('权限判断'+localStorage.token)
+        console.log('权限判断'+localStorage.mytoken)
         window.redirect = encodeURIComponent(to.path)
         let redirect = encodeURIComponent(to.path)
 
-        if (localStorage.token && localStorage.token !== 'null') {
+        if (localStorage.mytoken) {
             console.log('已获得权限')
             next();
         } else {
@@ -296,6 +258,7 @@ router.beforeEach((to, from, next) => {
         console.log('直接继续')
         next()
     }
+
 });
 
 export default router;

@@ -14,6 +14,7 @@ const store = new Vuex.Store({
     },
     mutations: {
         changeLanguage(state,lang){
+            alert(1);
             state.language = lang;
             Vue.config.lang = state.language;
         },
