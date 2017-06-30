@@ -2,18 +2,7 @@
 
     <div class="about">
         <h1>预约列表</h1>
-        <ul>
-            <li><router-link to="/admin/articles/1">文章1</router-link></li>
-            <li><router-link to="/admin/articles/2">文章2</router-link></li>
-        </ul>
-        <div class="btn-add" id="guideAdd">
-            <vue-tooltip content="添加车辆到装货进行装货">
-                <button class="btn btn-primary" @click="openChooseCar">
-                    添加文章
-                </button>
-            </vue-tooltip>
-        </div>
-        <router-link to="/admin/articles/add">添加文章</router-link>
+        <router-link to="/admin/orders/1">添加文章</router-link>
         <vue-filter-panel>
             <div slot="search-btn">
                 <input type="text" class="form-control" v-model="key" placeholder="标题/内容关键字">
@@ -31,12 +20,17 @@
         </vue-filter-panel>
         <vue-table
                 :columns="columns"
-                :tableData="tableData"></vue-table>
+                :tableData="tableData"
+                @table-action="tableActions"></vue-table>
     </div>
 </template>
 
 <script>
+    import Vue from 'vue'
+    import i18n from '@/i18n'
+
     export default {
+        i18n,
         data () {
             return {
                 key: '1223',
@@ -49,12 +43,8 @@
                 },
                 columns: [
                     {
-                        name: '__checkbox',
-                        title: ''
-                    },
-                    {
                         name: 'title',
-                        title: '文章标题'
+                        title: '预约内容'
                     },
                     {
                         name: 'createTime',
@@ -69,40 +59,75 @@
                         title: '操作',
                         actions: [
                             {
-                                name: 'delete',
-                                label: '查看'
+                                name: 'view',
+                                label: '查看',
                             },
                             {
                                 name: 'edit',
                                 label: '编辑',
-                                hasAuth: 'read&noauth'
                             },
                             {
-                                name: 'delete',
-                                label: '删除',
-                                //type: 'select'
+                                name: 'remove',
+                                label: '删除'
                             }
                         ]
                     }
                 ],
-                tableData: [
-                    {
-                        "id": 1,
-                        'title': '文章标题一',
-                        "createTime": "2016-12-09",
-                        "car_type": 1
-                    },
-                    {
-                        "id": 3,
-                        'title': '文章标题二',
-                        "createTime": "2016-12-09",
-                        "car_type": 2
-                    }
-                ]
+                tableData: []
             }
         },
+        computed: {
+            routeUrl () {
+                return '/' + this.$route.params.lang + '/home';
+            }
+        },
+        created: function () {
+            console.log('获取语言' + this.$route.params.lang);
+            this.tableData = [
+                {
+                    "id": 1,
+                    'title': '预约内容一',
+                    "createTime": "2016-12-09",
+                    "car_type": 1
+                },
+                {
+                    "id": 2,
+                    'title': '预约内容二',
+                    "createTime": "2016-12-09",
+                    "car_type": 2
+                },
+                {
+                    "id": 2,
+                    'title': '预约内容三',
+                    "createTime": "2016-12-09",
+                    "car_type": 2
+                },
+                {
+                    "id": 2,
+                    'title': '预约内容四',
+                    "createTime": "2016-12-09",
+                    "car_type": 2
+                },
+            ]
+        },
         methods: {
-
+            tableActions(item) {
+                console.log(item);
+                let id = item.data.id;
+                console.log('ID:' + id);
+                switch (item.name) {
+                    case 'view':
+                        this.$router.push('/admin/orders/' + id);
+                        break;
+                    case 'edit':
+                        this.$router.push('/admin/orders/1');
+                        break;
+                    case 'delete':
+                        alert('删除'+id);
+                        this.deleteModal = true;
+                        break;
+                }
+            },
         }
     }
 </script>

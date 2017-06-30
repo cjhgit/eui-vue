@@ -1,18 +1,22 @@
 <template>
-
-    <div class="about">
-        <h1>课程列表</h1>
+    <div class="layout-body">
+        <h1>素材管理</h1>
+        <div>
+            <router-link :to="routeUrl + '/resources/banner'">海报素材</router-link>
+            <router-link :to="routeUrl + '/resources/playground'">场地素材</router-link>
+        </div>
         <ul>
             <li><router-link to="/admin/articles/1">文章1</router-link></li>
             <li><router-link to="/admin/articles/2">文章2</router-link></li>
         </ul>
         <div class="btn-add" id="guideAdd">
             <vue-tooltip content="添加车辆到装货进行装货">
-                <button class="btn btn-primary">
+                <button class="btn btn-primary" @click="openChooseCar">
                     添加文章
                 </button>
             </vue-tooltip>
         </div>
+        <router-link to="/admin/articles/add">添加文章</router-link>
         <vue-filter-panel>
             <div slot="search-btn">
                 <input type="text" class="form-control" v-model="key" placeholder="标题/内容关键字">
@@ -48,6 +52,10 @@
                 },
                 columns: [
                     {
+                        name: '__checkbox',
+                        title: ''
+                    },
+                    {
                         name: 'title',
                         title: '文章标题'
                     },
@@ -64,20 +72,18 @@
                         title: '操作',
                         actions: [
                             {
+                                name: 'delete',
+                                label: '查看'
+                            },
+                            {
                                 name: 'edit',
                                 label: '编辑',
-                            },
-                            {
-                                name: 'onSale',
-                                label: '上架'
-                            },
-                            {
-                                name: 'offSale',
-                                label: '下架'
+                                hasAuth: 'read&noauth'
                             },
                             {
                                 name: 'delete',
                                 label: '删除',
+                                //type: 'select'
                             }
                         ]
                     }
@@ -98,8 +104,15 @@
                 ]
             }
         },
+        computed: {
+            routeUrl () {
+                return '/' + this.$route.params.lang + '/admin';
+            },
+        },
         methods: {
-
+            edit: function () {
+                alert('编辑');
+            }
         }
     }
 </script>

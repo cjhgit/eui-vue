@@ -2,12 +2,11 @@
 import App from './App'
 import Vue from 'vue'
 
-
 import router from './router/router.js'
 import VueResource from 'vue-resource'
 import VeeValidate from 'vee-validate'
 
-//import auth from 'directives/auth'
+import auth from './directives/auth'
 
 import './validators/validators'
 
@@ -18,6 +17,8 @@ import { Message, Loading, Tree, Dropdown, DropdownMenu, DropdownItem } from 'el
 //import './sass/main.scss'
 //import './sass/test.scss'
 
+import liangchuanUi2 from './components'
+
 // UEditor
 import './assets/utf8-php/ueditor.config.js'
 import './assets/utf8-php/ueditor.all.min.js'
@@ -27,11 +28,12 @@ import './assets/utf8-php/ueditor.parse.min.js'
 import dictionary from './i18n/dictionary'
 
 import VueI18n from 'vue-i18n'
+
 Vue.use(VueI18n);
-
-
 Vue.use(VueResource);
-Vue.use(liangchuanUi)
+Vue.use(liangchuanUi);
+Vue.use(liangchuanUi2);
+
 Vue.use(VeeValidate, {
     locale: 'zh_CN',
     dictionary: {
@@ -39,24 +41,14 @@ Vue.use(VeeValidate, {
     }
 });
 
-
-
-
-// 全局注册指令
-//Vue.directive('auth', auth)
-
-
-
+Vue.directive('auth', auth)
 
 // 全局消息组件, copy自element
 Vue.use(Loading.directive);
 Vue.prototype.$loading = Loading.service;
 Vue.prototype.$message = Message;
 
-
-
 // 全局注册组件
-
 const Home = { template: '<p>home page</p>' }
 const About = { template: '<p>about page</p>' }
 const Foo = { template: '<div>foo</div>' }

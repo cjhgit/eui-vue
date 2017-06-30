@@ -1,43 +1,46 @@
 <template>
     <div height="100%">
         <div class="layout-side">
-            <ul>
-                <li><router-link to="/admin">后台首页</router-link></li>
+            <div class="logo-box">
+                <img class="logo" src="/static/img/logo-purple.png">
+                <h1 class="title">后台管理系统</h1>
+            </div>
+            <ul class="sidenav-list">
+               <!-- <li><router-link to="/cn/admin">后台首页</router-link></li>
                 <li><router-link to="/admin/setting">我的设置</router-link></li>
-                <li><router-link to="/admin/info">我的信息</router-link></li>
-
-                <li><router-link to="/admin/courses">课程内容管理</router-link></li>
-                <li><router-link to="/admin/toturs">导师信息管理</router-link></li>
-                <li><router-link to="/admin/articles">行业讯息发布</router-link></li>
-                <li><router-link to="/admin/orders">预约信息管理</router-link></li>
+                <li><router-link to="/admin/info">我的信息</router-link></li>-->
+                <li>
+                    <span class="title"><i class="icon icon-app"></i> 管理</span>
+                    <ul>
+                        <li :class="{active: isActive('courses') }"><router-link :to="routeUrl + '/courses'">课程管理</router-link></li>
+                        <li :class="{active: isActive('tutors') }"><router-link :to="routeUrl + '/tutors'">导师信息管理</router-link></li>
+                        <li :class="{active: isActive('orders') }"><router-link :to="routeUrl + '/orders'">预约信息管理</router-link></li>
+                    </ul>
+                </li>
+                <li>
+                    <span class="title"><i class="icon icon-app"></i> 行业信息管理</span>
+                    <ul>
+                        <li :class="{active: isActive('resources') }"><router-link :to="routeUrl + '/resources'">素材管理</router-link></li>
+                        <li :class="{active: isActive('articles') }"><router-link to="/cn/admin/articles">文章管理</router-link></li>
+                    </ul>
+                </li>
             </ul>
         </div>
         <div class="layout-content">
             <header class="layout-header">
                 <div class="container">
                     <div class="container">
-                        <h1>EUI-vue 做最好的VUE UI</h1>
-                        <li><router-link to="/">网站首页</router-link></li>
-                        <button @click="loginout">退出登录</button>
+                        <div class="lang-box">
+                            <a :class="{active: isChinese}" href="#" @click="changeLanguage('cn')">中文</a>/<a :class="{active: isEnglish}" href="#" @click="changeLanguage('en')">English</a>
+                        </div>
+                        <div class="right-nav">
+                            <a href="#">账号</a> | <a href="#"  @click="loginout">退出</a>
+                        </div>
+
                     </div>
                 </div>
             </header>
-            <div class="layout-body">
-                <div class="container">
-                    <div class="col-sm-12">
-                        <h1>内容</h1>
-                        <div>
-                            <!--<Tag :message="121212" type="primary">asd</Tag>-->
-                            <!--<Asd :message="121212" type="primary">asd</Asd>-->
-                            <!--<Icon type="start"/>-->
-                            <!--<Alert type="success">123</Alert>-->
-
-                        </div>
-                        <router-view></router-view>
-                    </div>
-                </div>
-            </div>
-
+            <router-view></router-view>
             <footer class="layout-footer">
                 <div class="container">
 
@@ -63,12 +66,37 @@
                 editor: null
             }
         },
+        computed: {
+            routeUrl () {
+                return '/' + this.$route.params.lang + '/admin';
+            },
+            isChinese() {
+                return this.$route.params.lang === 'cn';
+            },
+            isEnglish() {
+                return this.$route.params.lang === 'en';
+            }
+        },
         methods: {
+            isActive(url) {
+                console.log(location.pathname);
+                //return true;
+                if (url) {
+                    return location.pathname === ('/' + this.$route.params.lang + '/admin/' + url)
+                } else {
+                    return location.pathname === ('/' + this.$route.params.lang + '/admin')
+                }
+            },
             loginout: function () {
                 localStorage.mytoken = '';
                 localStorage.username = '';
 
                 this.$router.push('/login');
+            },
+            changeLanguage(lang) {
+                console.log(location.href);
+                location.href = location.href.replace(/en|cn/, lang);
+                //this.$router.replace();
             },
             showNotification: function () {
                 if (window.Notification) {
@@ -104,7 +132,7 @@
 
 </script>
 
-<style scoped>
+<style>
     html,body {
         height: 100%;
         overflow: hidden;
@@ -112,30 +140,137 @@
     body {
         position: relative;
     }
+    .container {
+        width: 100%;
+    }
+    /**/
     .layout-side {
         position: absolute;
         left: 0;
         top: 0;
         bottom: 0;
-        width: 240px;
-        padding: 16px;
-        background-color: #f9f9f9;
+        width: 200px;
         border-right: 1px solid #ccc;
     }
+    .sidenav-list {
+
+    }
+    .sidenav-list .title {
+        display: block;
+        padding: 8px 16px 8px 32px;
+        color: #999;
+        border-top: 1px solid #ccc;
+    }
+    .sidenav-list > li {
+
+    }
+    .sidenav-list > li ul {
+
+    }
+    .sidenav-list > li ul li {
+    }
+    .sidenav-list .active a {
+        color: #fff;
+        background-color: #A9517A;
+    }
+    .sidenav-list > li ul a {
+        display: block;
+        padding: 8px 16px 8px 56px;
+        color: #333;
+        font-size: 16px;
+    }
+    .sidenav-list > li ul a:hover {
+        color: #fff;
+        background-color: #ca7c8a;
+    }
+    /**/
+    .logo-box {
+        padding: 8px;
+        /*border-bottom: 1px solid #ccc;*/
+    }
+    .logo-box .logo {
+        display: block;
+        width: 80px;
+        margin: 0 auto;
+    }
+    .logo-box .title {
+        text-align: center;
+    }
+    /**/
     .layout-header {
-        height: 80px;
-        background-color: #f00;
+        height: 64px;
+        padding-top: 20px;
+        border-bottom: 1px solid #ccc;
+    }
+    .right-nav {
+        float: right;
+    }
+    .right-nav a {
+        color: #666;
     }
     .layout-footer {
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        width: 100%;
         height: 80px;
-        background-color: #f90;
+        border-top: 1px solid #ccc;
     }
 
     .layout-content {
         position: absolute;
-        left: 240px;
+        left: 200px;
         top: 0;
         bottom: 0;
         right: 0;
+    }
+
+    /**/
+    .bread-nav .breadcrumb {
+        padding: 16px 0;
+        background-color: transparent;
+    }
+    .bread-nav .breadcrumb li a {
+        color: #666;
+    }
+    .bread-nav {
+        padding: 0 16px;
+        /*overflow: hidden;*/
+        border-bottom: 1px solid #ccc;
+    }
+    .bread-nav .nav-icon {
+        float: left;
+        margin-top: 16px;
+        margin-right: 16px;
+        background-color: #f00;
+    }
+    .bread-nav .bread-list {
+        float: left;
+        margin-bottom: 16px;
+    }
+    .bread-nav .bread-item {
+        float: left;
+        margin-right: 16px;
+    }
+    .bread-nav .bread-item.active {
+        color: #000 !important;
+    }
+    .bread-nav > li + li:before {
+        padding: 0 5px;
+        color: #ccc;
+        content: "/\00a0";
+    }
+    /**/
+    .lang-box {
+        float: left;
+        color: #666;
+    }
+    .lang-box a {
+        margin: 0 8px;
+        color: #666;
+    }
+    .lang-box .active {
+        color: #A9517A;
+        border-bottom: 1px solid #A9517A;
     }
 </style>

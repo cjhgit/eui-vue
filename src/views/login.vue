@@ -65,7 +65,7 @@
 
                 localStorage.mytoken = '123456';
                 localStorage.username = '陈建杭';
-                this.$router.push('/admin');
+                this.$router.push('/cn/admin');
             },
             handlerEnter (e) {
                 e = e || event;

@@ -6,15 +6,18 @@ import Router from 'vue-router'
 import Error404 from '@/views/error404'
 import Test from '@/views/tmp/Test' // 测试页面
 import Demo from '@/views/tmp/Demo' // demo 页面
-import Main from '@/views/home/base'
-import MainCn from '@/views/home/baseCn'
+import App from '@/App'
+import Empty from '@/views/empty';
 
 // 前台模块
 import Home from '@/views/home/base'
 import HomeIndex from '@/views/home/index'
 import About from '@/views/home/About'
+import Pilates from '@/views/home/Pilates'
 import Course from '@/views/home/Course'
-import Totur from '@/views/home/Totur'
+import CourseDetail from '@/views/home/courseDetail'
+import Tutor from '@/views/home/Tutor'
+import TutorDetail from '@/views/home/tutorDetail'
 import Playground from '@/views/home/Playground'
 import Order from '@/views/home/Order'
 import Contact from '@/views/home/Contact'
@@ -23,12 +26,17 @@ import Login from '@/views/login'
 import ArticleList from '@/views/home/articleList'
 import ArticleDetail from '@/views/home/articleDetail'
 
+
 // 后台模块
 import Admin from '@/views/admin/base'
 import AdminIndex from '@/views/admin/index'
 // 后台用户模块
 import UserSetting from '@/views/user/userSetting'
 import UserInfo from '@/views/user/userInfo'
+
+import AdminResource from '@/views/admin/resources'
+import AdminBanner from '@/views/admin/banner'
+import AdminPlayground from '@/views/admin/playground'
 // 后台文章模块
 import AdminArticle from '@/views/admin/articleList'
 import AdminArticleDetail from '@/views/admin/articleDetail'
@@ -36,9 +44,12 @@ import AdminArticleAdd from '@/views/admin/articleAdd'
 
 import AdminCourse from '@/views/admin/courseList'
 
-import AdminTotur from '@/views/admin/toturList'
+import AdminTutor from '@/views/admin/tutorList'
+import AdminTutorDetail from '@/views/admin/tutorDetail'
+import AdminTutorAdd from '@/views/admin/tutorAdd'
 
 import AdminOrder from '@/views/admin/orderList'
+import AdminOrderDetail from '@/views/admin/orderDetail'
 
 Vue.use(Router);
 
@@ -71,6 +82,20 @@ let adminMap = [
         path: 'setting',
         component: UserSetting,
     },
+    // 后台素材模块
+    {
+        path: 'resources',
+        //component: AdminResource,
+        redirect: 'resources/playground'
+    },
+    {
+        path: 'resources/banner',
+        component: AdminBanner,
+    },
+    {
+        path: 'resources/playground',
+        component: AdminPlayground,
+    },
     // 后台文章模块
     {
         path: 'articles',
@@ -91,15 +116,26 @@ let adminMap = [
     },
     // 后台导师模块
     {
-        path: 'toturs',
-        component: AdminTotur,
+        path: 'tutors',
+        component: AdminTutor,
+    },
+    {
+        path: 'tutors/add',
+        component: AdminTutorAdd
+    },
+    {
+        path: 'tutors/:id',
+        component: AdminTutorDetail
     },
     // 后台预约模块
     {
         path: 'orders',
         component: AdminOrder,
     },
-
+    {
+        path: 'orders/:id',
+        component: AdminOrderDetail
+    },
 ];
 
 let homeMap = [
@@ -113,11 +149,15 @@ let homeMap = [
     },
     {
         path: 'courses/:id',
-        component: Course,
+        component: CourseDetail,
     },
     {
-        path: 'toturs',
-        component: Totur
+        path: 'tutors',
+        component: Tutor
+    },
+    {
+        path: 'tutors/:id',
+        component: TutorDetail,
     },
     {
         path: 'playground',
@@ -130,6 +170,10 @@ let homeMap = [
     {
         path: 'about',
         component: About
+    },
+    {
+        path: 'pilates',
+        component: Pilates
     },
     {
         path: 'contact',
@@ -149,12 +193,33 @@ let homeMap = [
         component: Error404
     },
 
+    {
+        path: 'admin',
+        component: Admin,
+        meta: {
+            requiresAuth: true
+        },
+        children: adminMap
+    },
+    {
+        path: 'admin/:branch',
+        meta: {
+            requiresAuth: true
+        },
+        component: Admin,
+        children: [
+            {
+                path: '/',
+                component: AdminIndex
+            }
+        ]
+    },
 ];
 
 let routerMap = [
     {
         path: '/',
-        redirect: '/cn'
+        redirect: '/cn/home'
         //component: Main,
         //children: homeMap
     },
@@ -163,35 +228,42 @@ let routerMap = [
         component: Login
     },
     {
-        path: '/admin',
-        component: Admin,
-        meta: {
-            requiresAuth: true
-        },
-        children: adminMap
-    },
-    {
-        path: '/admin/:branch',
-        meta: {
-            requiresAuth: true
-        },
-        component: Admin,
-        children: [
-            {
-                path: '/',
-                component: HomeIndex
-            }
-        ]
-    },
-    {
         path: '/demo',
         components: Demo
     },
     {
         path: '/:lang',
-        component: MainCn,
-        children: homeMap
+        component: Empty,
+        //children: homeMap
+        children: [
+            {
+                path: '/',
+                redirect: 'home'
+            },
+            {
+                path: 'home',
+                component: Home,
+                children: homeMap,
+            },
+            {
+                path: 'admin',
+                component: Admin,
+                meta: {
+                    requiresAuth: true
+                },
+                children: adminMap
+            },
+            {
+                path: 'about',
+                component: About
+            },
+        ]
     },
+    /*{
+        path: '/admin',
+        redirect: '/cn/admin'
+    },
+*/
     /*{
         path: '/:lang',
         component: Main,
