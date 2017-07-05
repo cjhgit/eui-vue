@@ -22,6 +22,7 @@ import Playground from '@/views/home/Playground'
 import Order from '@/views/home/Order'
 import Contact from '@/views/home/Contact'
 import Login from '@/views/login'
+import Register from '@/views/register'
 // 前台文章模块
 import ArticleList from '@/views/home/articleList'
 import ArticleDetail from '@/views/home/articleDetail'
@@ -43,13 +44,17 @@ import AdminArticleDetail from '@/views/admin/articleDetail'
 import AdminArticleAdd from '@/views/admin/articleAdd'
 
 import AdminCourse from '@/views/admin/courseList'
+import AdminCourseAdd from '@/views/admin/courseAdd'
 
 import AdminTutor from '@/views/admin/tutorList'
 import AdminTutorDetail from '@/views/admin/tutorDetail'
+import AdminTutorEdit from '@/views/admin/tutorEdit'
 import AdminTutorAdd from '@/views/admin/tutorAdd'
-
+import AdminFile from '@/views/admin/file'
 import AdminOrder from '@/views/admin/orderList'
 import AdminOrderDetail from '@/views/admin/orderDetail'
+import AdminOrderNew from '@/views/admin/orderNew'
+import AdminOrderFinish from '@/views/admin/orderFinish'
 
 Vue.use(Router);
 
@@ -114,6 +119,10 @@ let adminMap = [
         path: 'courses',
         component: AdminCourse,
     },
+    {
+        path: 'courses/add',
+        component: AdminCourseAdd,
+    },
     // 后台导师模块
     {
         path: 'tutors',
@@ -127,6 +136,10 @@ let adminMap = [
         path: 'tutors/:id',
         component: AdminTutorDetail
     },
+    {
+        path: 'tutors/:id/edit',
+        component: AdminTutorEdit
+    },
     // 后台预约模块
     {
         path: 'orders',
@@ -135,6 +148,11 @@ let adminMap = [
     {
         path: 'orders/:id',
         component: AdminOrderDetail
+    },
+    // 后台文件管理模块
+    {
+        path: 'files',
+        component: AdminFile
     },
 ];
 
@@ -226,6 +244,10 @@ let routerMap = [
     {
         path: '/login',
         component: Login
+    },
+    {
+        path: '/register',
+        component: Register
     },
     {
         path: '/demo',

@@ -1,6 +1,7 @@
 <template>
 	<i class="icon icon-back"  @click="goback"></i>
 </template>
+
 <script>
 	export default {
 		methods: {

@@ -4,18 +4,18 @@
             <div class="bread-nav">
                 <ui-goback></ui-goback>
                 <ol class="breadcrumb">
-                    <li><router-link :to="'/'">{{ $t('home') }}</router-link></li>
+                    <li><router-link :to="routeUrl">{{ $t('home') }}</router-link></li>
                     <li><router-link :to="routeUrl + '/courses'">{{ $t('allCourse') }}</router-link></li>
-                    <li class="active">{{ article.title }}</li>
+                    <li class="active">{{ article.name }}</li>
                 </ol>
             </div>
 
             <article class="article-box">
                 <div class="article-header">
-                    <h1 class="article-title">{{ article.title }}</h1>
+                    <h1 class="article-title">{{ article.name }}</h1>
                 </div>
                 <div class="article-content">
-                    <div v-html="article.content"></div>
+                    <div v-html="article.introduction"></div>
                 </div>
             </article>
 
@@ -23,33 +23,46 @@
     </div>
 </template>
 
-
 <script>
     import Vue from 'vue'
     import i18n from '@/i18n'
+    import {domainUrl} from 'CONFIG/config'
 
     export default {
         i18n,
         data () {
             return {
-                article: null
+                article: {}
             }
         },
         computed: {
             routeUrl () {
-                return '/' + this.$route.params.lang + '/home';
+                return '/' + this.$route.params.lang + '/home'
             }
         },
-        created: function () {
-            console.log('获取语言' + this.$route.params.lang);
-            this.article = {
-                title: '这是文章的标题',
-                content: '<h2>什么是XXX？</h2><p>这是文章的内容</p><h2>第二段的标题</h2><p>这是第二段</p>'
-            };
+        mounted: function () {
+            this.getData()
         },
-
         methods: {
-
+            getData() {
+                this.$http.get(domainUrl + '/course/' + this.$route.params.id, {
+                    headers: {
+                        'Lc-Lang': this.$route.params.lang === 'en' ? 'en' : 'zh',
+                        'X-Auth-Token': localStorage.mytoken
+                    },
+                }).then(response => {
+                    let body = response.body
+                    console.log(body)
+                    this.article = body
+                }, response => {
+                    let body = response.body
+                    console.log(body);
+                    if (body.code === 101) {
+                        localStorage.mytoken = ''
+                        this.$router.push('/login') // TODO
+                    }
+                })
+            }
         }
     }
 

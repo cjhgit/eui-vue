@@ -5,13 +5,15 @@
             <div class="bread-nav">
                 <ui-goback></ui-goback>
                 <ol class="breadcrumb">
-                    <li><router-link :to="'/'">{{ $t('home') }}</router-link></li>
+                    <li><router-link :to="routeUrl">{{ $t('home') }}</router-link></li>
                     <li class="active">{{ $t('contactUs') }}</li>
                 </ol>
             </div>
 
             <div class="map-box">
-                <baidu-map class="map"></baidu-map>
+                <baidu-map class="map" :center="{lng: 113.382832, lat: 23.109058}" :zoom="16">
+                    <bm-scale anchor="BMAP_ANCHOR_TOP_RIGHT"></bm-scale>
+                </baidu-map>
                 <div class="contact-info">
                     <h2 class="title">紫然肌专业普拉提会馆</h2>
                     <div class="info">地址：广东省中山市石歧区悦来南路37号正和中州54/55卡</div>
@@ -41,7 +43,8 @@
         i18n,
         data () {
             return {
-                center: {lng: 0, lat: 0}
+                //zoom: 16,
+                //center: {lng: 113.382832, lat: 23.109058}
             }
         },
         computed: {
@@ -56,8 +59,8 @@
         methods: {
             handler ({BMap, map}) {
                 console.log('1212121212121')
-                this.lng = 116.404
-                this.lat = 39.915
+                //this.lng = 113.382832
+                //this.lat = 23.109058
             }
         }
     }

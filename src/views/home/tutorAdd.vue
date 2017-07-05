@@ -4,7 +4,7 @@
             <div class="bread-nav">
                 <ui-goback></ui-goback>
                 <ol class="breadcrumb">
-                    <li><router-link :to="'/'">{{ $t('home') }}</router-link></li>
+                    <li><router-link :to="routeUrl">{{ $t('home') }}</router-link></li>
                     <li><router-link :to="routeUrl + '/tutors'">{{ $t('tutorDesc') }}</router-link></li>
                     <li class="active">{{ tutor.name }}</li>
                 </ol>

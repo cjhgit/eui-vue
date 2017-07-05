@@ -6,22 +6,15 @@ html, body, div, span, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, a,
     font-weight: normal;
     vertical-align: baseline;
 }
-html,body{
-    height:100%
-}
-body {
-    font-size: 14px;
-}
+
+
 article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, section {
     display: block;
 }
 button {
     outline: none;
 }
-ol, ul {
-    margin: 0;
-    padding: 0;
-}
+
 ol, ul, li {
     list-style: none;
 }

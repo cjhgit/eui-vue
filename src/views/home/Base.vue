@@ -41,9 +41,6 @@
                 <div class="info">{{ $t('qrcode') }}</div>
                 <div class="info">{{ $t('contactPhone') }}：0760-88831122</div>
                 <div class="info">{{ $t('address') }}：{{ address }}</div>
-
-                <router-link to="/login">登录</router-link>
-                <router-link to="/cn/admin">后台管理</router-link>
             </div>
         </footer>
     </div>
@@ -127,6 +124,21 @@
 </script>
 
 <style>
+    .layout-body {
+        min-height: 600px;
+    }
+    /**/
+    .row-sm {
+        margin-right: -8px;
+        margin-left: -8px;
+    }
+    .row-sm .col-sm-3,
+    .row-sm .col-sm-4 {
+        padding-right: 8px;
+        padding-left: 8px;
+    }
+
+
     .layout-header {
         height: 56px;
         /*padding: 16px 0;*/
@@ -271,17 +283,7 @@
     .btn {
         border-radius: 0;
     }
-    .btn-primary {
-        color: #fff;
-        background-color: #A9517A;
-        border-radius: 0;
-        border-color: #A9517A;
-    }
-    .btn-primary:hover {
-        color: #A9517A;
-        background-color: transparent;
-        border-color: #A9517A;
-    }
+
 
 
 

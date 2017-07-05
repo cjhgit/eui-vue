@@ -4,7 +4,7 @@
             <div class="bread-nav">
                 <ui-goback></ui-goback>
                 <ol class="breadcrumb">
-                    <li><router-link :to="'/'">{{ $t('home') }}</router-link></li>
+                    <li><router-link :to="routeUrl">{{ $t('home') }}</router-link></li>
                     <li class="active">{{ $t('pilates') }}</li>
                 </ol>
             </div>
@@ -32,7 +32,9 @@
             }
         },
         computed: {
-
+            routeUrl () {
+                return '/' + this.$route.params.lang + '/home';
+            },
         },
         mounted() {
             this.article = {

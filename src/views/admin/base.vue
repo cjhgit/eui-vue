@@ -29,26 +29,23 @@
         <div class="layout-content">
             <header class="layout-header">
                 <div class="container">
-                    <div class="container">
-                        <div class="lang-box">
-                            <a :class="{active: isChinese}" href="#" @click="changeLanguage('cn')">中文</a>/<a :class="{active: isEnglish}" href="#" @click="changeLanguage('en')">English</a>
-                        </div>
-                        <div class="right-nav">
-                            <a href="#">账号</a> | <a href="#"  @click="loginout">退出</a>
-                        </div>
-
+                    <div class="lang-box">
+                        <a :class="{active: isChinese}" href="#" @click="changeLanguage('cn')">中文</a>/<a :class="{active: isEnglish}" href="#" @click="changeLanguage('en')">English</a>
+                    </div>
+                    <div class="right-nav">
+                        <a href="#">账号</a> | <a href="#"  @click="loginout">退出</a>
                     </div>
                 </div>
             </header>
             <router-view></router-view>
-            <footer class="layout-footer">
+            <!--<footer class="layout-footer">
                 <div class="container">
 
                     这是页脚
                     <div>我们强烈建议您<a href="#" @click="showNotification">开启浏览器通知</a></div>
 
                 </div>
-            </footer>
+            </footer>-->
         </div>
     </div>
 </template>
@@ -142,8 +139,28 @@
     }
     .container {
         width: 100%;
+        padding-right: 32px;
+        padding-left: 32px;
     }
     /**/
+    .admin-nav {
+        padding: 16px 0;
+        overflow: hidden;
+    }
+    .admin-nav .bread-nav {
+        float: left;
+        border-bottom: none;
+        font-size: 18px;
+        padding: 0;
+        margin-bottom: 0;
+    }
+    .admin-nav .bread-nav .breadcrumb {
+        padding: 0 0;
+    }
+    .admin-nav .btn {
+        float: right;
+    }
+        /**/
     .layout-side {
         position: absolute;
         left: 0;
@@ -238,11 +255,11 @@
         /*overflow: hidden;*/
         border-bottom: 1px solid #ccc;
     }
-    .bread-nav .nav-icon {
+    .bread-nav .icon-back {
         float: left;
-        margin-top: 16px;
-        margin-right: 16px;
-        background-color: #f00;
+        padding-top: 16px;
+        margin-right: 8px;
+        font-size: 20px;
     }
     .bread-nav .bread-list {
         float: left;
@@ -273,4 +290,6 @@
         color: #A9517A;
         border-bottom: 1px solid #A9517A;
     }
+
+
 </style>

@@ -4,7 +4,7 @@
             <div class="bread-nav">
                 <ui-goback></ui-goback>
                 <ol class="breadcrumb">
-                    <li><router-link :to="'/'">{{ $t('home') }}</router-link></li>
+                    <li><router-link :to="routeUrl">{{ $t('home') }}</router-link></li>
                     <li class="active">{{ $t('news') }}</li>
                 </ol>
             </div>
@@ -26,17 +26,16 @@
     </div>
 </template>
 
-
 <script>
     import Vue from 'vue'
     import i18n from '@/i18n'
+    import {domainUrl} from 'CONFIG/config'
 
     export default {
         i18n,
         data () {
             return {
                 articles: [],
-
             }
         },
         computed: {
@@ -44,55 +43,31 @@
                 return '/' + this.$route.params.lang + '/home';
             },
         },
-        created() {
-            console.log('获取语言' + this.$route.params.lang);
-            this.articles = [
-                {
-                    id: new Date().getTime(),
-                    title: '文章标题' + new Date().getTime(),
-                    image: 'http://localhost:1234/static/img/playground.jpg',
-                    time: '2016-6-28',
-                    content: '每天选择有每天选择有每天选择有每天选择有每天选择有每天选择有每天选择有每天选择有每天选择有每天选择有每天选择有每天选择有每天选择有每天选择有'
-                },
-                {
-                    id: new Date().getTime(),
-                    title: '文章标题' + new Date().getTime(),
-                    image: 'http://localhost:1234/static/img/playground.jpg',
-                    time: '2016-6-28',
-                    content: '每天选择有每天选择有每天选择有每天选择有每天选择有每天选择有每天选择有每天选择有每天选择有每天选择有每天选择有每天选择有每天选择有每天选择有'
-                },
-                {
-                    id: new Date().getTime(),
-                    title: '文章标题' + new Date().getTime(),
-                    image: 'http://localhost:1234/static/img/playground.jpg',
-                    time: '2016-6-28',
-                    content: '每天选择有每天选择有每天选择有每天选择有每天选择有每天选择有每天选择有每天选择有每天选择有每天选择有每天选择有每天选择有每天选择有每天选择有'
-                },
-                {
-                    id: new Date().getTime(),
-                    title: '文章标题' + new Date().getTime(),
-                    image: 'http://localhost:1234/static/img/playground.jpg',
-                    time: '2016-6-28',
-                    content: '每天选择有每天选择有每天选择有每天选择有每天选择有每天选择有每天选择有每天选择有每天选择有每天选择有每天选择有每天选择有每天选择有每天选择有'
-                },
-                {
-                    id: new Date().getTime(),
-                    title: '文章标题' + new Date().getTime(),
-                    image: 'http://localhost:1234/static/img/playground.jpg',
-                    time: '2016-6-28',
-                    content: '每天选择有每天选择有每天选择有每天选择有每天选择有每天选择有每天选择有每天选择有每天选择有每天选择有每天选择有每天选择有每天选择有每天选择有'
-                },
-                {
-                    id: new Date().getTime(),
-                    title: '文章标题' + new Date().getTime(),
-                    image: 'http://localhost:1234/static/img/playground.jpg',
-                    time: '2016-6-28',
-                    content: '每天选择有每天选择有每天选择有每天选择有每天选择有每天选择有每天选择有每天选择有每天选择有每天选择有每天选择有每天选择有每天选择有每天选择有'
-                },
-            ]
+        mounted() {
+            this.getData();
         },
         methods: {
-
+            getData() {
+                this.$http.post(domainUrl + '/news/list', {
+                    page: 1,
+                    pageSize: 12
+                }, {
+                    headers: {
+                        'Lc-Lang': this.$route.params.lang === 'en' ? 'en' : 'zh'
+                    },
+                }).then(response => {
+                    let body = response.body
+                    console.log(body)
+                    this.articles = body.data
+                }, response => {
+                    let body = response.body
+                    console.log(body);
+                    if (body.code === 101) {
+                        localStorage.mytoken = ''
+                        this.$router.push('/login') // TODO
+                    }
+                })
+            },
         }
     }
 
@@ -122,18 +97,25 @@
         padding: 16px;
     }
     .article-list .article-title {
+        max-width: 160px;
         color: #000;
         font-size: 18px;
         margin-bottom: 8px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
     }
     .article-list .article-time {
         position: absolute;
-        top: 16px;
-        right: 16px;
+        top: 18px;
+        right: 20px;
         float: right;
         color: #999;
     }
     .article-list .article-content {
+        max-height: 60px;
         color: #999;
+        text-overflow: ellipsis;
+        overflow: hidden;
     }
 </style>

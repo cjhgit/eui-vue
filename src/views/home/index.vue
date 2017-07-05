@@ -18,7 +18,7 @@
                         <img class="avatar" src="/static/img/avatar.jpg">
                         <router-link :to="routeUrl + '/tutors/' + tutor.id">
                             <div class="tutor-name">{{ tutor.name }}</div>
-                            <div class="tutor-desc">{{ tutor.desc }}</div>
+                            <div class="tutor-desc">{{ tutor.introduction }}</div>
                         </router-link>
                     </li>
                 </ul>
@@ -63,11 +63,14 @@
                 <ul class="course-list row">
                     <li class="col-sm-4" v-for="course in courses">
                         <div class="course-item">
-                            <router-link :to="routeUrl + '/courses/' + course.id">
-                                <div class="course-name">{{ course.name }}</div>
-                                <img class="course-img" src="/static/img/avatar.jpg">
-                                <div class="course-desc">{{ course.desc }}</div>
-                            </router-link>
+                            <div class="mask"></div>
+                            <div class="content">
+                                <router-link :to="routeUrl + '/courses/' + course.id">
+                                    <div class="course-name">{{ course.name }}</div>
+                                    <img class="course-img" src="/static/img/avatar.jpg">
+                                    <div class="course-desc">{{ course.introduction }}</div>
+                                </router-link>
+                            </div>
                         </div>
                     </li>
                 </ul>
@@ -81,6 +84,7 @@
     import Vue from 'vue'
     import i18n from '@/i18n'
     import { Swipe, SwipeItem } from 'vue-swipe';
+    import {domainUrl} from 'CONFIG/config'
 
     require('@/test.css');
     require('vue-swipe/dist/vue-swipe.css');
@@ -111,77 +115,91 @@
         },
         mounted: function () {
             console.log(this.$i18n);
-            this.tutors = [
-                {
-                    id: new Date().getTime(),
-                    name: '导师名称',
-                    desc: '导师介绍'
-                },
-                {
-                    id: new Date().getTime(),
-                    name: '导师名称',
-                    desc: '导师介绍'
-                },
-                {
-                    id: new Date().getTime(),
-                    name: '导师名称',
-                    desc: '导师介绍'
-                }
-            ];
-            this.courses = [
-                {
-                    id: new Date().getTime(),
-                    name: '课程名称',
-                    desc: '课程介绍'
-                },
-                {
-                    id: new Date().getTime(),
-                    name: '课程名称',
-                    desc: '课程介绍'
-                },
-                {
-                    id: new Date().getTime(),
-                    name: '课程名称',
-                    desc: '课程介绍'
-                }
-            ];
-            this.playgrounds = [
-                {
-                    image: 'http://pic.58pic.com/58pic/11/77/72/58PIC9w58PICC9P.jpg'
-                },
-                {
-                    image: 'http://s16.sinaimg.cn/mw690/b3b843e0gdf408436f34f&690'
-                },
-                {
-                    image: 'http://s11.sinaimg.cn/mw690/0046logVty6LEhJixDQca&690'
-                },
-                {
-                    image: '/static/img/avatar.jpg'
-                },
-                {
-                    image: '/static/img/avatar.jpg'
-                },
-                {
-                    image: '/static/img/avatar.jpg'
-                },
-                {
-                    image: '/static/img/avatar.jpg'
-                },
-            ];
-            this.banners = [
-                {
-                    url: 'http://www.baidu.com',
-                    image: 'http://pic.58pic.com/58pic/11/77/72/58PIC9w58PICC9P.jpg'
-                },
-                {
-                    url: 'http://www.baidu.com',
-                    image: 'http://pic.58pic.com/58pic/11/77/72/58PIC9w58PICC9P.jpg'
-                },
-                {
-                    url: 'http://www.baidu.com',
-                    image: 'http://pic.58pic.com/58pic/11/77/72/58PIC9w58PICC9P.jpg'
-                }
-            ];
+            this.getData();
+
+        },
+        methods: {
+            getData() {
+                // 获取导师数据
+                this.$http.post(domainUrl + '/teacher/list', {
+                    page: 1,
+                    pageSize: 3
+                }, {
+                    headers: {
+                        'Lc-Lang': this.$route.params.lang === 'en' ? 'en' : 'zh'
+                    },
+                }).then(response => {
+                    let body = response.body
+                    console.log(body)
+                    this.tutors = body.data
+                }, response => {
+                    let body = response.body
+                    console.log(body);
+                    if (body.code === 101) {
+                        localStorage.mytoken = ''
+                        this.$router.push('/login') // TODO
+                    }
+                })
+
+                // 课程信息
+                this.$http.post(domainUrl + '/course/list', {
+                    page: 1,
+                    pageSize: 3
+                }, {
+                    headers: {
+                        'Lc-Lang': this.$route.params.lang === 'en' ? 'en' : 'zh'
+                    },
+                }).then(response => {
+                    let body = response.body
+                    console.log(body)
+                    this.courses = body.data
+                }, response => {
+                    let body = response.body
+                    console.log(body);
+                    if (body.code === 101) {
+                        localStorage.mytoken = ''
+                        this.$router.push('/login') // TODO
+                    }
+                })
+
+                this.playgrounds = [
+                    {
+                        image: 'http://pic.58pic.com/58pic/11/77/72/58PIC9w58PICC9P.jpg'
+                    },
+                    {
+                        image: 'http://s16.sinaimg.cn/mw690/b3b843e0gdf408436f34f&690'
+                    },
+                    {
+                        image: 'http://s11.sinaimg.cn/mw690/0046logVty6LEhJixDQca&690'
+                    },
+                    {
+                        image: '/static/img/avatar.jpg'
+                    },
+                    {
+                        image: '/static/img/avatar.jpg'
+                    },
+                    {
+                        image: '/static/img/avatar.jpg'
+                    },
+                    {
+                        image: '/static/img/avatar.jpg'
+                    },
+                ];
+                this.banners = [
+                    {
+                        url: 'http://www.baidu.com',
+                        image: 'http://pic.58pic.com/58pic/11/77/72/58PIC9w58PICC9P.jpg'
+                    },
+                    {
+                        url: 'http://www.baidu.com',
+                        image: 'http://pic.58pic.com/58pic/11/77/72/58PIC9w58PICC9P.jpg'
+                    },
+                    {
+                        url: 'http://www.baidu.com',
+                        image: 'http://pic.58pic.com/58pic/11/77/72/58PIC9w58PICC9P.jpg'
+                    }
+                ];
+            }
         },
         components: {
             'swipe': Swipe,
@@ -284,16 +302,49 @@
         overflow: hidden;
     }
     .course-list .course-item {
+        position: relative;
+        background: url("/static/img/playground.jpg");
+        background-size: 100% 100%;
         background-color: #ccc;
-        height: 280px;
+        height: 320px;
+    }
+    .course-list .course-item:hover .mask {
+        
+    }
+    .course-list .course-item:hover .course-name {
+        color: #333;
+    }
+    .course-list .course-item a {
+        display: block;
+        color: #fff;
     }
     .course-list .course-name {
-
+        font-size: 18px;
+        margin-bottom: 24px;
     }
     .course-list .course-img {
-
+        width: 120px;
+        height: 120px;
+        margin-bottom: 24px;
+        border-radius: 60px;
     }
     .course-list .course-desc {
 
+    }
+    .course-list .mask {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: rgba(100, 100, 100, .5);
+    }
+    .course-list .content {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        padding: 32px;
     }
 </style>

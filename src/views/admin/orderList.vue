@@ -1,33 +1,46 @@
 <template>
+    <div class="layout-body">
 
-    <div class="about">
-        <h1>预约列表</h1>
-        <router-link to="/admin/orders/1">添加文章</router-link>
-        <vue-filter-panel>
-            <div slot="search-btn">
-                <input type="text" class="form-control" v-model="key" placeholder="标题/内容关键字">
-                <button class="btn btn-blue btn-search" @click="search">搜索</button>
-            </div>
-            <div slot="global-btn">
-                <div class="btn-create">
-                    <div class="btn-group">
-                        <button type="button" class="btn btn-blue dropdown-toggle" @click="addArticle">
-                            添加文章
-                        </button>
-                    </div>
+        <div class="admin-nav">
+            <div class="container">
+                <div class="bread-nav">
+                    <ol class="breadcrumb">
+                        <li class="active">预约信息管理</li>
+                    </ol>
                 </div>
             </div>
-        </vue-filter-panel>
-        <vue-table
-                :columns="columns"
-                :tableData="tableData"
-                @table-action="tableActions"></vue-table>
+        </div>
+
+        <div class="container">
+            <table class="table table-bordered">
+                <tr>
+                    <th>客户姓名</th>
+                    <th>性别</th>
+                    <th>电话号码</th>
+                    <th>电子邮件</th>
+                    <th>预约时间</th>
+                    <th>操作</th>
+                </tr>
+                <tr v-for="order in orders">
+                    <td>{{ order.name }}</td>
+                    <td>{{ order.sex }}</td>
+                    <td>{{ order.phone }}</td>
+                    <td>{{ order.email }}</td>
+                    <td>{{ order.time }}</td>
+                    <td>
+                        <button class="btn btn-primary">完成</button>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
     </div>
 </template>
 
 <script>
     import Vue from 'vue'
     import i18n from '@/i18n'
+    import {domainUrl} from 'CONFIG/config'
 
     export default {
         i18n,
@@ -41,76 +54,37 @@
                 addArticle: function () {
 
                 },
-                columns: [
-                    {
-                        name: 'title',
-                        title: '预约内容'
-                    },
-                    {
-                        name: 'createTime',
-                        title: '创建时间',
-                    },
-                    {
-                        name: 'car_type',
-                        title: '备注'
-                    },
-                    {
-                        name: '__actions',
-                        title: '操作',
-                        actions: [
-                            {
-                                name: 'view',
-                                label: '查看',
-                            },
-                            {
-                                name: 'edit',
-                                label: '编辑',
-                            },
-                            {
-                                name: 'remove',
-                                label: '删除'
-                            }
-                        ]
-                    }
-                ],
-                tableData: []
+                orders: []
             }
         },
         computed: {
             routeUrl () {
-                return '/' + this.$route.params.lang + '/home';
+                return '/' + this.$route.params.lang + '/home'
             }
         },
-        created: function () {
-            console.log('获取语言' + this.$route.params.lang);
-            this.tableData = [
-                {
-                    "id": 1,
-                    'title': '预约内容一',
-                    "createTime": "2016-12-09",
-                    "car_type": 1
-                },
-                {
-                    "id": 2,
-                    'title': '预约内容二',
-                    "createTime": "2016-12-09",
-                    "car_type": 2
-                },
-                {
-                    "id": 2,
-                    'title': '预约内容三',
-                    "createTime": "2016-12-09",
-                    "car_type": 2
-                },
-                {
-                    "id": 2,
-                    'title': '预约内容四',
-                    "createTime": "2016-12-09",
-                    "car_type": 2
-                },
-            ]
+        mounted: function () {
+            this.getData()
         },
         methods: {
+            getData(lang) {
+                this.$http.get(domainUrl + '/admin/reserve/all', {
+                    headers: {
+                        'Lc-Lang': this.$route.params.lang === 'en' ? 'en' : 'zh',
+                        'X-Auth-Token': localStorage.mytoken
+                    },
+                }).then(response => {
+                    let body = response.body
+                    console.log(body)
+                    this.orders = body
+                }, response => {
+                    let body = response.body
+                    console.log(body);
+                    if (body.code === 101) {
+                        localStorage.mytoken = ''
+                        this.$router.push('/login') // TODO
+                    }
+                })
+            },
             tableActions(item) {
                 console.log(item);
                 let id = item.data.id;
@@ -124,7 +98,7 @@
                         break;
                     case 'delete':
                         alert('删除'+id);
-                        this.deleteModal = true;
+                        this.deleteModal = true
                         break;
                 }
             },

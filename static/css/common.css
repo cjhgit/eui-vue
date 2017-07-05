@@ -1,2 +1,16 @@
 @import 'reset.css';
 
+.btn-primary {
+    color: #fff;
+    background-color: #A9517A;
+    border-radius: 0;
+    border-color: #A9517A;
+}
+.btn-primary:hover,
+.btn-primary:focus,
+.btn-primary:active:hover,
+.btn-primary:active {
+    color: #A9517A;
+    background-color: transparent;
+    border-color: #A9517A;
+}

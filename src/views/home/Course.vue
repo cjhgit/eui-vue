@@ -4,7 +4,7 @@
             <div class="bread-nav">
                 <ui-goback></ui-goback>
                 <ol class="breadcrumb">
-                    <li><router-link :to="'/'">{{ $t('home') }}</router-link></li>
+                    <li><router-link :to="routeUrl">{{ $t('home') }}</router-link></li>
                     <li class="active">{{ $t('allCourse') }}</li>
                 </ol>
             </div>
@@ -12,10 +12,10 @@
             <ul class="row course-list">
                 <li class="col-sm-3" v-for="course in courses">
                     <div class="course-item">
-                        <img class="course-img" :src="course.image">
+                        <img class="course-img" :src="course.media">
                         <div class="hr"></div>
                         <div class="course-name">{{ course.name }}</div>
-                        <div class="course-desc">{{ course.desc }}</div>
+                        <div class="course-desc">{{ course.introduction }}</div>
                         <router-link class="btn course-link" :to="routeUrl + '/courses/' + course.id">{{ $t('detail') }}</router-link>
                     </div>
                 </li>
@@ -26,6 +26,7 @@
 
 <script>
     import i18n from '@/i18n'
+    import {domainUrl} from 'CONFIG/config'
 
     export default {
         i18n,
@@ -40,67 +41,32 @@
             }
         },
         mounted: function () {
-            console.log(this.$i18n);
-            console.log('create')
-            this.courses = [
-                {
-                    id: new Date().getTime(),
-                    name: '课程名称',
-                    desc: '课程介绍',
-                    image: '/static/img/avatar.jpg'
-                },
-                {
-                    id: new Date().getTime(),
-                    name: '课程名称',
-                    desc: '课程介绍',
-                    image: '/static/img/avatar.jpg'
-                },
-                {
-                    id: new Date().getTime(),
-                    name: '课程名称',
-                    desc: '课程介绍',
-                    image: '/static/img/avatar.jpg'
-                },
-                {
-                    id: new Date().getTime(),
-                    name: '课程名称',
-                    desc: '课程介绍',
-                    image: '/static/img/avatar.jpg'
-                },
-                {
-                    id: new Date().getTime(),
-                    name: '课程名称',
-                    desc: '课程介绍',
-                    image: '/static/img/avatar.jpg'
-                },
-                {
-                    id: new Date().getTime(),
-                    name: '课程名称',
-                    desc: '课程介绍',
-                    image: '/static/img/avatar.jpg'
-                },
-                {
-                    id: new Date().getTime(),
-                    name: '课程名称',
-                    desc: '课程介绍',
-                    image: '/static/img/avatar.jpg'
-                },
-                {
-                    id: new Date().getTime(),
-                    name: '课程名称',
-                    desc: '课程介绍',
-                    image: '/static/img/avatar.jpg'
-                }
-            ];
+            this.getData();
         },
         methods: {
-
+            getData() {
+                this.$http.post(domainUrl + '/course/list', {
+                    page: 1,
+                    pageSize: 12
+                }, {
+                    headers: {
+                        'Lc-Lang': this.$route.params.lang === 'en' ? 'en' : 'zh'
+                    },
+                }).then(response => {
+                    let body = response.body
+                    console.log(body)
+                    this.courses = body.data
+                }, response => {
+                    let body = response.body
+                    console.log(body);
+                    if (body.code === 101) {
+                        localStorage.mytoken = ''
+                        this.$router.push('/login') // TODO
+                    }
+                })
+            },
         }
     }
-
-    console.log(this)
-    console.log(this.$i18n)
-
 </script>
 
 <style scoped>
@@ -123,8 +89,10 @@
     }
     .course-list .course-img {
         width: 100%;
+        height: 160px;
         max-width: 160px;
         border-radius: 50%;
+        background-color: #f9f9f9;
     }
     .course-list .course-name {
         margin-bottom: 8px;

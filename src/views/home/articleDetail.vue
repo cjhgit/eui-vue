@@ -4,8 +4,8 @@
             <div class="bread-nav">
                 <ui-goback></ui-goback>
                 <ol class="breadcrumb">
-                    <li><router-link :to="'/'">{{ $t('home') }}</router-link></li>
-                    <li><router-link :to="'/articles'">{{ $t('news') }}</router-link></li>
+                    <li><router-link :to="routeUrl">{{ $t('home') }}</router-link></li>
+                    <li><router-link :to="routeUrl + '/articles'">{{ $t('news') }}</router-link></li>
                     <li class="active">{{ article.title }}</li>
                 </ol>
             </div>
@@ -26,6 +26,7 @@
 <script>
     import Vue from 'vue'
     import i18n from '@/i18n'
+    import {domainUrl} from 'CONFIG/config'
 
     export default {
         i18n,
@@ -39,17 +40,29 @@
                 return '/' + this.$route.params.lang + '/home';
             }
         },
-        created: function () {
-            console.log('获取语言' + this.$route.params.lang);
-            this.article = {
-                title: '这是文章的标题',
-                time: '2017-6-2',
-                content: '<p>这是文章的内容</p><p>这是第二段</p>'
-            };
+        mounted: function () {
+            this.getData();
         },
-
         methods: {
-
+            getData() {
+                this.$http.get(domainUrl + '/news/' + this.$route.params.id, {
+                    headers: {
+                        'Lc-Lang': this.$route.params.lang === 'en' ? 'en' : 'zh',
+                        'X-Auth-Token': localStorage.mytoken
+                    },
+                }).then(response => {
+                    let body = response.body
+                    console.log(body)
+                    this.article = body
+                }, response => {
+                    let body = response.body
+                    console.log(body);
+                    if (body.code === 101) {
+                        localStorage.mytoken = ''
+                        this.$router.push('/login') // TODO
+                    }
+                })
+            },
         }
     }
 

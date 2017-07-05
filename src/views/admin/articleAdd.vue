@@ -1,7 +1,14 @@
 <template>
-    <div>
-        <h1>添加文章</h1>
-        <button></button>
+    <div class="layout-body">
+        <div class="admin-nav">
+            <div class="bread-nav">
+                <ol class="breadcrumb">
+                    <li><router-link :to="routeUrl + '/'">管理</router-link></li>
+                    <li class="active">新建文章</li>
+                </ol>
+            </div>
+        </div>
+
         <div @click="getEditorContent">获取编辑器内容</div>
         <script id="editor" type="text/plain"></script>
     </div>
@@ -20,13 +27,21 @@
                 editor: null
             }
         },
+        computed: {
+            domainUrl() {
+                return domainUrl;
+            },
+            routeUrl () {
+                return '/' + this.$route.params.lang + '/admin';
+            },
+        },
+        mounted: function () {
+            this.editor = UE.getEditor('editor');
+        },
         methods: {
             getEditorContent: function() {
                 console.log(this.editor.getContent());
             }
-        },
-        mounted: function () {
-            this.editor = UE.getEditor('editor');
         },
         destroyed: function () {
             this.editor.destroy();

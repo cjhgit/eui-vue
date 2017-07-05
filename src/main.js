@@ -29,6 +29,8 @@ import dictionary from './i18n/dictionary'
 
 import VueI18n from 'vue-i18n'
 
+import { VTooltip } from 'v-tooltip'
+
 Vue.use(VueI18n);
 Vue.use(VueResource);
 Vue.use(liangchuanUi);
@@ -42,6 +44,7 @@ Vue.use(VeeValidate, {
 });
 
 Vue.directive('auth', auth)
+Vue.directive('tooltip', VTooltip)
 
 // 全局消息组件, copy自element
 Vue.use(Loading.directive);

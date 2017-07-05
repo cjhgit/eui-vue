@@ -1,44 +1,57 @@
 <template>
     <div class="layout-body">
-        <div class="bread-nav">
-            <ui-goback></ui-goback>
-            <ol class="breadcrumb">
-                <li><router-link :to="routeUrl + '/'">管理</router-link></li>
-                <li class="active">导师信息管理</li>
-            </ol>
+        <div class="admin-nav">
+            <div class="container">
+                <div class="bread-nav">
+                    <ol class="breadcrumb">
+                        <li class="active">导师信息管理</li>
+                    </ol>
+                </div>
+                <router-link class="btn btn-primary" :to="routeUrl + '/tutors/add'">添加导师</router-link>
+            </div>
         </div>
-        <router-link class="btn btn-primary" :to="routeUrl + '/tutors/add'">添加导师</router-link>
-
-        <table>
-            <tr>
-                <th>图片</th>
-                <th>性别</th>
-                <th>电话</th>
-                <th>介绍</th>
-                <th>操作</th>
-            </tr>
-            <ul>
-                <li class="tutor-list" v-for="tutor in tutors">
-                    <div class="tutor-item">
-                        <div>
+        <div class="admin-header">
+            <div class="container">
+                <ul>
+                    <li class="col-image">图片</li>
+                    <li class="col-sex">性别</li>
+                    <li class="col-tel">电话</li>
+                    <li class="col-desc">介绍</li>
+                    <li class="col-operate">操作</li>
+                </ul>
+            </div>
+        </div>
+        <div class="tutor-box">
+            <div class="container">
+                <ul class="tutor-list">
+                    <li class="tutor-item" v-for="tutor in tutors">
+                        <div class="item-header">
                             <input type="checkbox">
+                            <span>姓名： {{ tutor.name }}</span>
                         </div>
-                    </div>
-                </li>
-            </ul>
-        </table>
-
-        <div class="container">
-
-            <vue-table
-                :columns="columns"
-                :tableData="tableData"
-                @table-action="tableActions"></vue-table>
+                        <div class="item-body">
+                            <img class="tutor-avatar col-image" :src="tutor.media">
+                            <div class="tutor-sex col-sex">{{ tutor.gender === 1 ? '男' : '女' }}</div>
+                            <div class="tutor-tel col-tel">{{ tutor.phone }}</div>
+                            <div class="tutor-desc col-desc">{{ tutor.introduction }}</div>
+                            <div class="btns col-operate">
+                                <a class="btn" href="javascript:;" @click="update(tutor, 2)"
+                                   :class="{'btn-link': tutor.status !== 2, 'btn-primary': tutor.status === 2}">上架</a>
+                                <a class="btn" href="javascript:;" @click="update(tutor, 3)"
+                                   :class="{'btn-link': tutor.status !== 3, 'btn-primary': tutor.status === 3}">下架</a>
+                                <router-link class="btn btn-link" :to="routeUrl + '/tutors/' + tutor.id + '/edit'">编辑</router-link>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
         </div>
     </div>
 </template>
 
 <script>
+    import {domainUrl} from 'CONFIG/config'
+
     export default {
         data () {
             return {
@@ -84,73 +97,42 @@
             },
         },
         mounted: function () {
-            console.log('mounted');
-        },
-        beforeMounted() {
-            console.log('before mounted');
-        },
-        beforeUpdate() {
-            console.log('before update');
-        },
-        created() {
-            console.log('获取语言' + this.$route.params.lang);
-
-            this.tutors = this.getData(this.$route.params.lang);
+            this.getData()
         },
         methods: {
-            getData(lang) {
-                if (lang === 'cn') {
-                    return [
-                        {
-                            "id": 1,
-                            'name': 'ANN',
-                            'sex': '男',
-                            'tel': '15602221234',
-                            'desc': '紫然肌身活馆、加拿大身活馆总教练 台湾普拉提协会创办人以及第一届会长'
-                        },
-                        {
-                            "id": 1,
-                            'name': 'STN',
-                            'sex': '女',
-                            'tel': '15602221234',
-                            'desc': '紫然肌身活馆、加拿大身活馆总教练 台湾普拉提协会创办人以及第一届会长'
-                        }
-                    ]
-                } else {
-                    return [
-                        {
-                            "id": 1,
-                            'name': 'ANN',
-                            'sex': '男',
-                            'tel': '15602221234',
-                            'desc': 'English test'
-                        },
-                        {
-                            "id": 1,
-                            'name': 'STN',
-                            'sex': '女',
-                            'tel': '15602221234',
-                            'desc': 'English test'
-                        }
-                    ]
-                }
+            getData() {
+                this.$http.get(domainUrl + '/admin/teacher/all', {
+                    headers: {
+                        'Lc-Lang': this.$route.params.lang === 'en' ? 'en' : 'zh',
+                        'X-Auth-Token': localStorage.mytoken
+                    },
+                }).then(response => {
+                    let body = response.body
+                    console.log(body)
+                    this.tutors = body
+                }, response => {
+                    let body = response.body
+                    console.log(body);
+                    if (body.code === 101) {
+                        localStorage.mytoken = ''
+                        this.$router.push('/login') // TODO
+                    }
+                })
             },
-            tableActions(item) {
-                console.log(item);
-                let id = item.data.id;
-                console.log('ID:' + id);
-                switch (item.name) {
-                    case 'view':
-                        this.$router.push('/admin/orders/' + id);
-                        break;
-                    case 'edit':
-                        this.$router.push('/admin/orders/1');
-                        break;
-                    case 'delete':
-                        alert('删除'+id);
-                        this.deleteModal = true;
-                        break;
-                }
+            update(teacher, status) {
+                teacher.status = status;
+                this.$http.post(domainUrl + '/admin/teacher/' + teacher.id + '/update', teacher, {
+                    headers: {
+                        'Lc-Lang': this.$route.params.lang === 'en' ? 'en' : 'zh',
+                        'X-Auth-Token': localStorage.mytoken
+                    },
+                }).then(response => {
+
+                }, response => {
+                    let body = response.body
+                    console.log(body)
+
+                })
             },
         },
         watch:{
@@ -166,7 +148,83 @@
 </script>
 
 <style scoped>
-    .asd {
 
+    .tutor-list {
+    }
+    .tutor-list .tutor-item {
+        border: 1px solid #ccc;
+        margin-bottom: 24px;
+    }
+    .tutor-list .item-header {
+        padding: 16px;
+        border-bottom: 1px solid #ccc;
+    }
+    .tutor-list .item-body {
+        height: 160px;
+        padding: 16px;
+        overflow: hidden;
+    }
+    .tutor-list .tutor-sex {
+        float: left;
+        text-align: center;
+        line-height: 120px;
+    }
+    .tutor-list .tutor-tel {
+        float: left;
+        text-align: center;
+        line-height: 120px;
+    }
+    .tutor-list .tutor-desc {
+        float: left;
+        height: 150px;
+        text-align: center;
+    }
+    .tutor-list .tutor-avatar {
+        float: left;
+        height: 120px;
+    }
+    .tutor-list .btns {
+        float: left;
+        padding: 16px 48px;
+        height: 100%;
+    }
+    .tutor-list .btns .btn {
+        display: inline-block;
+    }
+    /**/
+    .admin-header {
+        background-color: #F1EFF1;
+        margin-bottom: 24px;
+        overflow: hidden;
+    }
+    .admin-header li {
+        display: inline-block;
+        float: left;
+        text-align: center;
+        padding: 16px 24px;
+    }
+    .col-image {
+        width: 20%;
+    }
+    .col-sex {
+        width: 20%;
+    }
+    .col-tel {
+        width: 20%;
+    }
+    .col-desc {
+        width: 20%;
+    }
+    .col-operate {
+        width: 20%;
+    }
+    /**/
+    .tutor-box {
+        position: absolute;
+        top: 220px;
+        left: 0;
+        width: 100%;
+        bottom: 0;
+        overflow: auto;
     }
 </style>

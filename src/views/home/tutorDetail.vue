@@ -4,17 +4,17 @@
             <div class="bread-nav">
                 <ui-goback></ui-goback>
                 <ol class="breadcrumb">
-                    <li><router-link :to="'/'">{{ $t('home') }}</router-link></li>
+                    <li><router-link :to="routeUrl">{{ $t('home') }}</router-link></li>
                     <li><router-link :to="routeUrl + '/tutors'">{{ $t('tutorDesc') }}</router-link></li>
                     <li class="active">{{ tutor.name }}</li>
                 </ol>
             </div>
 
             <div class="tutor-box">
-                <img class="tutor-avatar" :src="tutor.avatar">
+                <img class="tutor-avatar" :src="tutor.media">
                 <div class="tutor-info">
                     <div class="tutor-name">{{ tutor.name }}</div>
-                    <div class="tutor-desc">{{ tutor.desc }}</div>
+                    <div class="tutor-desc">{{ tutor.introduction }}</div>
                 </div>
             </div>
 
@@ -46,6 +46,7 @@
     import i18n from '@/i18n'
 //    import Swiper from 'vue-swiper'
     import VueAwesomeSwiper from 'vue-awesome-swiper'
+    import {domainUrl} from 'CONFIG/config'
 
     Vue.use(VueAwesomeSwiper)
 
@@ -53,18 +54,7 @@
         i18n,
         data () {
             return {
-                tutor: {
-                    name: '陈建行',
-                    avatar: 'http://img5.imgtn.bdimg.com/it/u=3165176003,377901858&fm=26&gp=0.jpg',
-                    desc: '自然及自然及自然及自然及自然及自然及自然及自然及自然及自然及自然及自然及自然及自然及自然及自然及自然及自然及自然及自然及自',
-                    images: [
-                        'http://img5.imgtn.bdimg.com/it/u=3165176003,377901858&fm=26&gp=0.jpg',
-                        'http://img5.imgtn.bdimg.com/it/u=3165176003,377901858&fm=26&gp=0.jpg',
-                        'http://img5.imgtn.bdimg.com/it/u=3165176003,377901858&fm=26&gp=0.jpg',
-                        'http://img5.imgtn.bdimg.com/it/u=3165176003,377901858&fm=26&gp=0.jpg',
-                        'http://img5.imgtn.bdimg.com/it/u=3165176003,377901858&fm=26&gp=0.jpg'
-                    ]
-                },
+                tutor: {},
                 swiperOption: {
                     loop: true,
                     slidesPerView : 4,
@@ -79,26 +69,46 @@
         },
         computed: {
             routeUrl () {
-                return '/' + this.$route.params.lang + '/home';
+                return '/' + this.$route.params.lang + '/home'
             },
             swiper() {
                 return this.$refs.mySwiper.swiper
-            },
-            mounted() {
-                // you can use current swiper instance object to do something(swiper methods)
-                // 然后你就可以使用当前上下文内的swiper对象去做你想做的事了
-                console.log('this is current swiper instance object', this.swiper)
-                this.swiper.slideTo(3, 1000, false)
             }
         },
+        mounted() {
+            // you can use current swiper instance object to do something(swiper methods)
+            // 然后你就可以使用当前上下文内的swiper对象去做你想做的事了
+            console.log('this is current swiper instance object', this.swiper)
+            //this.swiper.slideTo(3, 1000, false)
+            this.getData();
+        },
         methods: {
+            getData() {
+                this.$http.get(domainUrl + '/teacher/' + this.$route.params.id, {
+                    headers: {
+                        'Lc-Lang': this.$route.params.lang === 'en' ? 'en' : 'zh',
+                        'X-Auth-Token': localStorage.mytoken
+                    },
+                }).then(response => {
+                    let body = response.body
+                    console.log(body)
+                    this.tutor = body
+                }, response => {
+                    let body = response.body
+                    console.log(body);
+                    if (body.code === 101) {
+                        localStorage.mytoken = ''
+                        this.$router.push('/login') // TODO
+                    }
+                })
+            },
             swipeLeft() {
                 console.log(this.swiper)
                 //this.swiper.slideTo(3, 1000, false)
-                this.swiper.slidePrev();
+                this.swiper.slidePrev()
             },
             swipeRight() {
-                this.swiper.slideNext();
+                this.swiper.slideNext()
             }
         }
     }

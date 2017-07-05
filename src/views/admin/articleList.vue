@@ -1,107 +1,91 @@
 <template>
-
-    <div class="about">
-        <h1>文章列表</h1>
-        <ul>
-            <li><router-link to="/admin/articles/1">文章1</router-link></li>
-            <li><router-link to="/admin/articles/2">文章2</router-link></li>
-        </ul>
-        <div class="btn-add" id="guideAdd">
-            <vue-tooltip content="添加车辆到装货进行装货">
-                <button class="btn btn-primary" @click="openChooseCar">
-                    添加文章
-                </button>
-            </vue-tooltip>
-        </div>
-        <router-link to="/admin/articles/add">添加文章</router-link>
-        <vue-filter-panel>
-            <div slot="search-btn">
-                <input type="text" class="form-control" v-model="key" placeholder="标题/内容关键字">
-                <button class="btn btn-blue btn-search" @click="search">搜索</button>
+    <div class="layout-body">
+        <div class="admin-nav">
+            <div class="container">
+                <div class="bread-nav">
+                    <ol class="breadcrumb">
+                        <li class="active">文章管理</li>
+                    </ol>
+                </div>
+                <router-link class="btn btn-primary" :to="routeUrl + '/articles/add'">新建文章</router-link>
             </div>
-            <div slot="global-btn">
-                <div class="btn-create">
-                    <div class="btn-group">
-                        <button type="button" class="btn btn-blue dropdown-toggle" @click="addArticle">
-                            添加文章
-                        </button>
+        </div>
+
+        <ul class="row article-list">
+            <li class="col-sm-4 article-item" v-for="article in articles">
+                <div class="card-box">
+                    <div class="card-header">
+                        <input type="checkbox">
+                        <span>{{ article.title }}</span>
+                    </div>
+                    <img class="playground-image" :src="domainUrl + '/' + article.media">
+                    <div class="box-body">
+                        <div class="article-content">{{ article.introduction }}</div>
+                    </div>
+                    <div class="box-footer">
+                            <span class="left">
+                                <ui-icon type="edit" v-tooltip="'2121ewd21212'"></ui-icon>
+                            </span>
+                        <span class="center">
+                            <router-link class="btn btn-link" :to="routeUrl + '/articles/' + article.id + '/edit'">编辑</router-link>
+                        </span>
+                        <span class="right">
+                            <a href="#" @click="remove(article.id)">删除</a>
+                        </span>
                     </div>
                 </div>
-            </div>
-        </vue-filter-panel>
-        <vue-table
-                :columns="columns"
-                :tableData="tableData"></vue-table>
+
+            </li>
+        </ul>
     </div>
 </template>
 
 <script>
+    import {domainUrl} from 'CONFIG/config'
+
     export default {
         data () {
             return {
-                key: '1223',
+                articles: [],
                 search: function () {
-
                     //this
                 },
                 addArticle: function () {
 
                 },
-                columns: [
-                    {
-                        name: '__checkbox',
-                        title: ''
-                    },
-                    {
-                        name: 'title',
-                        title: '文章标题'
-                    },
-                    {
-                        name: 'createTime',
-                        title: '创建时间',
-                    },
-                    {
-                        name: 'car_type',
-                        title: '备注'
-                    },
-                    {
-                        name: '__actions',
-                        title: '操作',
-                        actions: [
-                            {
-                                name: 'delete',
-                                label: '查看'
-                            },
-                            {
-                                name: 'edit',
-                                label: '编辑',
-                                hasAuth: 'read&noauth'
-                            },
-                            {
-                                name: 'delete',
-                                label: '删除',
-                                //type: 'select'
-                            }
-                        ]
-                    }
-                ],
-                tableData: [
-                    {
-                        "id": 1,
-                        'title': '文章标题一',
-                        "createTime": "2016-12-09",
-                        "car_type": 1
-                    },
-                    {
-                        "id": 3,
-                        'title': '文章标题二',
-                        "createTime": "2016-12-09",
-                        "car_type": 2
-                    }
-                ]
             }
         },
+        computed: {
+            domainUrl() {
+                return domainUrl;
+            },
+            routeUrl () {
+                return '/' + this.$route.params.lang + '/admin';
+            },
+        },
+        mounted() {
+            this.getData(this.$route.params.lang);
+        },
         methods: {
+            getData(lang) {
+                this.$http.get(domainUrl + '/admin/news/all', {
+                    headers: {
+                        'Lc-Lang': this.$route.params.lang === 'en' ? 'en' : 'zh',
+                        'X-Auth-Token': localStorage.mytoken
+                    },
+                }).then(response => {
+                    let body = response.body
+                    console.log(body)
+                    this.articles = body
+                }, response => {
+                    let body = response.body
+                    console.log(body);
+                    if (body.code === 101) {
+                        localStorage.mytoken = ''
+                        this.$router.push('/login') // TODO
+                    }
+                })
+            },
             edit: function () {
                 alert('编辑');
             }
@@ -110,7 +94,69 @@
 </script>
 
 <style scoped>
-    .asd {
+    /**/
+    .article-list {
+        margin: 0 24px;
+    }
+    .article-list .article-item {
+        margin-bottom: 24px;
+    }
+    .article-list .item-header {
+        padding: 16px;
+        border-bottom: 1px solid #ccc;
+    }
+    .article-list .item-body {
+        padding: 16px;
+        overflow: hidden;
+    }
+    .article-list .article-content {
+        float: left;
+        width: 120px;
+        text-align: center;
+    }
+    .article-list .article-image {
+        float: left;
+        width: 120px;
+        height: 120px;
+        margin-right: 20px;
+    }
+    .article-list .btns {
 
+    }
+    .article-list .btns .btn {
+        display: block;
+    }
+
+    /**/
+    .card-box {
+        margin-bottom: 24px;
+        border: 1px solid #ccc;
+    }
+    .card-box .box-body {
+        padding: 8px;
+    }
+    .card-box .box-footer {
+        padding: 8px;
+        background-color: #F3F1F3;
+    }
+    .card-box .box-footer .icon {
+        color: #999;
+        font-size: 20px;
+        cursor: pointer;
+    }
+    .left {
+        display: inline-block;
+        width: 33.3%;
+        text-align: left;
+    }
+    .right {
+        display: inline-block;
+        width: 33.3%;
+        text-align: right;
+    }
+    .center {
+        display: inline-block;
+        width: 28%;
+        text-align: center;
     }
 </style>

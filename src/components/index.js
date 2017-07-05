@@ -17,12 +17,14 @@ module.exports = {
 // import uiGoback from './vueGoback/index.js'
 import uiIcon from './icon'
 import goback from './goback'
+import file from './file'
 
 // 这里是重点
 const Loading = {
     install: function(Vue){
         Vue.component('uiGoback', goback)
         Vue.component('uiIcon', uiIcon)
+        Vue.component('uiFile', file)
     }
 }
 

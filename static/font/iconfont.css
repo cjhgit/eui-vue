@@ -1,10 +1,10 @@
 
 @font-face {font-family: "icon";
-  src: url('iconfont.eot?t=1498814214474'); /* IE9*/
-  src: url('iconfont.eot?t=1498814214474#iefix') format('embedded-opentype'), /* IE6-IE8 */
-  url('iconfont.woff?t=1498814214474') format('woff'), /* chrome, firefox */
-  url('iconfont.ttf?t=1498814214474') format('truetype'), /* chrome, firefox, opera, Safari, Android, iOS 4.2+*/
-  url('iconfont.svg?t=1498814214474#icon') format('svg'); /* iOS 4.1- */
+  src: url('iconfont.eot?t=1499074163346'); /* IE9*/
+  src: url('iconfont.eot?t=1499074163346#iefix') format('embedded-opentype'), /* IE6-IE8 */
+  url('iconfont.woff?t=1499074163346') format('woff'), /* chrome, firefox */
+  url('iconfont.ttf?t=1499074163346') format('truetype'), /* chrome, firefox, opera, Safari, Android, iOS 4.2+*/
+  url('iconfont.svg?t=1499074163346#icon') format('svg'); /* iOS 4.1- */
 }
 
 .icon {
@@ -22,29 +22,35 @@
 
 .icon-tupian:before { content: "\e6e9"; }
 
-.icon-shanchu:before { content: "\e609"; }
+.icon-remove:before { content: "\e609"; }
 
 .icon-back:before { content: "\e61d"; }
 
 .icon-linespacing:before { content: "\e65b"; }
 
+.icon-huadongjiantouzuo:before { content: "\e61f"; }
+
+.icon-huadongjiantouyou:before { content: "\e621"; }
+
 .icon-duanwang:before { content: "\e615"; }
 
-.icon-lianjie:before { content: "\e6a5"; }
+.icon-link:before { content: "\e6a5"; }
 
 .icon-jiacu:before { content: "\e62f"; }
+
+.icon-bofang:before { content: "\e62e"; }
 
 .icon-shipin:before { content: "\e620"; }
 
 .icon-icxiangmufuhaodaishuzi24px:before { content: "\e77e"; }
 
-.icon-paixu:before { content: "\e78a"; }
+.icon-sort:before { content: "\e78a"; }
 
 .icon-zuoduiqi:before { content: "\e88d"; }
 
 .icon-fanhui1:before { content: "\e618"; }
 
-.icon-zhongmingming:before { content: "\e66c"; }
+.icon-edit:before { content: "\e66c"; }
 
 .icon-qingxie:before { content: "\e601"; }
 
@@ -54,6 +60,8 @@
 
 .icon-zhongmingming1:before { content: "\e604"; }
 
+.icon-close:before { content: "\e635"; }
+
 .icon-juzhongduiqi:before { content: "\e602"; }
 
 .icon-xiahuaxian:before { content: "\e703"; }
@@ -61,4 +69,6 @@
 .icon-app:before { content: "\e603"; }
 
 .icon-wenziyanse:before { content: "\e777"; }
+
+.icon-you:before { content: "\e61a"; }
 

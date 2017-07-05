@@ -12,10 +12,8 @@ if (Env === 'production') {
 	domainUrl = 'http://api.yun.lcy56.com/v1';
 	imgDomain = 'http://yun.lcy56.com/';
 } else {
-	// domainUrl = 'http://192.168.1.16:9090/v1';
-	domainUrl = 'http://192.168.3.110:8989/v1';
 	imgDomain = 'http://192.168.3.110:8989/';
-	domainUrl = 'http://120.24.226.112:8080/v1';
+	domainUrl = 'http://192.168.3.110:9998';
 }
 
 module.exports = { 

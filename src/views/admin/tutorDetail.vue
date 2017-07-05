@@ -18,50 +18,11 @@
 </template>
 
 <script>
+    import {domainUrl} from 'CONFIG/config'
+
     export default {
         data () {
             return {
-                key: '1223',
-                search: function () {
-
-                    //this
-                },
-                addArticle: function () {
-
-                },
-                columns: [
-                    {
-                        name: 'name',
-                        title: '姓名'
-                    },
-                    {
-                        name: 'sex',
-                        title: '性别',
-                    },
-                    {
-                        name: 'tel',
-                        title: '电话'
-                    },
-                    {
-                        name: 'desc',
-                        title: '介绍'
-                    },
-                    {
-                        name: '__actions',
-                        title: '操作',
-                        actions: [
-                            {
-                                name: 'edit',
-                                label: '编辑',
-                            },
-                            {
-                                name: 'delete',
-                                label: '删除',
-                            }
-                        ]
-                    }
-                ],
-                tableData: []
             }
         },
         computed: {
@@ -70,21 +31,29 @@
             },
         },
         mounted: function () {
-            console.log('mounted');
-        },
-        beforeMounted() {
-            console.log('before mounted');
-        },
-        beforeUpdate() {
-            console.log('before update');
-        },
-        created() {
-            console.log('获取语言' + this.$route.params.lang);
-
-            this.tableData = this.getData(this.$route.params.lang);
+            this.getData();
         },
         methods: {
-            getData(lang) {
+            getData() {
+                alert(1)
+                this.$http.get(domainUrl + '/teacher/' + this.$route.params.id, {
+                    headers: {
+                        'Lc-Lang': this.$route.params.lang === 'en' ? 'en' : 'zh',
+                        'X-Auth-Token': localStorage.mytoken
+                    },
+                }).then(response => {
+                    let body = response.body
+                    console.log(body)
+                    this.courses = body
+                }, response => {
+                    let body = response.body
+                    console.log(body);
+                    if (body.code === 101) {
+                        localStorage.mytoken = ''
+                        this.$router.push('/login') // TODO
+                    }
+                })
+
                 if (lang === 'cn') {
                     return [
                         {

@@ -4,12 +4,12 @@
             <div class="bread-nav">
                 <ui-goback></ui-goback>
                 <ol class="breadcrumb">
-                    <li><router-link :to="'/'">{{ $t('home') }}</router-link></li>
+                    <li><router-link :to="routeUrl">{{ $t('home') }}</router-link></li>
                     <li class="active">{{ $t('playground') }}</li>
                 </ol>
             </div>
 
-            <ul class="row playground-list">
+            <ul class="row playground-list row-sm">
                 <li class="col-sm-4" v-for="playground in playgrounds">
                     <div class="playground-item" @click="showImage(playground.image)">
                         <img class="playground-img" :src="playground.image">
@@ -23,7 +23,11 @@
         </div>
         <div class="viewbox" v-if="viewboxVisible">
             <div class="mask" @click="hideViewbox">
-                <img class="viewbox-image" src="/static/img/playground.jpg">
+                <div class="img-wrap">
+
+                    <i class="icon icon-app">12</i>
+                    <img class="viewbox-image" src="/static/img/playground.jpg">
+                </div>
             </div>
         </div>
     </div>
@@ -76,6 +80,18 @@
                     id: new Date().getTime(),
                     image: '/static/img/playground.jpg'
                 },
+                {
+                    id: new Date().getTime(),
+                    image: '/static/img/playground.jpg'
+                },
+                {
+                    id: new Date().getTime(),
+                    image: '/static/img/playground.jpg'
+                },
+                {
+                    id: new Date().getTime(),
+                    image: '/static/img/playground.jpg'
+                },
             ]
         },
 
@@ -92,6 +108,8 @@
 </script>
 
 <style scoped>
+
+    /**/
     .viewbox {
 
     }
@@ -103,9 +121,14 @@
         left: 0;
         background-color: rgba(0, 0, 0, .6);
     }
-    .viewbox-image {
+    .viewbox .img-wrap {
+        position: relative;
         display: block;
+        max-width: 500px;
         margin: 300px auto;
+    }
+    .viewbox .viewbox-image {
+        width: 100%;
     }
     /**/
     .playground-list {
@@ -113,7 +136,7 @@
     }
     .playground-list .playground-item {
         position: relative;
-        margin-bottom: 24px;
+        margin-bottom: 16px;
     }
     .playground-list .playground-item:hover {
         cursor: pointer;

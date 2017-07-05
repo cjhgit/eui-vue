@@ -3,26 +3,31 @@
         <div class="container">
 
             <div class="bread-nav">
+                <ui-icon><b>哈哈哈</b></ui-icon>
                 <ui-goback></ui-goback>
                 <ol class="breadcrumb">
-                    <li><router-link :to="'/'">{{ $t('home') }}</router-link></li>
+                    <li><router-link :to="routeUrl">{{ $t('home') }}</router-link></li>
                     <li class="active">{{ $t('tutorDesc') }}</li>
                 </ol>
             </div>
 
-            <ul class="tutor-list row">
+            <ul class="tutor-list row row-sm">
                 <li class="col-sm-3" v-for="tutor in tutors">
                     <div class="tutor-item">
                         <router-link :to="routeUrl + '/tutors/' + tutor.id">
-                            <div class="center">
+                            <div class="avatar-box">
+                                <img class="avatar-img" src="http://localhost:1234/static/img/avatar.jpg">
+                                <img class="mask" src="/static/img/shape-6.png">
+                            </div>
+                            <!--<div class="center">
                                 <div class="hexagon">
                                     <div class="hexagon-in1">
-                                        <div class="hexagon-in2"></div>
+                                        <div class="hexagon-in2" style="background: url('http://localhost:1234/static/img/avatar.jpg')"></div>
                                     </div>
                                 </div>
-                            </div>
+                            </div>-->
                             <div class="tutor-name">{{ tutor.name }}</div>
-                            <div class="tutor-desc">{{ tutor.desc }}</div>
+                            <div class="tutor-desc">{{ tutor.introduction }}</div>
                         </router-link>
                     </div>
                 </li>
@@ -34,7 +39,7 @@
 <script>
     import Vue from 'vue'
     import i18n from '@/i18n'
-
+    import {domainUrl} from 'CONFIG/config'
 
     export default {
         i18n,
@@ -50,53 +55,55 @@
                 return '/' + this.$route.params.lang + '/home';
             }
         },
-        created: function () {
+        mounted: function () {
             console.log('获取语言' + this.$route.params.lang);
-            this.tutors = [
-                {
-                    id: new Date().getTime(),
-                    name: '导师名称',
-                    desc: '导师介绍'
-                },
-                {
-                    id: new Date().getTime(),
-                    name: '导师名称',
-                    desc: '导师介绍'
-                },
-                {
-                    id: new Date().getTime(),
-                    name: '导师名称',
-                    desc: '导师介绍'
-                },
-                {
-                    id: new Date().getTime(),
-                    name: '导师名称',
-                    desc: '导师介绍'
-                },
-                {
-                    id: new Date().getTime(),
-                    name: '导师名称',
-                    desc: '导师介绍'
-                },
-                {
-                    id: new Date().getTime(),
-                    name: '导师名称',
-                    desc: '导师介绍'
-                }
-            ]
+            this.getData();
         },
         methods: {
-
+            getData() {
+                this.$http.post(domainUrl + '/teacher/list', {
+                    page: 1,
+                    pageSize: 12
+                }, {
+                    headers: {
+                        'Lc-Lang': this.$route.params.lang === 'en' ? 'en' : 'zh'
+                    },
+                }).then(response => {
+                    let body = response.body
+                    console.log(body)
+                    this.tutors = body.data
+                }, response => {
+                    let body = response.body
+                    console.log(body);
+                    if (body.code === 101) {
+                        localStorage.mytoken = ''
+                        this.$router.push('/login') // TODO
+                    }
+                })
+            },
         }
     }
 
 </script>
 
 <style scoped>
-    .avatar {
-        width: 80px;
-        height: 80px;
-        border-radius: 40px;
+    .avatar-box {
+        position: relative;
+        width: 100%;
+        max-width: 160px;
+        height: 160px;
+        margin: 16px auto 16px auto;
+    }
+    .avatar-box .avatar-img {
+        width: 100%;
+        height: 100%;
+    }
+    .avatar-box .mask {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
     }
     .tutor-list {
     }
@@ -109,46 +116,17 @@
     .tutor-list .tutor-item:hover {
         border-bottom: 4px solid #B5BF71;
     }
+    .tutor-list .tutor-item:hover .tutor-name {
+        color: #A9517A;
+    }
     .tutor-list .tutor-name {
-        position: relative;
-        top: -24px;
         margin-bottom: 16px;
         text-align: center;
         font-size: 18px;
         color: #000;
     }
     .tutor-list .tutor-desc {
-        position: relative;
-        top: -24px;
-        color: #999;
-    }
-    .tutor-list .center {
-        width: 160px;
-        margin: auto;
-        margin-top: -50px;
-    }
-    .tutor-list .hexagon {
-        width: 160px;
-        height: 320px;
-        overflow: hidden;
-        visibility: hidden;
-        transform: rotate(120deg);
-        cursor: pointer;
-    }
-    .tutor-list .hexagon-in1 {
-        overflow: hidden;
-        width: 100%;
-        height: 100%;
-        transform: rotate(-60deg);
-    }
-    .tutor-list .hexagon-in2 {
-        width: 100%;
-        height: 100%;
-        visibility: visible;
-        transform: rotate(-60deg);
-        background: url(http://lorempixel.com/g/250/350/people);
-        background-repeat: no-repeat;
-        background-position: 50%;
+        color: #666;
     }
     @media (min-width: 768px) {
         .tutor-list .center {
