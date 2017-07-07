@@ -23,7 +23,7 @@
                 </tr>
                 <tr v-for="order in orders">
                     <td>{{ order.name }}</td>
-                    <td>{{ order.sex }}</td>
+                    <td>{{ order.gender == 1 ? '男' : '女' }}</td>
                     <td>{{ order.phone }}</td>
                     <td>{{ order.email }}</td>
                     <td>{{ order.time }}</td>

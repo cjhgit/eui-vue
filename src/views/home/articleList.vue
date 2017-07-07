@@ -11,11 +11,11 @@
             <ul class="row article-list">
                 <li class="col-sm-4" v-for="article in articles">
                     <div class="article-item">
-                        <img class="article-img" :src="article.image" :alt="article.title">
-                        <router-link class="article-info" :to="routeUrl + '/articles/1'">
+                        <img class="article-img" :src="domainUrl + '/' + article.medias" :alt="article.title">
+                        <router-link class="article-info" :to="routeUrl + '/articles/' + article.id">
                             <h2 class="article-title">{{ article.title }}</h2>
-                            <div class="article-time">{{ article.time }}</div>
-                            <div class="article-content">{{ article.content }}</div>
+                            <div class="article-time">{{ simpleDate(article.time) }}</div>
+                            <div class="article-content">{{ removeHtmlTag(article.content) }}</div>
                         </router-link>
                     </div>
                 </li>
@@ -30,6 +30,9 @@
     import Vue from 'vue'
     import i18n from '@/i18n'
     import {domainUrl} from 'CONFIG/config'
+    import Util from '@/util/util'
+
+    console.log(Util)
 
     export default {
         i18n,
@@ -39,6 +42,9 @@
             }
         },
         computed: {
+            domainUrl() {
+                return domainUrl
+            },
             routeUrl () {
                 return '/' + this.$route.params.lang + '/home';
             },
@@ -47,6 +53,19 @@
             this.getData();
         },
         methods: {
+            simpleDate(str) {
+                console.log(str);
+                //let date = new Date(Date.parse(str.replace(/-/g, "/")));
+                return str.split(' ')[0];
+            },
+            removeHtmlTag(str) {
+                str = str.replace(/<\/?[^>]*>/g,''); //去除HTML tag
+                str = str.replace(/[ | ]*\n/g,'\n'); //去除行尾空白
+                //str = str.replace(/\n[\s| | ]*\r/g,'\n'); //去除多余空行
+                str=str.replace(/&nbsp;/ig,'');//去掉&nbsp;
+                str=str.replace(/\s/g,''); //将空格去掉
+                return str;
+            },
             getData() {
                 this.$http.post(domainUrl + '/news/list', {
                     page: 1,
@@ -113,7 +132,7 @@
         color: #999;
     }
     .article-list .article-content {
-        max-height: 60px;
+        height: 60px;
         color: #999;
         text-overflow: ellipsis;
         overflow: hidden;

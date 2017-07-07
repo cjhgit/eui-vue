@@ -5,7 +5,8 @@
                 <img class="logo" src="/static/img/logo.png" :alt="$t('siteName')">
                 <ul class="header-nav-list">
                     <li :class="{active: isActive('') }"><router-link :to="routeUrl">{{ $t('home') }}</router-link></li>
-                    <li :class="{active: isActive('courses') }"><a href="#">{{ $t('courseDesc') }}</a>
+                    <li :class="{active: isActive('courses') }">
+                        <router-link :to="routeUrl + '/courses'">{{ $t('courseDesc') }}</router-link>
                         <ul>
                             <li><router-link :to="routeUrl + '/courses'">{{ $t('allCourse') }}</router-link></li>
                             <li><router-link :to="routeUrl + '/pilates'">{{ $t('pilates') }}</router-link></li>
@@ -280,13 +281,13 @@
         border-color: #ca7b9f;
         box-shadow: none;
     }
+    .form-horizontal .control-label {
+        text-align: left;
+        width: 100px;
+    }
     .btn {
         border-radius: 0;
     }
-
-
-
-
 
     .article-box {
 
@@ -311,4 +312,6 @@
         line-height: 1.6;
         margin-bottom: 24px;
     }
+
+
 </style>

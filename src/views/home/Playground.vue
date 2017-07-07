@@ -11,9 +11,9 @@
 
             <ul class="row playground-list row-sm">
                 <li class="col-sm-4" v-for="playground in playgrounds">
-                    <div class="playground-item" @click="showImage(playground.image)">
-                        <img class="playground-img" :src="playground.image">
-                        <div class="playground-name">主要工作区</div>
+                    <div class="playground-item" @click="showImage(domainUrl + '/' + playground.url)">
+                        <img class="playground-img" :src="domainUrl + '/' + playground.url">
+                        <div class="playground-name">{{ playground.name }}</div>
                         <div class="mask">
                             <ui-icon type="zoomin"></ui-icon>
                         </div>
@@ -24,9 +24,8 @@
         <div class="viewbox" v-if="viewboxVisible">
             <div class="mask" @click="hideViewbox">
                 <div class="img-wrap">
-
-                    <i class="icon icon-app">12</i>
-                    <img class="viewbox-image" src="/static/img/playground.jpg">
+                    <ui-icon type="close"></ui-icon>
+                    <img class="viewbox-image" :src="viewboxImg">
                 </div>
             </div>
         </div>
@@ -37,69 +36,53 @@
 <script>
     import Vue from 'vue'
     import i18n from '@/i18n'
+    import {domainUrl} from 'CONFIG/config'
 
     export default {
         i18n,
         data () {
             return {
-                playgrounds: [
-
-                ],
-                viewboxVisible: false
+                playgrounds: [],
+                viewboxVisible: false,
+                viewboxImage: '/static/img/playground.jpg'
             }
         },
         computed: {
+            domainUrl() {
+                return domainUrl;
+            },
             routeUrl () {
                 return '/' + this.$route.params.lang + '/home';
             }
         },
-        created: function () {
-            console.log('获取语言' + this.$route.params.lang);
-            this.playgrounds = [
-                {
-                    id: new Date().getTime(),
-                    image: '/static/img/playground.jpg'
-                },
-                {
-                    id: new Date().getTime(),
-                    image: '/static/img/playground.jpg'
-                },
-                {
-                    id: new Date().getTime(),
-                    image: '/static/img/playground.jpg'
-                },
-                {
-                    id: new Date().getTime(),
-                    image: '/static/img/playground.jpg'
-                },
-                {
-                    id: new Date().getTime(),
-                    image: '/static/img/playground.jpg'
-                },
-                {
-                    id: new Date().getTime(),
-                    image: '/static/img/playground.jpg'
-                },
-                {
-                    id: new Date().getTime(),
-                    image: '/static/img/playground.jpg'
-                },
-                {
-                    id: new Date().getTime(),
-                    image: '/static/img/playground.jpg'
-                },
-                {
-                    id: new Date().getTime(),
-                    image: '/static/img/playground.jpg'
-                },
-            ]
+        mounted: function () {
+            this.getData()
         },
 
         methods: {
+            getData() {
+                this.$http.get(domainUrl + '/location/all', {
+                    headers: {
+                        'Lc-Lang': this.$route.params.lang === 'en' ? 'en' : 'zh'
+                    },
+                }).then(response => {
+                    let body = response.body
+                    console.log(body)
+                    this.playgrounds = body
+                }, response => {
+                    let body = response.body
+                    console.log(body);
+                    if (body.code === 101) {
+                        localStorage.mytoken = ''
+                        this.$router.push('/login') // TODO
+                    }
+                })
+            },
             hideViewbox() {
                 this.viewboxVisible = false;
             },
             showImage(src) {
+                this.viewboxImg = src;
                 this.viewboxVisible = true;
             }
         }
@@ -125,17 +108,26 @@
         position: relative;
         display: block;
         max-width: 500px;
-        margin: 300px auto;
+        margin: 240px auto;
     }
     .viewbox .viewbox-image {
         width: 100%;
     }
-    /**/
+    .viewbox .icon-close {
+        position: absolute;
+        top: 8px;
+        right: 8px;
+        z-index: 100;
+        color: #fff;
+        cursor: pointer;
+    }
+        /**/
     .playground-list {
 
     }
     .playground-list .playground-item {
         position: relative;
+        height: 280px;
         margin-bottom: 16px;
     }
     .playground-list .playground-item:hover {
@@ -165,9 +157,13 @@
         display: block;
     }
     .playground-list .icon {
+        position: absolute;
         display: block;
         width: 30px;
-        margin: 100px auto;
+        margin-left: -15px;
+        margin-top: -15px;
+        left: 50%;
+        top: 50%;
         color: #fff;
         font-size: 30px;
     }

@@ -12,7 +12,7 @@
             <ul class="row course-list">
                 <li class="col-sm-3" v-for="course in courses">
                     <div class="course-item">
-                        <img class="course-img" :src="course.media">
+                        <img class="course-img" :src="domainUrl + '/' + course.media">
                         <div class="hr"></div>
                         <div class="course-name">{{ course.name }}</div>
                         <div class="course-desc">{{ course.introduction }}</div>
@@ -36,8 +36,11 @@
             }
         },
         computed: {
+            domainUrl() {
+                return domainUrl
+            },
             routeUrl () {
-                return '/' + this.$route.params.lang + '/home';
+                return '/' + this.$route.params.lang + '/home'
             }
         },
         mounted: function () {
@@ -95,12 +98,19 @@
         background-color: #f9f9f9;
     }
     .course-list .course-name {
+        margin: 0 auto;
         margin-bottom: 8px;
         color: #000;
         font-size: 16px;
         text-align: center;
+        white-space: nowrap;
+        max-width: 80%;
+        text-overflow: ellipsis;
+        overflow: hidden;
     }
     .course-list .course-desc {
+        height: 60px;
+        overflow: hidden;
         margin-bottom: 8px;
         text-align: center;
     }

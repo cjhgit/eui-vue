@@ -30,14 +30,14 @@
                         <div class="form-group">
                             <label class="control-label col-sm-3">{{ $t('name') }}：</label>
                             <div class="col-sm-9">
-                                <input v-validate="'required'" :class="{'form-control': true, 'is-danger': errors.has('name') }" name="name">
+                                <input v-model="name" v-validate="'required'" :class="{'form-control': true, 'is-danger': errors.has('name') }" name="name">
                                 <div v-show="errors.has('name')" class="help-block is-danger">{{ errors.first('name') }}</div>
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="control-label col-sm-3">{{ $t('sex') }}：</label>
                             <div class="col-sm-9">
-                                <select class="form-control sex-select">
+                                <select v-model="sex" class="form-control sex-select">
                                     <option value="male">{{ $t('male') }}</option>
                                     <option value="female">{{ $t('female') }}</option>
                                 </select>
@@ -46,13 +46,14 @@
                         <div class="form-group">
                             <label class="control-label col-sm-3">{{ $t('phone') }}：</label>
                             <div class="col-sm-9">
-                                <input class="form-control">
+                                <input v-model="phone" v-validate="'required'" :class="{'form-control': true, 'is-danger': errors.has('email') }" name="phone" >
+                                <div v-show="errors.has('phone')" class="help-block is-danger">{{ errors.first('phone') }}</div>
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="control-label col-sm-3">{{ $t('email') }}：</label>
                             <div class="col-sm-9">
-                                <input v-validate="'required|email'" :class="{'form-control': true, 'is-danger': errors.has('email') }" name="email" type="text">
+                                <input v-model="email" v-validate="'required|email'" :class="{'form-control': true, 'is-danger': errors.has('email') }" name="email" type="text">
                                 <div v-show="errors.has('email')" class="help-block is-danger">{{ errors.first('email') }}</div>
                             </div>
                         </div>
@@ -61,7 +62,6 @@
                             <div class="col-sm-9">
                                 <vue-calendar-input v-model="date"></vue-calendar-input>
                             </div>
-
                         </div>
                         <div class="form-group">
                             <div class="col-sm-12">
@@ -86,8 +86,16 @@
         i18n,
         data() {
             return {
-                courses: [],
+                name: '',
+                sex: 'male',
+                phone: '',
+                email: '',
                 date: '',
+                /*name: '陈建行',
+                sex: 'male',
+                phone: '15602221234',
+                email: '141850@qq.com',
+                date: '2017-08-03',*/
             }
         },
         computed: {
@@ -102,22 +110,25 @@
         },
         methods: {
             submit() {
-                this.$http.post(domainUrl + '/admin/reserve/create', {
-                        "name":"张三",
-                        "phone":"18373939",
-                        "email":"393939@aa.com",
-                        "status":1      // 1未处理，2已处理 (本页均为此含义)
-                    },
-                    {
-                        headers: {
-//                            'Lc-Lang': this.$route.params.lang === 'en' ? 'en' : 'zh',
-//                            'X-Auth-Token': localStorage.mytoken
+                this.$validator.validateAll().then(() => {
+                    console.log(1)
+                    this.$http.post(domainUrl + '/reserve/create', {
+                            name: this.name,
+                            phone: this.phone,
+                            email: this.email,
+                            gender: this.sex === 'male' ? 1 : 2,
+                            status: 1
                         },
-                    }
-                ).then(response => {
-                    console.log(response)
+                        {
+                        }
+                    ).then(response => {
+                        console.log(response)
 //                    this.$router.push(this.routeUrl + '/courses')
+                    });
+                }).catch(() => {
+                    // eslint-disable-next-line
                 });
+
             }
         }
     }

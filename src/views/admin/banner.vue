@@ -1,124 +1,233 @@
 <template>
     <div class="layout-body">
-        <h1>素材管理</h1>
-        <div>
-            <router-link :to="routeUrl + '/resources/banner'">海报素材</router-link>
-            <router-link :to="routeUrl + '/resources/playground'">场地素材</router-link>
-        </div>
-        <ul>
-            <li><router-link to="/admin/articles/1">文章1</router-link></li>
-            <li><router-link to="/admin/articles/2">文章2</router-link></li>
-        </ul>
-        <div class="btn-add" id="guideAdd">
-            <vue-tooltip content="添加车辆到装货进行装货">
-                <button class="btn btn-primary" @click="openChooseCar">
-                    添加文章
-                </button>
-            </vue-tooltip>
-        </div>
-        <router-link to="/admin/articles/add">添加文章</router-link>
-        <vue-filter-panel>
-            <div slot="search-btn">
-                <input type="text" class="form-control" v-model="key" placeholder="标题/内容关键字">
-                <button class="btn btn-blue btn-search" @click="search">搜索</button>
-            </div>
-            <div slot="global-btn">
-                <div class="btn-create">
-                    <div class="btn-group">
-                        <button type="button" class="btn btn-blue dropdown-toggle" @click="addArticle">
-                            添加文章
-                        </button>
-                    </div>
+        <div class="admin-nav">
+            <div class="container">
+                <div class="bread-nav">
+                    <ol class="breadcrumb">
+                        <li class="active">素材管理</li>
+                    </ol>
                 </div>
+                <ui-file :url="domainUrl + '/admin/file/save'" :success="uploadSuccess">本地上传</ui-file>
             </div>
-        </vue-filter-panel>
-        <vue-table
-                :columns="columns"
-                :tableData="tableData"></vue-table>
+        </div>
+
+        <div class="container">
+            <ul class="admin-tab">
+                <router-link class="tab-item active" :to="routeUrl + '/resources/banner'">海报素材</router-link>
+                <router-link class="tab-item" :to="routeUrl + '/resources/playground'">场地素材</router-link>
+            </ul>
+        </div>
+
+        <!--<div class="admin-header">
+            <div class="container">
+                <label class="select-all"><input type="checkbox" v-model="checked" @click="checkedAll"> 全选</label>
+                <button class="btn btn-primary">删除</button>
+            </div>
+        </div>-->
+
+        <div class="container">
+            <ul class="row banner-list">
+                <li class="col-sm-3" v-for="banner in banners">
+                    <div class="card-box">
+                        <img class="card-image" :src="domainUrl + '/' + banner.url">
+                        <div class="box-body">
+                            <input type="checkbox" v-model="checkboxModel" :value="banner.id"> {{ banner.name }}
+                        </div>
+                        <div class="box-footer">
+                            <span class="left">
+                                <ui-icon type="edit" v-tooltip="'2121ewd21212'"></ui-icon>
+                            </span>
+                            <span class="center">
+                                <i data-v-47dbc752="" class="icon icon-sort" @click="sort(banner.id)"></i>
+                                <!--<ui-icon type="sort" v-tooltip="'排序'" ></ui-icon>-->
+                            </span>
+                            <span class="right">
+                                <i data-v-47dbc752="" class="icon icon-remove" @click="remove(banner.id)"></i>
+                                <!--<ui-icon type="remove" v-tooltip="'删除'" @click="remove(banner.id)"></ui-icon>-->
+                            </span>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+
     </div>
 </template>
 
 <script>
+    import {domainUrl} from 'CONFIG/config'
+
     export default {
         data () {
             return {
-                key: '1223',
-                search: function () {
-
-                    //this
-                },
-                addArticle: function () {
-
-                },
-                columns: [
-                    {
-                        name: '__checkbox',
-                        title: ''
-                    },
-                    {
-                        name: 'title',
-                        title: '文章标题'
-                    },
-                    {
-                        name: 'createTime',
-                        title: '创建时间',
-                    },
-                    {
-                        name: 'car_type',
-                        title: '备注'
-                    },
-                    {
-                        name: '__actions',
-                        title: '操作',
-                        actions: [
-                            {
-                                name: 'delete',
-                                label: '查看'
-                            },
-                            {
-                                name: 'edit',
-                                label: '编辑',
-                                hasAuth: 'read&noauth'
-                            },
-                            {
-                                name: 'delete',
-                                label: '删除',
-                                //type: 'select'
-                            }
-                        ]
-                    }
-                ],
-                tableData: [
-                    {
-                        "id": 1,
-                        'title': '文章标题一',
-                        "createTime": "2016-12-09",
-                        "car_type": 1
-                    },
-                    {
-                        "id": 3,
-                        'title': '文章标题二',
-                        "createTime": "2016-12-09",
-                        "car_type": 2
-                    }
-                ]
+                checkList: [],
+                banners: [],
+                checkboxModel: ['1','3','4'],
+                checked: ""
             }
         },
         computed: {
+            domainUrl() {
+                return domainUrl
+            },
             routeUrl () {
                 return '/' + this.$route.params.lang + '/admin';
             },
         },
+        mounted() {
+            this.getData()
+        },
         methods: {
+            getData() {
+                this.$http.get(domainUrl + '/admin/banner/all', {
+                    headers: {
+                        'Lc-Lang': this.$route.params.lang === 'en' ? 'en' : 'zh',
+                        'X-Auth-Token': localStorage.mytoken
+                    },
+                }).then(response => {
+                    let body = response.body
+                    console.log(body)
+                    this.banners = body
+                }, response => {
+                    let body = response.body
+                    console.log(body);
+                    if (body.code === 101) {
+                        localStorage.mytoken = ''
+                        this.$router.push('/login') // TODO
+                    }
+                })
+            },
+            remove(id) {
+                this.$http.delete(domainUrl + '/admin/banner/' + id + '/delete', {
+                    headers: {
+                        'Lc-Lang': this.$route.params.lang === 'en' ? 'en' : 'zh',
+                        'X-Auth-Token': localStorage.mytoken
+                    },
+                }).then(response => {
+                    for (let i = 0; i < this.banners.length; i++) {
+                        if (this.banners[i].id === id) {
+                            this.banners.splice(i, 1)
+                        }
+                    }
+                }, response => {
+                    let body = response.body
+                    console.log(body)
+                    if (body.code === 101) {
+                        localStorage.mytoken = ''
+                        this.$router.push('/login') // TODO
+                    }
+                })
+            },
+            uploadSuccess(url) {
+                this.uploadUrl = url
+
+                this.$http.post(domainUrl + '/admin/banner/create', {
+                        name: '图片1',
+                        url: this.uploadUrl
+                    },
+                    {
+                        headers: {
+                            'Lc-Lang': this.$route.params.lang === 'en' ? 'en' : 'zh',
+                            'X-Auth-Token': localStorage.mytoken
+                        },
+                    }
+                ).then(response => {
+                    this.banners.push(response.body)
+                    this.$router.push(this.routeUrl + '/resources/banner')
+                });
+            },
+            sort(id) {
+                for (let i = 0; i < this.banners.length; i++) {
+                    if (this.banners[i].id === id) {
+                        if (i === 0) {
+                            break;
+                        }
+                        let idx = i
+                        this.$http.get(domainUrl + '/admin/banner/swap?id1=' + id + '&id2=' + this.banners[i - 1].id, {
+                            headers: {
+                                'Lc-Lang': this.$route.params.lang === 'en' ? 'en' : 'zh',
+                                'X-Auth-Token': localStorage.mytoken
+                            },
+                        }).then(response => {
+                            this.getData()
+//                            console.log(this.banners)
+//                            console.log('家婆换'+idx)
+//                            let tmp = this.banners[idx]
+//                            this.banners[idx] = this.banners[idx - 1]
+//                            console.log(this.banners)
+//                            this.banners[idx - 1] = tmp
+                        }, response => {
+
+                        })
+                    }
+                }
+            },
             edit: function () {
                 alert('编辑');
+            },
+            checkedAll() {
+                var _this = this;
+                console.log(_this.checkboxModel);
+                if (this.checked) {//实现反选
+                    _this.checkboxModel = [];
+                    _this.banners.forEach(function(item) {
+                        _this.checkboxModel.push(item.id);
+                    });
+                }else{//实现全选
+                    _this.checkboxModel = [];
+
+
+                }
             }
         }
     }
 </script>
 
 <style scoped>
-    .asd {
+    .admin-header {
+        background-color: #F1EFF1;
+        padding: 12px 0;
+        margin-bottom: 24px;
+        overflow: hidden;
+    }
+    .admin-header .select-all {
+        margin-right: 16px;
+        font-size: 16px;
+    }
 
+    .card-box {
+        margin-bottom: 24px;
+        border: 1px solid #ccc;
+    }
+    .card-box .box-body {
+        padding: 8px;
+    }
+    .card-box .box-footer {
+        padding: 8px;
+        background-color: #F3F1F3;
+    }
+    .card-box .box-footer .icon {
+        color: #999;
+        font-size: 20px;
+        cursor: pointer;
+    }
+    .card-box .card-image {
+        width: 100%;
+        height: 160px;
+    }
+    .card-box .left {
+        display: inline-block;
+        width: 33.3%;
+        text-align: left;
+    }
+    .card-box .right {
+        display: inline-block;
+        width: 33.3%;
+        text-align: right;
+    }
+    .card-box .center {
+        display: inline-block;
+        width: 28%;
+        text-align: center;
     }
 </style>

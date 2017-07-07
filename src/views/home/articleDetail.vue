@@ -32,7 +32,7 @@
         i18n,
         data () {
             return {
-                article: null
+                article: {}
             }
         },
         computed: {

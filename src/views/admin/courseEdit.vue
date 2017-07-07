@@ -6,7 +6,7 @@
                     <ui-goback></ui-goback>
                     <ol class="breadcrumb">
                         <li><router-link :to="routeUrl + '/'">管理</router-link></li>
-                        <li class="active">添加课程</li>
+                        <li class="active">课程编辑</li>
                     </ol>
                 </div>
             </div>
@@ -18,21 +18,21 @@
                     <div class="form-group">
                         <label class="control-label col-sm-3">名称：</label>
                         <div class="col-sm-9">
-                            <input class="form-control" v-model="courseName" name="courseName" v-validate="'required'">
+                            <input class="form-control" v-model="course.name" name="courseName" v-validate="'required'">
                             <div v-show="errors.has('courseName')" class="help-block is-danger">{{ errors.first('courseName') }}</div>
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="control-label col-sm-3">介绍：</label>
                         <div class="col-sm-9">
-                            <textarea class="form-control" v-model="courseDesc" rows="3" name="courseDesc" v-validate="'required'"></textarea>
+                            <textarea class="form-control" v-model="course.introduction" rows="3" name="courseDesc" v-validate="'required'"></textarea>
                             <div v-show="errors.has('courseName')" class="help-block is-danger">{{ errors.first('courseName') }}</div>
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="control-label col-sm-3">图片：</label>
                         <div class="col-sm-9">
-                            <ui-file :url="domainUrl + '/admin/file/save?'" :success="uploadSuccess">本地上传</ui-file>
+                            <ui-file :url="domainUrl + '/admin/file/save'" :success="uploadSuccess">本地上传</ui-file>
                         </div>
                     </div>
                 </div>
@@ -53,6 +53,7 @@
     export default {
         data () {
             return {
+                course: {},
                 myfile: null,
                 input: null,
                 courseName: '',
@@ -77,17 +78,31 @@
             },
         },
         mounted() {
-            console.log('获取语言' + this.$route.params.lang)
+            this.getData()
         },
         methods: {
+            getData() {
+                this.$http.get(domainUrl + '/admin/course/' + this.$route.params.id, {
+                    headers: {
+                        'Lc-Lang': this.$route.params.lang === 'en' ? 'en' : 'zh',
+                        'X-Auth-Token': localStorage.mytoken
+                    },
+                }).then(response => {
+                    let body = response.body
+                    console.log(body)
+                    this.course = body
+                }, response => {
+                    let body = response.body
+                    console.log(body);
+                    if (body.code === 101) {
+                        localStorage.mytoken = ''
+                        this.$router.push('/login') // TODO
+                    }
+                })
+            },
             save() {
                 this.$validator.validateAll().then(() => {
-                    this.$http.post(domainUrl + '/admin/course/create', {
-                            name: this.courseName,
-                            media: this.uploadUrl,
-                            introduction: this.courseDesc,
-                            status: 2
-                        },
+                    this.$http.post(domainUrl + '/admin/course/' + this.course.id + '/update', this.course,
                         {
                             headers: {
                                 'Lc-Lang': this.$route.params.lang === 'en' ? 'en' : 'zh',

@@ -1,5 +1,8 @@
 (function () {
     var parent = window.parent;
+    console.log('document.domain=192.168.3.110:9998')
+    document.domain = '192.168.3.110:9998';
+
     //dialog对象
     dialog = parent.$EDITORUI[window.frameElement.id.replace( /_iframe$/, '' )];
     //当前打开dialog的编辑器实例

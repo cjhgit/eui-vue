@@ -18,9 +18,9 @@
                         <input type="checkbox">
                         <span>{{ article.title }}</span>
                     </div>
-                    <img class="playground-image" :src="domainUrl + '/' + article.media">
+                    <img class="article-image" :src="domainUrl + '/' + article.medias">
                     <div class="box-body">
-                        <div class="article-content">{{ article.introduction }}</div>
+                        <div class="article-content">{{ removeHtmlTag(article.content) }}</div>
                     </div>
                     <div class="box-footer">
                             <span class="left">
@@ -86,9 +86,38 @@
                     }
                 })
             },
+            remove(id) {
+                this.$http.delete(domainUrl + '/admin/news/' + id + '/delete', {
+                    headers: {
+                        'Lc-Lang': this.$route.params.lang === 'en' ? 'en' : 'zh',
+                        'X-Auth-Token': localStorage.mytoken
+                    },
+                }).then(response => {
+                    for (let i = 0; i < this.articles.length; i++) {
+                        if (this.articles[i].id === id) {
+                            this.articles.splice(i, 1)
+                        }
+                    }
+                }, response => {
+                    let body = response.body
+                    console.log(body)
+                    if (body.code === 101) {
+                        localStorage.mytoken = ''
+                        this.$router.push('/login') // TODO
+                    }
+                })
+            },
             edit: function () {
                 alert('编辑');
-            }
+            },
+            removeHtmlTag(str) {
+                str = str.replace(/<\/?[^>]*>/g,''); //去除HTML tag
+                str = str.replace(/[ | ]*\n/g,'\n'); //去除行尾空白
+                //str = str.replace(/\n[\s| | ]*\r/g,'\n'); //去除多余空行
+                str=str.replace(/&nbsp;/ig,'');//去掉&nbsp;
+                str=str.replace(/\s/g,''); //将空格去掉
+                return str;
+            },
         }
     }
 </script>
@@ -111,12 +140,13 @@
     }
     .article-list .article-content {
         float: left;
-        width: 120px;
-        text-align: center;
+        width: 100%;
+        height: 40px;
+        overflow: hidden;
     }
     .article-list .article-image {
         float: left;
-        width: 120px;
+        width: 100%;
         height: 120px;
         margin-right: 20px;
     }

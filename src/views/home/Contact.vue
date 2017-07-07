@@ -12,7 +12,7 @@
 
             <div class="map-box">
                 <baidu-map class="map" :center="{lng: 113.382832, lat: 23.109058}" :zoom="16">
-                    <bm-scale anchor="BMAP_ANCHOR_TOP_RIGHT"></bm-scale>
+                    <bm-navigation anchor="BMAP_ANCHOR_TOP_RIGHT"></bm-navigation>
                 </baidu-map>
                 <div class="contact-info">
                     <h2 class="title">紫然肌专业普拉提会馆</h2>
@@ -48,13 +48,11 @@
             }
         },
         computed: {
-
+            routeUrl () {
+                return '/' + this.$route.params.lang + '/home';
+            },
         },
         mounted() {
-            this.article = {
-                title: '这是文章的标题',
-                content: '<h2>什么是XXX？</h2><p>这是文章的内容</p><h2>第二段的标题</h2><p>这是第二段</p>'
-            };
         },
         methods: {
             handler ({BMap, map}) {

@@ -21,30 +21,33 @@
                 </ul>
             </div>
         </div>
-        <div class="tutor-box">
-            <div class="container">
-                <ul class="tutor-list">
-                    <li class="tutor-item" v-for="tutor in tutors">
-                        <div class="item-header">
-                            <input type="checkbox">
-                            <span>姓名： {{ tutor.name }}</span>
+        <div class="container">
+            <ul class="tutor-list">
+                <li class="tutor-item" v-for="tutor in tutors">
+                    <div class="item-header">
+                        <input type="checkbox">
+                        <span>姓名： {{ tutor.name }}</span>
+                    </div>
+                    <div class="item-body">
+                        <div class="img-box col-image">
+                            <img class="tutor-avatar" :src="domainUrl + '/' + tutor.media">
                         </div>
-                        <div class="item-body">
-                            <img class="tutor-avatar col-image" :src="tutor.media">
-                            <div class="tutor-sex col-sex">{{ tutor.gender === 1 ? '男' : '女' }}</div>
-                            <div class="tutor-tel col-tel">{{ tutor.phone }}</div>
-                            <div class="tutor-desc col-desc">{{ tutor.introduction }}</div>
-                            <div class="btns col-operate">
+                        <div class="tutor-sex col-sex">{{ tutor.gender === 1 ? '男' : '女' }}</div>
+                        <div class="tutor-tel col-tel">{{ tutor.phone }}</div>
+                        <div class="tutor-desc col-desc">{{ tutor.introduction }}</div>
+                        <div class="btns col-operate">
+                            <div class="btn-inbox">
                                 <a class="btn" href="javascript:;" @click="update(tutor, 2)"
                                    :class="{'btn-link': tutor.status !== 2, 'btn-primary': tutor.status === 2}">上架</a>
                                 <a class="btn" href="javascript:;" @click="update(tutor, 3)"
                                    :class="{'btn-link': tutor.status !== 3, 'btn-primary': tutor.status === 3}">下架</a>
                                 <router-link class="btn btn-link" :to="routeUrl + '/tutors/' + tutor.id + '/edit'">编辑</router-link>
+                                <a class="btn" href="javascript:;" @click="remove(tutor.id)">删除</a>
                             </div>
                         </div>
-                    </li>
-                </ul>
-            </div>
+                    </div>
+                </li>
+            </ul>
         </div>
     </div>
 </template>
@@ -55,43 +58,13 @@
     export default {
         data () {
             return {
-                tutors: [],
-                columns: [
-                    {
-                        name: 'name',
-                        title: '姓名'
-                    },
-                    {
-                        name: 'sex',
-                        title: '性别',
-                    },
-                    {
-                        name: 'tel',
-                        title: '电话'
-                    },
-                    {
-                        name: 'desc',
-                        title: '介绍'
-                    },
-                    {
-                        name: '__actions',
-                        title: '操作',
-                        actions: [
-                            {
-                                name: 'edit',
-                                label: '编辑',
-                            },
-                            {
-                                name: 'delete',
-                                label: '删除',
-                            }
-                        ]
-                    }
-                ],
-                tableData: []
+                tutors: []
             }
         },
         computed: {
+            domainUrl() {
+                return domainUrl
+            },
             routeUrl () {
                 return '/' + this.$route.params.lang + '/admin';
             },
@@ -121,17 +94,41 @@
             },
             update(teacher, status) {
                 teacher.status = status;
-                this.$http.post(domainUrl + '/admin/teacher/' + teacher.id + '/update', teacher, {
+                this.$http.post(domainUrl + '/admin/teacher/' + teacher.id + '/updateStatus', {
+                    status: status
+                }, {
                     headers: {
                         'Lc-Lang': this.$route.params.lang === 'en' ? 'en' : 'zh',
                         'X-Auth-Token': localStorage.mytoken
                     },
+                    emulateJSON: true
                 }).then(response => {
 
                 }, response => {
                     let body = response.body
                     console.log(body)
 
+                })
+            },
+            remove(id) {
+                this.$http.delete(domainUrl + '/admin/teacher/' + id + '/delete', {
+                    headers: {
+                        'Lc-Lang': this.$route.params.lang === 'en' ? 'en' : 'zh',
+                        'X-Auth-Token': localStorage.mytoken
+                    },
+                }).then(response => {
+                    for (let i = 0; i < this.tutors.length; i++) {
+                        if (this.tutors[i].id === id) {
+                            this.tutors.splice(i, 1)
+                        }
+                    }
+                }, response => {
+                    let body = response.body
+                    console.log(body)
+                    if (body.code === 101) {
+                        localStorage.mytoken = ''
+                        this.$router.push('/login') // TODO
+                    }
                 })
             },
         },
@@ -161,7 +158,6 @@
     }
     .tutor-list .item-body {
         height: 160px;
-        padding: 16px;
         overflow: hidden;
     }
     .tutor-list .tutor-sex {
@@ -176,17 +172,30 @@
     }
     .tutor-list .tutor-desc {
         float: left;
-        height: 150px;
+        height: 60px;
+        margin-top: 30px;
         text-align: center;
+        overflow: hidden;
+    }
+    .tutor-list .img-box {
+        float: left;
+        height: 100%;
     }
     .tutor-list .tutor-avatar {
-        float: left;
+        display: block;
+        width: 120px;
         height: 120px;
+        margin: 20px auto;
     }
     .tutor-list .btns {
         float: left;
-        padding: 16px 48px;
         height: 100%;
+        padding: 16px 48px;
+        border-left: 1px solid #ccc;
+    }
+    .tutor-list .btn-inbox {
+        width: 60px;
+        margin: 0 auto;
     }
     .tutor-list .btns .btn {
         display: inline-block;

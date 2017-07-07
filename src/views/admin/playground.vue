@@ -1,47 +1,49 @@
 <template>
     <div class="layout-body">
-        <div class="admin-nav">
+        <div class="admin-nav ">
             <div class="container">
                 <div class="bread-nav">
                     <ol class="breadcrumb">
                         <li class="active">素材管理</li>
                     </ol>
                 </div>
-                <router-link class="btn btn-primary" :to="routeUrl + '/tutors/add'">本地上传</router-link>
+                <ui-file :url="domainUrl + '/admin/file/save'" :success="uploadSuccess">本地上传</ui-file>
+                <!--<router-link class="btn btn-primary" :to="routeUrl + '/tutors/add'">本地上传</router-link>-->
             </div>
         </div>
 
         <div class="container">
             <ul class="admin-tab">
                 <router-link class="tab-item" :to="routeUrl + '/resources/banner'">海报素材</router-link>
-                <router-link class="tab-item" :to="routeUrl + '/resources/playground'">场地素材</router-link>
+                <router-link class="tab-item active" :to="routeUrl + '/resources/playground'">场地素材</router-link>
             </ul>
         </div>
 
-        <div class="admin-header">
+        <!--<div class="admin-header">
             <div class="container">
-                <input type="checkbox"> 全选
+                <input class="select-all" type="checkbox"> 全选
                 <button class="btn btn-primary">删除</button>
             </div>
-        </div>
+        </div>-->
 
         <div class="container">
             <ul class="row playground-list">
                 <li class="col-sm-3" v-for="playground in playgrounds">
                     <div class="card-box">
-                        <img class="playground-image" src="http://localhost:1234/static/img/avatar.jpg">
+                        <img class="card-image" :src="domainUrl + '/' + playground.url">
                         <div class="box-body">
-                            <input type="checkbox"> 教室图片
+                            <input type="checkbox"> {{ playground.name }}
                         </div>
                         <div class="box-footer">
                             <span class="left">
                                 <ui-icon type="edit" v-tooltip="'2121ewd21212'"></ui-icon>
                             </span>
                             <span class="center">
-                                <ui-icon type="sort" v-tooltip="'排序'"></ui-icon>
+                                <!--<ui-icon type="sort" v-tooltip="'排序'"></ui-icon>-->
                             </span>
                             <span class="right">
-                                <ui-icon type="remove" v-tooltip="'删除'" @click="remove(playground.id)"></ui-icon>
+                                <i data-v-47dbc752="" class="icon icon-remove" @click="remove(playground.id)"></i>
+                                <!--<ui-icon type="remove" v-tooltip="'删除'" @click="remove(playground.id)"></ui-icon>-->
                             </span>
                         </div>
                     </div>
@@ -53,116 +55,73 @@
 </template>
 
 <script>
+    import {domainUrl} from 'CONFIG/config'
+
     export default {
         data () {
             return {
-                playgrounds: [
-                    {
-                        id: '1',
-                        image: 'http://localhost:1234/static/img/avatar.jpg'
-                    },
-                    {
-                        id: '1',
-                        image: 'http://localhost:1234/static/img/avatar.jpg'
-                    },
-                    {
-                        id: '1',
-                        image: 'http://localhost:1234/static/img/avatar.jpg'
-                    },
-                    {
-                        id: '1',
-                        image: 'http://localhost:1234/static/img/avatar.jpg'
-                    },
-                    {
-                        id: '1',
-                        image: 'http://localhost:1234/static/img/avatar.jpg'
-                    },
-                    {
-                        id: '1',
-                        image: 'http://localhost:1234/static/img/avatar.jpg'
-                    },
-                    {
-                        id: '1',
-                        image: 'http://localhost:1234/static/img/avatar.jpg'
-                    }
-                ],
-                search: function () {
-
-                    //this
-                },
-                addArticle: function () {
-
-                },
-                columns: [
-                    {
-                        name: '__checkbox',
-                        title: ''
-                    },
-                    {
-                        name: 'title',
-                        title: '文章标题'
-                    },
-                    {
-                        name: 'createTime',
-                        title: '创建时间',
-                    },
-                    {
-                        name: 'car_type',
-                        title: '备注'
-                    },
-                    {
-                        name: '__actions',
-                        title: '操作',
-                        actions: [
-                            {
-                                name: 'delete',
-                                label: '查看'
-                            },
-                            {
-                                name: 'edit',
-                                label: '编辑',
-                                hasAuth: 'read&noauth'
-                            },
-                            {
-                                name: 'delete',
-                                label: '删除',
-                                //type: 'select'
-                            }
-                        ]
-                    }
-                ],
-                tableData: [
-                    {
-                        "id": 1,
-                        'title': '文章标题一',
-                        "createTime": "2016-12-09",
-                        "car_type": 1
-                    },
-                    {
-                        "id": 3,
-                        'title': '文章标题二',
-                        "createTime": "2016-12-09",
-                        "car_type": 2
-                    }
-                ]
+                playgrounds: [],
             }
         },
         computed: {
+            domainUrl() {
+                return domainUrl
+            },
             routeUrl () {
-                return '/' + this.$route.params.lang + '/admin';
+                return '/' + this.$route.params.lang + '/admin'
             },
         },
+        mounted() {
+            this.getData()
+        },
         methods: {
-            remove(id) {
-                this.$http.delete(domainUrl + '/admin/course/' + id + '/delete', {
+            getData() {
+                this.$http.get(domainUrl + '/admin/location/all', {
                     headers: {
                         'Lc-Lang': this.$route.params.lang === 'en' ? 'en' : 'zh',
                         'X-Auth-Token': localStorage.mytoken
                     },
                 }).then(response => {
-                    for (let i = 0; i < this.courses.length; i++) {
-                        if (this.courses[i].id === id) {
-                            this.courses.splice(i, 1)
+                    let body = response.body
+                    console.log(body)
+                    this.playgrounds = body
+                }, response => {
+                    let body = response.body
+                    console.log(body);
+                    if (body.code === 101) {
+                        localStorage.mytoken = ''
+                        this.$router.push('/login') // TODO
+                    }
+                })
+            },
+            uploadSuccess(url) {
+                this.uploadUrl = url
+
+                this.$http.post(domainUrl + '/admin/location/create', {
+                        name: '图片1',
+                        url: this.uploadUrl
+                    },
+                    {
+                        headers: {
+                            'Lc-Lang': this.$route.params.lang === 'en' ? 'en' : 'zh',
+                            'X-Auth-Token': localStorage.mytoken
+                        },
+                    }
+                ).then(response => {
+                    this.playgrounds.push(response.body)
+                    this.$router.push(this.routeUrl + '/resources/playground')
+                });
+            },
+            remove(id) {
+                this.$http.delete(domainUrl + '/admin/location/' + id + '/delete', {
+                    headers: {
+                        'Lc-Lang': this.$route.params.lang === 'en' ? 'en' : 'zh',
+                        'X-Auth-Token': localStorage.mytoken
+                    },
+                }).then(response => {
+                    for (let i = 0; i < this.playgrounds.length; i++) {
+                        if (this.playgrounds[i].id === id) {
+                            this.playgrounds.splice(i, 1)
                         }
                     }
                 }, response => {
@@ -189,24 +148,13 @@
         margin-bottom: 24px;
         overflow: hidden;
     }
-
-    .admin-tab {
-        margin-bottom: 8px;
-    }
-    .admin-tab .tab-item {
-        padding: 8px 0;
+    .admin-header .select-all {
         margin-right: 16px;
-        color: #333;
-        font-size: 18px;
     }
-    .admin-tab .tab-item.active {
-        border-bottom: 2px solid #A9517A;
-    }
+
     .playground-list {
 
     }
-
-
     .playground-list .playground-image {
         width: 100%;
         height: 160px;
@@ -228,17 +176,21 @@
         font-size: 20px;
         cursor: pointer;
     }
-    .left {
+    .card-box .card-image {
+        width: 100%;
+        height: 160px;
+    }
+    .card-box .left {
         display: inline-block;
         width: 33.3%;
         text-align: left;
     }
-    .right {
+    .card-box .right {
         display: inline-block;
         width: 33.3%;
         text-align: right;
     }
-    .center {
+    .card-box .center {
         display: inline-block;
         width: 28%;
         text-align: center;

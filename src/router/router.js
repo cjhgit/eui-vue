@@ -42,15 +42,18 @@ import AdminPlayground from '@/views/admin/playground'
 import AdminArticle from '@/views/admin/articleList'
 import AdminArticleDetail from '@/views/admin/articleDetail'
 import AdminArticleAdd from '@/views/admin/articleAdd'
-
+// 课程
 import AdminCourse from '@/views/admin/courseList'
 import AdminCourseAdd from '@/views/admin/courseAdd'
-
+import AdminCourseEdit from '@/views/admin/courseEdit'
+// 导师
 import AdminTutor from '@/views/admin/tutorList'
 import AdminTutorDetail from '@/views/admin/tutorDetail'
 import AdminTutorEdit from '@/views/admin/tutorEdit'
 import AdminTutorAdd from '@/views/admin/tutorAdd'
+
 import AdminFile from '@/views/admin/file'
+//
 import AdminOrder from '@/views/admin/orderList'
 import AdminOrderDetail from '@/views/admin/orderDetail'
 import AdminOrderNew from '@/views/admin/orderNew'
@@ -76,7 +79,20 @@ const ComponentHome = { template: '<div>组件首页Home</div>' }
 let adminMap = [
     {
         path: '',
-        component: AdminIndex,
+        redirect: 'courses',
+    },
+    // 后台课程模块
+    {
+        path: 'courses',
+        component: AdminCourse,
+    },
+    {
+        path: 'courses/add',
+        component: AdminCourseAdd,
+    },
+    {
+        path: 'courses/:id/edit',
+        component: AdminCourseEdit
     },
     // 后台用户模块
     {
@@ -113,15 +129,6 @@ let adminMap = [
     {
         path: 'articles/:id',
         component: AdminArticleDetail
-    },
-    // 后台课程模块
-    {
-        path: 'courses',
-        component: AdminCourse,
-    },
-    {
-        path: 'courses/add',
-        component: AdminCourseAdd,
     },
     // 后台导师模块
     {
@@ -323,7 +330,8 @@ let router = new Router({
     hashbang: false,
     //history: true,
     routes: routerMap,
-    linkActiveClass: 'active'
+    //linkActiveClass: 'active'
+    saveScrollPosition: true,
 });
 
 router.beforeEach((to, from, next) => {

@@ -20,10 +20,10 @@ import { Message, Loading, Tree, Dropdown, DropdownMenu, DropdownItem } from 'el
 import liangchuanUi2 from './components'
 
 // UEditor
-import './assets/utf8-php/ueditor.config.js'
-import './assets/utf8-php/ueditor.all.min.js'
-import './assets/utf8-php/lang/zh-cn/zh-cn.js'
-import './assets/utf8-php/ueditor.parse.min.js'
+import './assets/utf8-jsp/ueditor.config.js'
+import './assets/utf8-jsp/ueditor.all.min.js'
+import './assets/utf8-jsp/lang/zh-cn/zh-cn.js'
+import './assets/utf8-jsp/ueditor.parse.min.js'
 
 import dictionary from './i18n/dictionary'
 

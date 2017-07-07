@@ -16,16 +16,9 @@
                     <div class="tutor-item">
                         <router-link :to="routeUrl + '/tutors/' + tutor.id">
                             <div class="avatar-box">
-                                <img class="avatar-img" src="http://localhost:1234/static/img/avatar.jpg">
+                                <img class="avatar-img" :src="domainUrl + '/' + tutor.media">
                                 <img class="mask" src="/static/img/shape-6.png">
                             </div>
-                            <!--<div class="center">
-                                <div class="hexagon">
-                                    <div class="hexagon-in1">
-                                        <div class="hexagon-in2" style="background: url('http://localhost:1234/static/img/avatar.jpg')"></div>
-                                    </div>
-                                </div>
-                            </div>-->
                             <div class="tutor-name">{{ tutor.name }}</div>
                             <div class="tutor-desc">{{ tutor.introduction }}</div>
                         </router-link>
@@ -51,6 +44,9 @@
             }
         },
         computed: {
+            domainUrl() {
+                return domainUrl;
+            },
             routeUrl () {
                 return '/' + this.$route.params.lang + '/home';
             }
@@ -108,7 +104,7 @@
     .tutor-list {
     }
     .tutor-list .tutor-item {
-        height: 300px;
+        height: 340px;
         padding: 16px;
         margin-bottom: 24px;
         border: 1px solid #ccc;
@@ -127,6 +123,9 @@
     }
     .tutor-list .tutor-desc {
         color: #666;
+        color: #666;
+        height: 60px;
+        overflow: hidden;
     }
     @media (min-width: 768px) {
         .tutor-list .center {

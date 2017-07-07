@@ -3,23 +3,33 @@
         <!-- banner -->
         <swipe class="my-swipe">
             <swipe-item class="swipe-item" v-for="banner in banners">
-                <img :src="banner.image" alt="">
+                <img :src="domainUrl + '/' + banner.url" alt="">
             </swipe-item>
         </swipe>
         <!-- 导师 -->
-        <section class="index-box">
+        <section class="index-box" style="position: relative">
+            <div class="tutor-bg">
+                <div class="line1"></div>
+                <div class="line2"></div>
+                <div class="line3"></div>
+            </div>
             <div class="container">
                 <header>
                     <h3 class="title">导师</h3>
                     <div class="sub-title">TUTOR</div>
                 </header>
                 <ul class="tutor-list row">
-                    <li class="tutor-item col-sm-4" v-for="tutor in tutors">
-                        <img class="avatar" src="/static/img/avatar.jpg">
-                        <router-link :to="routeUrl + '/tutors/' + tutor.id">
-                            <div class="tutor-name">{{ tutor.name }}</div>
-                            <div class="tutor-desc">{{ tutor.introduction }}</div>
-                        </router-link>
+                    <li class="col-sm-4" v-for="tutor in tutors">
+                        <div class="tutor-item">
+                            <img class="avatar" src="/static/img/avatar.jpg">
+                            <div class="tutor-info">
+                                <div class="clearfix">
+                                    <div class="tutor-name">{{ tutor.name }}</div>
+                                    <router-link class="btn" :to="routeUrl + '/tutors/' + tutor.id">详情</router-link>
+                                </div>
+                                <div class="tutor-desc">{{ tutor.introduction }}</div>
+                            </div>
+                        </div>
                     </li>
                 </ul>
             </div>
@@ -32,21 +42,22 @@
                         <div class="col-sm-4">
                             <div class="sub-title">CLASSROOM</div>
                             <h3 class="title">教室环境</h3>
+                            <ui-icon type="playground"></ui-icon>
                         </div>
-                        <div class="col-sm-4"><img class="classroom-img" :src="playgrounds[0].image"></div>
-                        <div class="col-sm-4"><img class="classroom-img" :src="playgrounds[1].image"></div>
+                        <div class="col-sm-4"><img class="classroom-img" :src="domainUrl + '/' + playgrounds[0].url"></div>
+                        <div class="col-sm-4"><img class="classroom-img" :src="domainUrl + '/' + playgrounds[1].url"></div>
                     </div>
                     <div class="row">
                         <div class="col-sm-4">
-                            <img class="classroom-img" :src="playgrounds[2].image">
-                            <img class="classroom-img" :src="playgrounds[3].image">
+                            <img class="classroom-img" :src="domainUrl + '/' + playgrounds[2].url">
+                            <img class="classroom-img" :src="domainUrl + '/' + playgrounds[3].url">
                         </div>
                         <div class="col-sm-4">
-                            <img class="classroom-img-lg" :src="playgrounds[4].image">
+                            <img class="classroom-img-lg" :src="domainUrl + '/' + playgrounds[4].url">
                         </div>
                         <div class="col-sm-4">
-                            <img class="classroom-img" :src="playgrounds[5].image">
-                            <img class="classroom-img" :src="playgrounds[6].image">
+                            <img class="classroom-img" :src="domainUrl + '/' + playgrounds[5].url">
+                            <img class="classroom-img" :src="domainUrl + '/' + playgrounds[6].url">
                         </div>
                     </div>
 
@@ -79,7 +90,6 @@
     </div>
 </template>
 
-
 <script>
     import Vue from 'vue'
     import i18n from '@/i18n'
@@ -109,17 +119,57 @@
             }
         },
         computed: {
+            domainUrl() {
+                return domainUrl
+            },
             routeUrl () {
-                return '/' + this.$route.params.lang + '/home';
+                return '/' + this.$route.params.lang + '/home'
             }
         },
         mounted: function () {
             console.log(this.$i18n);
-            this.getData();
-
+            this.getData()
         },
         methods: {
             getData() {
+                // 教室环境
+                this.$http.get(domainUrl + '/location/all', {
+                    headers: {
+                        'Lc-Lang': this.$route.params.lang === 'en' ? 'en' : 'zh'
+                    },
+                }).then(response => {
+                    let body = response.body
+                    console.log('场地')
+                    console.log(body)
+                    this.playgrounds = body
+                }, response => {
+                    let body = response.body
+                    console.log(body);
+                    if (body.code === 101) {
+                        localStorage.mytoken = ''
+                        this.$router.push('/login') // TODO
+                    }
+                })
+
+                // banner
+                this.$http.get(domainUrl + '/banner/all', {
+                    headers: {
+                        'Lc-Lang': this.$route.params.lang === 'en' ? 'en' : 'zh'
+                    },
+                }).then(response => {
+                    let body = response.body
+                    console.log(body)
+                    this.banners = body
+                }, response => {
+                    let body = response.body
+                    console.log('banner')
+                    console.log(body);
+                    if (body.code === 101) {
+                        localStorage.mytoken = ''
+                        this.$router.push('/login') // TODO
+                    }
+                })
+
                 // 获取导师数据
                 this.$http.post(domainUrl + '/teacher/list', {
                     page: 1,
@@ -187,16 +237,28 @@
                 ];
                 this.banners = [
                     {
-                        url: 'http://www.baidu.com',
-                        image: 'http://pic.58pic.com/58pic/11/77/72/58PIC9w58PICC9P.jpg'
+                        "id": 1,
+                        "name": "图片1",
+                        "url": "upload/123456",
+                        "sort": 1,
+                        "time": "2017-07-05 18:34:20",
+                        "lang": "zh"
                     },
                     {
-                        url: 'http://www.baidu.com',
-                        image: 'http://pic.58pic.com/58pic/11/77/72/58PIC9w58PICC9P.jpg'
+                        "id": 2,
+                        "name": "图片1",
+                        "url": "upload/123456",
+                        "sort": 2,
+                        "time": "2017-07-05 18:37:32",
+                        "lang": "zh"
                     },
                     {
-                        url: 'http://www.baidu.com',
-                        image: 'http://pic.58pic.com/58pic/11/77/72/58PIC9w58PICC9P.jpg'
+                        "id": 3,
+                        "name": "图片1",
+                        "url": "upload/123456",
+                        "sort": 3,
+                        "time": "2017-07-05 18:37:33",
+                        "lang": "zh"
                     }
                 ];
             }
@@ -212,8 +274,24 @@
 
 </script>
 
-<style scoped>
+<style>
 
+</style>
+
+<style scoped>
+    .layout-header {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        background-color: rgba(169, 81, 122, .5)
+    }
+
+    @media (min-width: 1200px) {
+        .container {
+            width: 1024px;
+        }
+    }
     /**/
     .my-swipe {
         height: 500px;
@@ -256,20 +334,73 @@
         overflow: hidden;
     }
     .tutor-list .tutor-item {
-        float: left;
         /*width: 33.3%;
         padding: 0 16px;*/
+        border: 1px solid #fff;
     }
+    .tutor-list .tutor-item:hover {
+        border: 1px solid #ccc;
+    }
+
     .tutor-list .tutor-item img {
         width: 100%;
-        height: 320px;
+        height: 400px;
+        box-shadow: -2px 4px 2px 2px rgba(0,0,0,.1)
+    }
+    .tutor-info {
+        padding: 16px;
+        overflow: hidden;
     }
     .tutor-list .tutor-name {
+        float: left;
+        display: block;
         text-align: left;
         color: #555;
+        font-size: 18px;
+        line-height: 34px;
+    }
+    .tutor-list .btn {
+        float: right;
+        color: #B5BF71;
+        border-color: #B5BF71;
     }
     .tutor-list .tutor-desc {
         text-align: left;
+        height: 40px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+    .tutor-list .clearfix {
+        margin-bottom: 16px;
+        overflow: hidden;
+    }
+    /**/
+    .tutor-bg {
+        position: absolute;
+        top: 0;
+        left: 0;
+        z-index: -1;
+        width: 100%;
+        height: 200px;
+        padding-top: 200px;
+    }
+    .tutor-bg .line1 {
+        width: 100%;
+        height: 100px;
+        margin-bottom: 20px;
+        background-color: rgba(230, 228, 230, .5);
+    }
+    .tutor-bg .line2 {
+        width: 100%;
+        height: 50px;
+        margin-bottom: 20px;
+        background-color: rgba(230, 228, 230, .5);
+    }
+    .tutor-bg .line3 {
+        width: 100%;
+        height: 40px;
+        margin-bottom: 20px;
+        background-color: rgba(230, 228, 230, .5);
     }
     /**/
     .classroom-box .classroom-img {
@@ -291,11 +422,18 @@
         }
     }
     .classroom-box .title {
+        margin-bottom: 16px;
         text-align: left;
     }
     .classroom-box .sub-title {
         text-align: left;
         margin-bottom: 8px;
+    }
+    .classroom-box .icon-playground {
+        display: block;
+        width: 32px;
+        font-size: 32px;
+        color: #A9517A;
     }
     /**/
     .course-list {
@@ -309,9 +447,10 @@
         height: 320px;
     }
     .course-list .course-item:hover .mask {
-        
+        background-color: rgba(174, 173, 100, .8);
     }
-    .course-list .course-item:hover .course-name {
+    .course-list .course-item:hover .course-name,
+    .course-list .course-item:hover .course-desc {
         color: #333;
     }
     .course-list .course-item a {
@@ -319,8 +458,11 @@
         color: #fff;
     }
     .course-list .course-name {
-        font-size: 18px;
+        font-size: 20px;
         margin-bottom: 24px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
     }
     .course-list .course-img {
         width: 120px;
@@ -329,7 +471,8 @@
         border-radius: 60px;
     }
     .course-list .course-desc {
-
+        height: 60px;
+        overflow: hidden;
     }
     .course-list .mask {
         position: absolute;

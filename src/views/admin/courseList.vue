@@ -15,8 +15,7 @@
             <li class="col-desc">课程介绍</li>
             <li class="col-operate">操作</li>
         </ul>
-
-        <div class="course-box">
+        <div class="container">
             <ul class="course-list">
                 <li class="course-item" v-for="course in courses">
                     <div class="item-header">
@@ -28,13 +27,15 @@
                             <img class="course-image" :src="domainUrl + '/' + course.media">
                         </div>
                         <div class="course-content col-desc">{{ course.introduction }}</div>
-                        <div class="btns col-operate">
-                            <a class="btn" href="javascript:;" @click="update(course, 2)"
-                               :class="{'btn-link': course.status !== 2, 'btn-primary': course.status === 2}">上架</a>
-                            <a class="btn" href="javascript:;" @click="update(course, 3)"
-                               :class="{'btn-link': course.status !== 3, 'btn-primary': course.status === 3}">下架</a>
-                            <router-link class="btn btn-link" :to="routeUrl + '/tutors/' + course.id + '/edit'">编辑</router-link>
-                            <a class="btn" href="javascript:;" @click="remove(course.id)">删除</a>
+                        <div class="col-operate btns">
+                            <div class="btns-inbox">
+                                <a class="btn" href="javascript:;" @click="update(course, 2)"
+                                   :class="{'btn-link': course.status !== 2, 'btn-primary': course.status === 2}">上架</a>
+                                <a class="btn" href="javascript:;" @click="update(course, 3)"
+                                   :class="{'btn-link': course.status !== 3, 'btn-primary': course.status === 3}">下架</a>
+                                <router-link class="btn btn-link" :to="routeUrl + '/courses/' + course.id + '/edit'">编辑</router-link>
+                                <a class="btn" href="javascript:;" @click="remove(course.id)">删除</a>
+                            </div>
                         </div>
                     </div>
                 </li>
@@ -70,7 +71,7 @@
             },
         },
         mounted() {
-            this.getData(this.$route.params.lang);
+            this.getData();
         },
         methods: {
             getData(lang) {
@@ -153,14 +154,13 @@
         width: 20%;
     }
     .col-desc {
-        width: 50%;
+        width: 60%;
     }
     .col-operate {
-        width: 30%;
+        width: 20%;
     }
     /**/
     .course-list {
-        margin: 0 24px;
     }
     .course-list .course-item {
         border: 1px solid #ccc;
@@ -172,24 +172,33 @@
     }
     .course-list .item-body {
         height: 160px;
-        padding: 16px;
         overflow: hidden;
     }
     .course-list .course-content {
         float: left;
+        padding: 0 16px;
+        margin-top: 48px;
         text-align: center;
+        height: 60px;
+        overflow: hidden;
     }
     .couse-img-box {
         float: left;
     }
     .course-list .course-image {
+        display: block;
         width: 120px;
         height: 120px;
-        margin: 0 auto;
+        margin: 16px auto;
     }
     .course-list .btns {
         float: left;
-        padding: 16px 48px;
+        height: 100%;
+        border-left: 1px solid #ccc;
+    }
+    .course-list .btns-inbox {
+        width: 50px;
+        margin: 16px auto;
     }
     .course-list .btns .btn {
         display: inline-block;

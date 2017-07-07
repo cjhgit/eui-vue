@@ -137,18 +137,43 @@
     body {
         position: relative;
     }
+    .layout-body {
+        position: absolute;
+        top: 66px;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        width: 100%;
+        overflow: auto;
+    }
+    .layout-footer-btn {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        padding: 24px;
+        border-top: 1px solid #ccc;
+    }
+    .layout-footer-btn .btn {
+        float: right;
+        margin-left: 32px;
+    }
     .container {
         width: 100%;
-        padding-right: 32px;
-        padding-left: 32px;
+        padding-right: 40px;
+        padding-left: 40px;
     }
     /**/
     .admin-nav {
         padding: 16px 0;
         overflow: hidden;
     }
+    .admin-nav.border-bottom {
+        border-bottom: 1px solid #ccc;
+    }
     .admin-nav .bread-nav {
         float: left;
+        min-width: 300px;
         border-bottom: none;
         font-size: 18px;
         padding: 0;
@@ -156,6 +181,13 @@
     }
     .admin-nav .bread-nav .breadcrumb {
         padding: 0 0;
+        margin-bottom: 0;
+    }
+    .admin-nav .bread-nav .breadcrumb a {
+        color: #999;
+    }
+    .admin-nav .bread-nav .breadcrumb .active {
+        color: #333;
     }
     .admin-nav .btn {
         float: right;
@@ -257,7 +289,7 @@
     }
     .bread-nav .icon-back {
         float: left;
-        padding-top: 16px;
+        padding-top: 4px;
         margin-right: 8px;
         font-size: 20px;
     }
@@ -279,6 +311,8 @@
     }
     /**/
     .lang-box {
+        position: relative;
+        left: -8px;
         float: left;
         color: #666;
     }
@@ -291,5 +325,27 @@
         border-bottom: 1px solid #A9517A;
     }
 
+    /**/
+    .admin-tab {
+        margin-bottom: 12px;
+    }
+    .admin-tab .tab-item {
+        padding: 8px 0;
+        margin-right: 16px;
+        color: #333;
+        font-size: 18px;
+    }
+    .admin-tab .tab-item.active {
+        border-bottom: 2px solid #A9517A;
+    }
+
+
+    /**/
+    .admin-form {
+        padding: 16px 0;
+    }
+    .form-horizontal .control-label {
+        text-align: left;
+    }
 
 </style>
