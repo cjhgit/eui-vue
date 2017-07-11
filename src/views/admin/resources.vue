@@ -42,14 +42,6 @@
     export default {
         data () {
             return {
-                key: '1223',
-                search: function () {
-
-                    //this
-                },
-                addArticle: function () {
-
-                },
                 columns: [
                     {
                         name: '__checkbox',

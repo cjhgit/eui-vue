@@ -112,7 +112,7 @@
                 }, response => {
                     let body = response.body
                     console.log(body);
-                    if (body.code === 101) {
+                    if (body.code === 101 || body.code === 103) {
                         localStorage.mytoken = ''
                         this.$router.push('/login') // TODO
                     }
@@ -164,7 +164,6 @@
         },
         watch:{
             $route: function () {
-                console.log('获取语言' + this.$route.params.lang)
                 this.tableData = this.getData(this.$route.params.lang)
             },
             'route': function () {

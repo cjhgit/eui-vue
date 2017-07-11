@@ -21,7 +21,7 @@
                 </li>
             </ul>
 
-
+            <ui-page :page="page" :total="totalPage" :gotoPage="gotoPage"></ui-page>
         </div>
     </div>
 </template>
@@ -32,12 +32,14 @@
     import {domainUrl} from 'CONFIG/config'
     import Util from '@/util/util'
 
-    console.log(Util)
-
     export default {
         i18n,
         data () {
             return {
+                page: 1,
+                totalPage: 1,
+                pageSize: 12,
+
                 articles: [],
             }
         },
@@ -50,12 +52,14 @@
             },
         },
         mounted() {
-            this.getData();
+            this.getData(1);
         },
         methods: {
+            gotoPage(page) {
+                this.page = page
+                this.getData(page)
+            },
             simpleDate(str) {
-                console.log(str);
-                //let date = new Date(Date.parse(str.replace(/-/g, "/")));
                 return str.split(' ')[0];
             },
             removeHtmlTag(str) {
@@ -66,10 +70,10 @@
                 str=str.replace(/\s/g,''); //将空格去掉
                 return str;
             },
-            getData() {
+            getData(page) {
                 this.$http.post(domainUrl + '/news/list', {
-                    page: 1,
-                    pageSize: 12
+                    page: page,
+                    pageSize: this.pageSize
                 }, {
                     headers: {
                         'Lc-Lang': this.$route.params.lang === 'en' ? 'en' : 'zh'
@@ -78,6 +82,7 @@
                     let body = response.body
                     console.log(body)
                     this.articles = body.data
+                    this.totalPage = Math.ceil(body.total / this.pageSize)
                 }, response => {
                     let body = response.body
                     console.log(body);

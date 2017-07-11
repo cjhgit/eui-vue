@@ -32,9 +32,6 @@
         mounted: function () {
 //            this.editor = UE.getEditor('editor');
         },
-        destroyed: function () {
-//            this.editor.destroy();
-        },
         methods: {
             loginout: function () {
                 console.log('退出登录');
@@ -44,25 +41,6 @@
                 this.$router.push('/login');
 
                // window.open('/login');
-            },
-            showNotification: function () {
-                if (window.Notification) {
-                    console.log('支持');
-                    if (Notification.permission === "denied") {
-                        alert('你已经禁用浏览器通知，请在浏览器中开启。');
-                        return;
-                    }
-                    // 支持
-
-
-                    Notification.requestPermission(function(status) {
-                        var n = new Notification('通知标题', { body: '这里是通知内容！' });
-                    });
-                } else {
-                    alert('你的浏览器不支持通知')
-                    console.log('不支持');
-                    // 不支持
-                }
             }
         },
         components: {
@@ -73,12 +51,6 @@
             //'Icon': Icon
         },
     }
-
-    if(window.Notification && Notification.permission !== "denied") {
-
-    }
-
-
 </script>
 
 <style>

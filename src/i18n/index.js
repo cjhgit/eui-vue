@@ -42,7 +42,13 @@ const messages = {
         male: '男',
         female: '女',
 
-        contactUs: '联系我们'
+        contactUs: '联系我们',
+
+        error404: '抱歉，你访问的页面已丢失！',
+
+        playgroundName: '紫然肌专业普拉提会馆',
+        addressDetail: '广东省中山市石歧区悦来南路37号正和中州54/55卡',
+
     },
     en: {
         courseDesc: 'Courses',

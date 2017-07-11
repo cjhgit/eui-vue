@@ -1,6 +1,6 @@
 <template>
     <div class="layout-body">
-        <div class="admin-nav">
+        <div class="admin-nav border-bottom">
             <div class="container">
                 <div class="bread-nav">
                     <ol class="breadcrumb">
@@ -11,32 +11,39 @@
             </div>
         </div>
 
-        <ul class="row article-list">
-            <li class="col-sm-4 article-item" v-for="article in articles">
-                <div class="card-box">
-                    <div class="card-header">
-                        <input type="checkbox">
-                        <span>{{ article.title }}</span>
-                    </div>
-                    <img class="article-image" :src="domainUrl + '/' + article.medias">
-                    <div class="box-body">
-                        <div class="article-content">{{ removeHtmlTag(article.content) }}</div>
-                    </div>
-                    <div class="box-footer">
+        <div class="container">
+            <ui-empty v-if="!articles.length"></ui-empty>
+
+            <ul class="row article-list">
+                <li class="col-sm-4 article-item" v-for="article in articles">
+                    <div class="card-box">
+                        <div class="card-header">
+                            <!--<input type="checkbox">-->
+                            <span class="card-title">{{ article.title }}</span>
+                        </div>
+                        <img class="article-image" :src="domainUrl + '/' + article.medias">
+                        <div class="box-body">
+                            <div class="article-content">{{ removeHtmlTag(article.content) }}</div>
+                        </div>
+                        <div class="box-footer">
                             <span class="left">
                                 <ui-icon type="edit" v-tooltip="'2121ewd21212'"></ui-icon>
                             </span>
-                        <span class="center">
+                            <span class="center">
                             <router-link class="btn btn-link" :to="routeUrl + '/articles/' + article.id + '/edit'">编辑</router-link>
                         </span>
-                        <span class="right">
+                            <span class="right">
                             <a href="#" @click="remove(article.id)">删除</a>
                         </span>
+                        </div>
                     </div>
-                </div>
 
-            </li>
-        </ul>
+                </li>
+            </ul>
+
+            <ui-page :page="page" :total="totalPage" :gotoPage="gotoPage"></ui-page>
+        </div>
+
     </div>
 </template>
 
@@ -46,13 +53,11 @@
     export default {
         data () {
             return {
-                articles: [],
-                search: function () {
-                    //this
-                },
-                addArticle: function () {
+                page: 1,
+                totalPage: 1,
+                pageSize: 12,
 
-                },
+                articles: [],
             }
         },
         computed: {
@@ -64,11 +69,18 @@
             },
         },
         mounted() {
-            this.getData(this.$route.params.lang);
+            this.getData(1);
         },
         methods: {
-            getData(lang) {
-                this.$http.get(domainUrl + '/admin/news/all', {
+            gotoPage(page) {
+                this.page = page
+                this.getData(page)
+            },
+            getData(page) {
+                this.$http.post(domainUrl + '/admin/news/list', {
+                    page: page,
+                    pageSize: this.pageSize
+                }, {
                     headers: {
                         'Lc-Lang': this.$route.params.lang === 'en' ? 'en' : 'zh',
                         'X-Auth-Token': localStorage.mytoken
@@ -76,13 +88,14 @@
                 }).then(response => {
                     let body = response.body
                     console.log(body)
-                    this.articles = body
+                    this.articles = body.data
+                    this.totalPage = Math.ceil(body.total / this.pageSize)
                 }, response => {
                     let body = response.body
                     console.log(body);
-                    if (body.code === 101) {
+                    if (body.code === 101 || body.code === 103) {
                         localStorage.mytoken = ''
-                        this.$router.push('/login') // TODO
+                        this.$router.push('/login')
                     }
                 })
             },
@@ -101,7 +114,7 @@
                 }, response => {
                     let body = response.body
                     console.log(body)
-                    if (body.code === 101) {
+                    if (body.code === 101 || body.code === 103) {
                         localStorage.mytoken = ''
                         this.$router.push('/login') // TODO
                     }
@@ -125,7 +138,7 @@
 <style scoped>
     /**/
     .article-list {
-        margin: 0 24px;
+        margin-top: 24px;
     }
     .article-list .article-item {
         margin-bottom: 24px;
@@ -162,8 +175,19 @@
         margin-bottom: 24px;
         border: 1px solid #ccc;
     }
+    .card-box .card-header {
+        padding: 8px;
+    }
     .card-box .box-body {
         padding: 8px;
+    }
+    .card-box .card-title {
+        font-size: 18px;
+        height: 22px;
+        overflow: hidden;
+        display: block;
+        white-space: nowrap;
+        text-overflow: ellipsis;
     }
     .card-box .box-footer {
         padding: 8px;

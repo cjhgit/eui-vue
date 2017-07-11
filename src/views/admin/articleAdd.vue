@@ -13,13 +13,28 @@
         </div>
 
         <div class="container">
-            <div @click="getEditorContent">获取编辑器内容</div>
-            <input v-model="title" placeholder="文章标题">
+            <div class="admin-form">
+                <div class="form-horizontal" style="width: 500px">
+                    <div class="form-group">
+                        <label class="control-label col-sm-3">标题：</label>
+                        <div class="col-sm-9">
+                            <input class="form-control" v-model="article.title" name="courseName" v-validate="'required'">
+                            <div v-show="errors.has('title')" class="help-block is-danger">{{ errors.first('title') }}</div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-sm-3">封面：</label>
+                        <div class="col-sm-9">
+                            <img class="article-img" :src="domainUrl + '/' + article.medias" v-if="article.medias">
+                            <ui-file :url="domainUrl + '/admin/file/save?'" :success="uploadSuccess">本地上传</ui-file>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <script id="editor" type="text/plain"></script>
         </div>
 
         <div class="layout-footer-btn">
-            <!--<vue-button type="primary">212</vue-button>-->
             <button class="btn btn-default" @click="cancel">取消</button>
             <button class="btn btn-primary" @click="save">保存</button>
         </div>
@@ -28,65 +43,68 @@
 
 <script>
     import {domainUrl} from 'CONFIG/config'
-    /*import './assets/utf8-php/ueditor.config.js'
-    import './assets/utf8-php/ueditor.all.min.js'
-    import './assets/utf8-php/lang/zh-cn/zh-cn.js'
-    import './assets/utf8-php/ueditor.parse.min.js'*/
-
-    //document.domain = "192.168.3.110";
+    import { Message } from 'element-ui';
 
     export default {
         data () {
             return {
-                uploadUrl: '',
-                title: '',
+                article: {
+                    title: '',
+                    medias: ''
+                },
                 editor: null
             }
         },
         computed: {
             domainUrl() {
-                return domainUrl;
+                return domainUrl
             },
             routeUrl () {
-                return '/' + this.$route.params.lang + '/admin';
+                return '/' + this.$route.params.lang + '/admin'
             },
         },
         mounted: function () {
-
-            /*UE.Editor.prototype._bkGetActionUrl = UE.Editor.prototype.getActionUrl
-            UE.Editor.prototype.getActionUrl = function(action) {
-                console.log('测试', action)
-                if (action == 'uploadimage' || action == 'uploadscrawl') {
-                    //return 'http://a.b.com/video.php';
-                    return 'http://192.168.3.110:8989/admin/file/save';
-                } else if (action == 'uploadvideo') {
-                    return 'http://a.b.com/video.php';
-                } else {
-                    return this._bkGetActionUrl.call(this, action);
-                }
-            }*/
-            /*
-            UE.Editor.prototype.getActionUrl = function(action) {
-                return this._bkGetActionUrl.call(this, action);
-                console.log('测试', action)
-                /!*if (action == 'uploadimage' || action == 'uploadscrawl' || action == 'uploadimage') {
-                    return 'http://192.168.3.110:8989//admin/file/save';
-                } else if (action == 'uploadvideo') {
-                    return 'http://a.b.com/video.php';
-                } else {
-                    return this._bkGetActionUrl.call(this, action);
-                }*!/
-            }*/
-
-            this.editor = UE.getEditor('editor');
+            this.editor = UE.getEditor('editor', {
+                initialFrameWidth: 800,
+                initialFrameHeight: 300,
+            })
+            var _this = this
+            setTimeout(() => {
+                _this.editor.setHeight(500) // TODO 这段代码必须延迟执行，否则异常，原因不明
+            }, 500)
         },
         methods: {
             save() {
+                if (!this.article.title) {
+                    Message({
+                        type: 'warning',
+                        message: '文章标题不能为空'
+                    })
+                    return
+                }
+
+                if (!this.article.medias) {
+                    Message({
+                        type: 'warning',
+                        message: '请上传文章封面'
+                    })
+                    return
+                }
+
+                let content = this.editor.getContent()
+                if (!content) {
+                    Message({
+                        type: 'warning',
+                        message: '文章内容不能为空'
+                    })
+                    return
+                }
+
+
                 this.$http.post(domainUrl + '/admin/news/create', {
-                        title: this.title,
-                        //media: this.uploadUrl,
-                        medias: '/upload/97b5d0a6-555f-4478-9912-311454b9b6d5.jpg',
-                        content: this.editor.getContent(),
+                        title: this.article.title,
+                        medias: this.article.medias,
+                        content: content,
                         status: 2
                     },
                     {
@@ -102,17 +120,19 @@
             cancel() {
                 this.$router.go(-1)
             },
-            getEditorContent: function() {
-                console.log(this.editor.getContent());
-            }
+            uploadSuccess(url) {
+                this.article.medias = url
+            },
         },
         destroyed: function () {
-            this.editor.destroy();
+            this.editor.destroy()
         },
     }
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-
+    .article-img {
+        width: 120px;
+        height: 120px;
+    }
 </style>

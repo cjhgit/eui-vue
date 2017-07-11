@@ -11,12 +11,13 @@
             </div>
         </div>
 
-        <div class="container">
-            <ul class="admin-tab">
+        <ul class="admin-tab border-bottom">
+            <div class="container">
                 <router-link class="tab-item active" :to="routeUrl + '/resources/banner'">海报素材</router-link>
                 <router-link class="tab-item" :to="routeUrl + '/resources/playground'">场地素材</router-link>
-            </ul>
-        </div>
+            </div>
+        </ul>
+
 
         <!--<div class="admin-header">
             <div class="container">
@@ -26,6 +27,8 @@
         </div>-->
 
         <div class="container">
+            <ui-empty v-if="!banners.length"></ui-empty>
+
             <ul class="row banner-list">
                 <li class="col-sm-3" v-for="banner in banners">
                     <div class="card-box">
@@ -91,7 +94,7 @@
                 }, response => {
                     let body = response.body
                     console.log(body);
-                    if (body.code === 101) {
+                    if (body.code === 101 || body.code === 103) {
                         localStorage.mytoken = ''
                         this.$router.push('/login') // TODO
                     }
@@ -112,7 +115,7 @@
                 }, response => {
                     let body = response.body
                     console.log(body)
-                    if (body.code === 101) {
+                    if (body.code === 101 || body.code === 103) {
                         localStorage.mytoken = ''
                         this.$router.push('/login') // TODO
                     }

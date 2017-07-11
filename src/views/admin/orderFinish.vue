@@ -33,14 +33,6 @@
         i18n,
         data () {
             return {
-                key: '1223',
-                search: function () {
-
-                    //this
-                },
-                addArticle: function () {
-
-                },
                 columns: [
                     {
                         name: 'title',
@@ -82,7 +74,6 @@
             }
         },
         created: function () {
-            console.log('获取语言' + this.$route.params.lang);
             this.tableData = [
                 {
                     "id": 1,

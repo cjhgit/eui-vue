@@ -1,10 +1,10 @@
 
 @font-face {font-family: "icon";
-  src: url('iconfont.eot?t=1499328273020'); /* IE9*/
-  src: url('iconfont.eot?t=1499328273020#iefix') format('embedded-opentype'), /* IE6-IE8 */
-  url('iconfont.woff?t=1499328273020') format('woff'), /* chrome, firefox */
-  url('iconfont.ttf?t=1499328273020') format('truetype'), /* chrome, firefox, opera, Safari, Android, iOS 4.2+*/
-  url('iconfont.svg?t=1499328273020#icon') format('svg'); /* iOS 4.1- */
+  src: url('iconfont.eot?t=1499658766860'); /* IE9*/
+  src: url('iconfont.eot?t=1499658766860#iefix') format('embedded-opentype'), /* IE6-IE8 */
+  url('iconfont.woff?t=1499658766860') format('woff'), /* chrome, firefox */
+  url('iconfont.ttf?t=1499658766860') format('truetype'), /* chrome, firefox, opera, Safari, Android, iOS 4.2+*/
+  url('iconfont.svg?t=1499658766860#icon') format('svg'); /* iOS 4.1- */
 }
 
 .icon {
@@ -71,4 +71,12 @@
 .icon-wenziyanse:before { content: "\e777"; }
 
 .icon-playground:before { content: "\e61a"; }
+
+.icon-page-right2:before { content: "\e61e"; }
+
+.icon-page-left2:before { content: "\e622"; }
+
+.icon-page-left:before { content: "\e623"; }
+
+.icon-page-right:before { content: "\e626"; }
 

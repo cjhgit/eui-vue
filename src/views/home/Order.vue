@@ -46,21 +46,22 @@
                         <div class="form-group">
                             <label class="control-label col-sm-3">{{ $t('phone') }}：</label>
                             <div class="col-sm-9">
-                                <input v-model="phone" v-validate="'required'" :class="{'form-control': true, 'is-danger': errors.has('email') }" name="phone" >
+                                <input v-model="phone" v-validate="'required|phone'" :class="{'form-control': true, 'is-danger': errors.has('email') }" name="phone" >
                                 <div v-show="errors.has('phone')" class="help-block is-danger">{{ errors.first('phone') }}</div>
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="control-label col-sm-3">{{ $t('email') }}：</label>
                             <div class="col-sm-9">
-                                <input v-model="email" v-validate="'required|email'" :class="{'form-control': true, 'is-danger': errors.has('email') }" name="email" type="text">
+                                <input v-model="email" v-validate="'email'" :class="{'form-control': true, 'is-danger': errors.has('email') }" name="email" type="text">
                                 <div v-show="errors.has('email')" class="help-block is-danger">{{ errors.first('email') }}</div>
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="control-label col-sm-3">{{ $t('orderTime') }}：</label>
                             <div class="col-sm-9">
-                                <vue-calendar-input v-model="date"></vue-calendar-input>
+                                <vue-calendar-input name="date" v-model="date"></vue-calendar-input>
+                                <div class="help-block is-danger" v-if="tip">{{ tip }}</div>
                             </div>
                         </div>
                         <div class="form-group">
@@ -68,6 +69,7 @@
                                 <button class="btn btn-primary" @click="submit">{{ $t('submit') }}</button>
                             </div>
                         </div>
+                        <div v-if="success">{{ success }}</div>
                     </div>
                 </div>
                 <div class="col-sm-7">
@@ -91,11 +93,9 @@
                 phone: '',
                 email: '',
                 date: '',
-                /*name: '陈建行',
-                sex: 'male',
-                phone: '15602221234',
-                email: '141850@qq.com',
-                date: '2017-08-03',*/
+
+                success: '',
+                tip: ''
             }
         },
         computed: {
@@ -111,6 +111,11 @@
         methods: {
             submit() {
                 this.$validator.validateAll().then(() => {
+                    if (!this.date) {
+                        this.tip = '预约时间不能为空'
+                        return
+                    }
+
                     console.log(1)
                     this.$http.post(domainUrl + '/reserve/create', {
                             name: this.name,
@@ -123,6 +128,7 @@
                         }
                     ).then(response => {
                         console.log(response)
+                        this.success = '预约成功';
 //                    this.$router.push(this.routeUrl + '/courses')
                     });
                 }).catch(() => {

@@ -22,6 +22,7 @@
             </div>
         </div>
         <div class="container">
+            <ui-empty v-if="!tutors.length"></ui-empty>
             <ul class="tutor-list">
                 <li class="tutor-item" v-for="tutor in tutors">
                     <div class="item-header">
@@ -48,6 +49,7 @@
                     </div>
                 </li>
             </ul>
+            <ui-page :page="page" :total="totalPage" :gotoPage="gotoPage"></ui-page>
         </div>
     </div>
 </template>
@@ -58,6 +60,10 @@
     export default {
         data () {
             return {
+                page: 1,
+                totalPage: 1,
+                pageSize: 12,
+
                 tutors: []
             }
         },
@@ -70,11 +76,18 @@
             },
         },
         mounted: function () {
-            this.getData()
+            this.getData(1)
         },
         methods: {
-            getData() {
-                this.$http.get(domainUrl + '/admin/teacher/all', {
+            gotoPage(page) {
+                this.page = page
+                this.getData(page)
+            },
+            getData(page) {
+                this.$http.post(domainUrl + '/admin/teacher/list', {
+                    page: page,
+                    pageSize: this.pageSize
+                }, {
                     headers: {
                         'Lc-Lang': this.$route.params.lang === 'en' ? 'en' : 'zh',
                         'X-Auth-Token': localStorage.mytoken
@@ -82,11 +95,12 @@
                 }).then(response => {
                     let body = response.body
                     console.log(body)
-                    this.tutors = body
+                    this.tutors = body.data
+                    this.totalPage = Math.ceil(body.total / this.pageSize)
                 }, response => {
                     let body = response.body
                     console.log(body);
-                    if (body.code === 101) {
+                    if (body.code === 101 || body.code === 103) {
                         localStorage.mytoken = ''
                         this.$router.push('/login') // TODO
                     }
@@ -125,7 +139,7 @@
                 }, response => {
                     let body = response.body
                     console.log(body)
-                    if (body.code === 101) {
+                    if (body.code === 101 || body.code === 103) {
                         localStorage.mytoken = ''
                         this.$router.push('/login') // TODO
                     }
@@ -134,7 +148,6 @@
         },
         watch:{
             $route: function () {
-                console.log('获取语言' + this.$route.params.lang);
                 this.tableData = this.getData(this.$route.params.lang);
             },
             'route': function () {

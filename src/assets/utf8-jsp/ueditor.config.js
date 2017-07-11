@@ -35,7 +35,7 @@
         , serverUrl: "http://api.liangchuan.com:9998/ueditor"
 
         //工具栏上的所有的功能按钮和下拉框，可以在new编辑器的实例时选择自己需要的重新定义
-        , toolbars: [[
+        /*, toolbars: [[
             'fullscreen', 'source', '|', 'undo', 'redo', '|',
             'bold', 'italic', 'underline', 'fontborder', 'strikethrough', 'superscript', 'subscript', 'removeformat', 'formatmatch', 'autotypeset', 'blockquote', 'pasteplain', '|', 'forecolor', 'backcolor', 'insertorderedlist', 'insertunorderedlist', 'selectall', 'cleardoc', '|',
             'rowspacingtop', 'rowspacingbottom', 'lineheight', '|',
@@ -47,6 +47,20 @@
             'horizontal', 'date', 'time', 'spechars', 'snapscreen', 'wordimage', '|',
             'inserttable', 'deletetable', 'insertparagraphbeforetable', 'insertrow', 'deleterow', 'insertcol', 'deletecol', 'mergecells', 'mergeright', 'mergedown', 'splittocells', 'splittorows', 'splittocols', 'charts', '|',
             'print', 'preview', 'searchreplace', 'drafts', 'help'
+        ]]*/
+        , toolbars: [[
+            'fullscreen', 'source', '|', 'undo', 'redo', '|',
+            'bold', 'italic', 'underline', 'fontborder', 'strikethrough', 'superscript', 'subscript', 'removeformat', 'formatmatch', 'blockquote', 'pasteplain', '|',
+			'forecolor', 'backcolor', 'insertorderedlist', 'insertunorderedlist', '|',
+            'rowspacingtop', 'rowspacingbottom', 'lineheight', '|',
+             'paragraph', 'fontfamily', 'fontsize', '|',
+            'indent', '|',
+            'justifyleft', 'justifycenter', 'justifyright', 'justifyjustify', '|',
+            'link', 'unlink', '|', 'imagenone', 'imageleft', 'imageright', 'imagecenter', '|',
+            //'simpleupload',
+			'insertimage',  'insertvideo', 'pagebreak', 'background', '|',
+            'horizontal', 'spechars', '|',
+            'inserttable'
         ]]
         //当鼠标放在工具栏上时显示的tooltip提示,留空支持自动多语言配置，否则以配置值为准
         //,labelMap:{

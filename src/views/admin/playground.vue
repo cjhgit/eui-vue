@@ -12,12 +12,12 @@
             </div>
         </div>
 
-        <div class="container">
-            <ul class="admin-tab">
+        <ul class="admin-tab border-bottom">
+            <div class="container">
                 <router-link class="tab-item" :to="routeUrl + '/resources/banner'">海报素材</router-link>
                 <router-link class="tab-item active" :to="routeUrl + '/resources/playground'">场地素材</router-link>
-            </ul>
-        </div>
+            </div>
+        </ul>
 
         <!--<div class="admin-header">
             <div class="container">
@@ -27,6 +27,8 @@
         </div>-->
 
         <div class="container">
+            <ui-empty v-if="!playgrounds.length"></ui-empty>
+
             <ul class="row playground-list">
                 <li class="col-sm-3" v-for="playground in playgrounds">
                     <div class="card-box">
@@ -34,9 +36,37 @@
                         <div class="box-body">
                             <input type="checkbox"> {{ playground.name }}
                         </div>
+
+                        <ui-popover
+                                ref="popover4"
+                                placement="right"
+                                width="400"
+                                trigger="click">
+                            <div>12121212</div>
+                        </ui-popover>
+
                         <div class="box-footer">
                             <span class="left">
-                                <ui-icon type="edit" v-tooltip="'2121ewd21212'"></ui-icon>
+                                <ui-popover
+                                        placement="top"
+                                        width="180"
+                                        v-model="playground.visible"
+                                        trigger="click">
+                                        <div class="popover-box">
+                                            <div class="title">编辑名称</div>
+                                            <input class="form-control" :value="playground.name">
+                                            <div>
+                                                <button class="btn btn-primary btn-xs" @click="update">确定</button>
+                                                <button class="btn btn-default btn-xs" @click="playground.visible = false">取消</button>
+                                            </div>
+                                        </div>
+                                    <i class="icon icon-edit" v-tooltip="'2121ewd21212'" type="warning"
+                                       slot="reference"></i>
+                                    <!--<ui-button type="warning" icon="delete" size="mini"-->
+                                    <!--slot="reference">删除</ui-button>-->
+                                </ui-popover>
+
+                                <!--<ui-icon type="edit"></ui-icon>-->
                             </span>
                             <span class="center">
                                 <!--<ui-icon type="sort" v-tooltip="'排序'"></ui-icon>-->
@@ -56,6 +86,8 @@
 
 <script>
     import {domainUrl} from 'CONFIG/config'
+    import { Button } from 'element-ui'
+    import { Popover } from 'element-ui'
 
     export default {
         data () {
@@ -74,6 +106,10 @@
         mounted() {
             this.getData()
         },
+        components: {
+            'ui-button': Button,
+            'ui-popover': Popover
+        },
         methods: {
             getData() {
                 this.$http.get(domainUrl + '/admin/location/all', {
@@ -88,7 +124,7 @@
                 }, response => {
                     let body = response.body
                     console.log(body);
-                    if (body.code === 101) {
+                    if (body.code === 101 || body.code === 103) {
                         localStorage.mytoken = ''
                         this.$router.push('/login') // TODO
                     }
@@ -98,7 +134,7 @@
                 this.uploadUrl = url
 
                 this.$http.post(domainUrl + '/admin/location/create', {
-                        name: '图片1',
+                        name: '图片',
                         url: this.uploadUrl
                     },
                     {
@@ -111,6 +147,9 @@
                     this.playgrounds.push(response.body)
                     this.$router.push(this.routeUrl + '/resources/playground')
                 });
+            },
+            update() {
+
             },
             remove(id) {
                 this.$http.delete(domainUrl + '/admin/location/' + id + '/delete', {
@@ -127,7 +166,7 @@
                 }, response => {
                     let body = response.body
                     console.log(body)
-                    if (body.code === 101) {
+                    if (body.code === 101 || body.code === 103) {
                         localStorage.mytoken = ''
                         this.$router.push('/login') // TODO
                     }
@@ -141,6 +180,20 @@
 </script>
 
 <style scoped>
+    .popover-box {
+        padding: 8px;
+    }
+    .popover-box .title {
+        margin-bottom: 8px;
+    }
+    .popover-box .form-control {
+        height: 28px;
+        margin-bottom: 8px;
+    }
+    .popover-box .btn {
+        width: 48%;
+        /*height: 28px;*/
+    }
     /**/
     .admin-header {
         background-color: #F1EFF1;

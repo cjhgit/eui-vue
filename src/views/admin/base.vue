@@ -10,18 +10,19 @@
                 <li><router-link to="/admin/setting">我的设置</router-link></li>
                 <li><router-link to="/admin/info">我的信息</router-link></li>-->
                 <li>
-                    <span class="title"><i class="icon icon-app"></i> 管理</span>
+                    <span class="title"><ui-icon type="app"></ui-icon> 管理</span>
                     <ul>
                         <li :class="{active: isActive('courses') }"><router-link :to="routeUrl + '/courses'">课程管理</router-link></li>
                         <li :class="{active: isActive('tutors') }"><router-link :to="routeUrl + '/tutors'">导师信息管理</router-link></li>
                         <li :class="{active: isActive('orders') }"><router-link :to="routeUrl + '/orders'">预约信息管理</router-link></li>
+                        <li :class="{active: isActive('users') }"><router-link :to="routeUrl + '/users'" v-if="isSuper">用户管理</router-link></li>
                     </ul>
                 </li>
                 <li>
-                    <span class="title"><i class="icon icon-app"></i> 行业信息管理</span>
+                    <span class="title"><ui-icon type="edit"></ui-icon> 行业信息管理</span>
                     <ul>
                         <li :class="{active: isActive('resources') }"><router-link :to="routeUrl + '/resources'">素材管理</router-link></li>
-                        <li :class="{active: isActive('articles') }"><router-link to="/cn/admin/articles">文章管理</router-link></li>
+                        <li :class="{active: isActive('articles') }"><router-link :to="routeUrl + '/articles'">文章管理</router-link></li>
                     </ul>
                 </li>
             </ul>
@@ -33,7 +34,7 @@
                         <a :class="{active: isChinese}" href="#" @click="changeLanguage('cn')">中文</a>/<a :class="{active: isEnglish}" href="#" @click="changeLanguage('en')">English</a>
                     </div>
                     <div class="right-nav">
-                        <a href="#">账号</a> | <a href="#"  @click="loginout">退出</a>
+                        <a href="#"  @click="profile">账号</a> | <a href="#"  @click="loginout">退出</a>
                     </div>
                 </div>
             </header>
@@ -52,6 +53,7 @@
 
 <script>
     import Vue from 'vue'
+    import {domainUrl} from 'CONFIG/config'
 
     export default {
         data: function () {
@@ -64,27 +66,61 @@
             }
         },
         computed: {
+            domainUrl() {
+                return domainUrl
+            },
             routeUrl () {
-                return '/' + this.$route.params.lang + '/admin';
+                return '/' + this.$route.params.lang + '/admin'
             },
             isChinese() {
-                return this.$route.params.lang === 'cn';
+                return this.$route.params.lang === 'cn'
             },
             isEnglish() {
-                return this.$route.params.lang === 'en';
-            }
+                return this.$route.params.lang === 'en'
+            },
+            isSuper() {
+                console.log(localStorage.user.name)
+                return localStorage.authority === 'SUPER'
+            },
+        },
+        mounted() {
+            this.getData()
         },
         methods: {
+            getData() {
+                this.$http.get(domainUrl + '/admin/news/all', {
+                    headers: {
+                        'Lc-Lang': this.$route.params.lang === 'en' ? 'en' : 'zh',
+                        'X-Auth-Token': localStorage.mytoken
+                    },
+                }).then(response => {
+                    let body = response.body
+                    console.log(body)
+                    this.articles = body
+                }, response => {
+                    let body = response.body
+                    console.log(body);
+                    if (body.code === 101 || body.code === 103) {
+                        localStorage.mytoken = ''
+                        this.$router.push('/login') // TODO
+                    }
+                })
+            },
             isActive(url) {
-                console.log(location.pathname);
-                //return true;
                 if (url) {
-                    return location.pathname === ('/' + this.$route.params.lang + '/admin/' + url)
+                    return location.pathname.indexOf('/' + this.$route.params.lang + '/admin/' + url) !== -1
                 } else {
                     return location.pathname === ('/' + this.$route.params.lang + '/admin')
                 }
             },
-            loginout: function () {
+            profile() {
+                if (localStorage.authority === 'SUPER') {
+                    this.$router.push(this.routeUrl + '/profile');
+                } else {
+                    this.$router.push(this.routeUrl + '/user/profile');
+                }
+            },
+            loginout() {
                 localStorage.mytoken = '';
                 localStorage.username = '';
 
@@ -94,39 +130,9 @@
                 console.log(location.href);
                 location.href = location.href.replace(/en|cn/, lang);
                 //this.$router.replace();
-            },
-            showNotification: function () {
-                if (window.Notification) {
-                    console.log('支持');
-                    if (Notification.permission === "denied") {
-                        alert('你已经禁用浏览器通知，请在浏览器中开启。');
-                        return;
-                    }
-                    // 支持
-
-
-                    Notification.requestPermission(function(status) {
-                        var n = new Notification('通知标题', { body: '这里是通知内容！' });
-                    });
-                } else {
-                    alert('你的浏览器不支持通知')
-                    console.log('不支持');
-                    // 不支持
-                }
-            },
-            getEditorContent: function() {
-                console.log(this.editor.getContent());
             }
         }
     }
-
-    if(window.Notification && Notification.permission !== "denied") {
-
-    }
-
-    console.log('后台权限', localStorage.token)
-
-
 </script>
 
 <style>
@@ -168,7 +174,7 @@
         padding: 16px 0;
         overflow: hidden;
     }
-    .admin-nav.border-bottom {
+    .border-bottom {
         border-bottom: 1px solid #ccc;
     }
     .admin-nav .bread-nav {
@@ -204,10 +210,14 @@
     .sidenav-list {
 
     }
+    .sidenav-list .icon {
+        font-size: 18px;
+    }
     .sidenav-list .title {
         display: block;
         padding: 8px 16px 8px 32px;
         color: #999;
+        font-size: 16px;
         border-top: 1px solid #ccc;
     }
     .sidenav-list > li {
@@ -327,6 +337,7 @@
 
     /**/
     .admin-tab {
+        height: 34px;
         margin-bottom: 12px;
     }
     .admin-tab .tab-item {
@@ -346,6 +357,23 @@
     }
     .form-horizontal .control-label {
         text-align: left;
+        width: 100px;
     }
+
+    /**/
+    .admin-table {
+        margin-top: 24px;
+    }
+    .admin-table th {
+        padding: 16px;
+        text-align: center;
+        background-color: #eee;
+    }
+    .admin-table td {
+        padding: 8px;
+        border-bottom: 1px solid #ccc;
+    }
+
+    /**/
 
 </style>

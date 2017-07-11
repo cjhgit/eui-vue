@@ -17,13 +17,13 @@ import { Message, Loading, Tree, Dropdown, DropdownMenu, DropdownItem } from 'el
 //import './sass/main.scss'
 //import './sass/test.scss'
 
-import liangchuanUi2 from './components'
+import ziranjiUi from './components'
 
 // UEditor
-import './assets/utf8-jsp/ueditor.config.js'
-import './assets/utf8-jsp/ueditor.all.min.js'
-import './assets/utf8-jsp/lang/zh-cn/zh-cn.js'
-import './assets/utf8-jsp/ueditor.parse.min.js'
+// import './assets/utf8-jsp/ueditor.config.js'
+// import './assets/utf8-jsp/ueditor.all.js'
+// import './assets/utf8-jsp/lang/zh-cn/zh-cn.js'
+// import './assets/utf8-jsp/ueditor.parse.min.js'
 
 import dictionary from './i18n/dictionary'
 
@@ -34,7 +34,8 @@ import { VTooltip } from 'v-tooltip'
 Vue.use(VueI18n);
 Vue.use(VueResource);
 Vue.use(liangchuanUi);
-Vue.use(liangchuanUi2);
+//Vue.use(element-ui);
+Vue.use(ziranjiUi);
 
 Vue.use(VeeValidate, {
     locale: 'zh_CN',

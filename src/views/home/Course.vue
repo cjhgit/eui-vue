@@ -20,6 +20,8 @@
                     </div>
                 </li>
             </ul>
+
+            <ui-page :page="page" :total="totalPage" :gotoPage="gotoPage"></ui-page>
         </div>
     </div>
 </template>
@@ -32,6 +34,10 @@
         i18n,
         data() {
             return {
+                page: 1,
+                totalPage: 1,
+                pageSize: 12,
+
                 courses: []
             }
         },
@@ -44,13 +50,17 @@
             }
         },
         mounted: function () {
-            this.getData();
+            this.getData(1);
         },
         methods: {
-            getData() {
+            gotoPage(page) {
+                this.page = page
+                this.getData(page)
+            },
+            getData(page) {
                 this.$http.post(domainUrl + '/course/list', {
-                    page: 1,
-                    pageSize: 12
+                    page: page,
+                    pageSize: this.pageSize
                 }, {
                     headers: {
                         'Lc-Lang': this.$route.params.lang === 'en' ? 'en' : 'zh'
@@ -59,6 +69,7 @@
                     let body = response.body
                     console.log(body)
                     this.courses = body.data
+                    this.totalPage = Math.ceil(body.total / this.pageSize)
                 }, response => {
                     let body = response.body
                     console.log(body);

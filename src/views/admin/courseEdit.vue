@@ -40,7 +40,6 @@
         </div>
 
         <div class="layout-footer-btn">
-            <!--<vue-button type="primary">212</vue-button>-->
             <button class="btn btn-default" @click="cancel">取消</button>
             <button class="btn btn-primary" @click="save">保存</button>
         </div>
@@ -59,14 +58,6 @@
                 courseName: '',
                 courseDesc: '',
                 uploadUrl: null,
-                key: '1223',
-                search: function () {
-
-                    //this
-                },
-                addArticle: function () {
-
-                },
             }
         },
         computed: {
@@ -94,7 +85,7 @@
                 }, response => {
                     let body = response.body
                     console.log(body);
-                    if (body.code === 101) {
+                    if (body.code === 101 || body.code === 103) {
                         localStorage.mytoken = ''
                         this.$router.push('/login') // TODO
                     }
@@ -102,7 +93,7 @@
             },
             save() {
                 this.$validator.validateAll().then(() => {
-                    this.$http.post(domainUrl + '/admin/course/' + this.course.id + '/update', this.course,
+                    this.$http.post(domainUrl + '/admin/updateUser', this.course,
                         {
                             headers: {
                                 'Lc-Lang': this.$route.params.lang === 'en' ? 'en' : 'zh',
@@ -110,7 +101,7 @@
                             },
                         }
                     ).then(response => {
-                        this.$router.push(this.routeUrl + '/courses')
+                        this.$router.push(this.routeUrl + '/users')
                     });
                 });
             },
@@ -124,7 +115,6 @@
         },
         watch:{
             $route: function () {
-                console.log('获取语言' + this.$route.params.lang)
                 this.tableData = this.getData(this.$route.params.lang)
             },
             'route': function () {

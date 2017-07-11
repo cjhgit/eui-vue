@@ -13,30 +13,13 @@
                 <div class="article-header">
                     <h1 class="article-title">{{ article.title }}</h1>
                 </div>
-                <div class="article-content">
+                <div class="ui-article">
                     <div v-html="article.content"></div>
                 </div>
             </article>
-
-            <!--<div class="row">-->
-                <!--<div class="col-sm-12">-->
-
-
-                    <!--<p>{{count}}-->
-                        <!--<button @click="inc">+</button>-->
-                        <!--<button @click="dec">-</button>-->
-                    <!--</p>-->
-
-
-
-
-
-                <!--</div>-->
-            <!--</div>-->
         </div>
     </div>
 </template>
-
 
 <script>
     import i18n from '@/i18n'

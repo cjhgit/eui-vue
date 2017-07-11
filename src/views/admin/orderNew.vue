@@ -33,47 +33,6 @@
         i18n,
         data () {
             return {
-                key: '1223',
-                search: function () {
-
-                    //this
-                },
-                addArticle: function () {
-
-                },
-                columns: [
-                    {
-                        name: 'title',
-                        title: '预约内容'
-                    },
-                    {
-                        name: 'createTime',
-                        title: '创建时间',
-                    },
-                    {
-                        name: 'car_type',
-                        title: '备注'
-                    },
-                    {
-                        name: '__actions',
-                        title: '操作',
-                        actions: [
-                            {
-                                name: 'view',
-                                label: '查看',
-                            },
-                            {
-                                name: 'edit',
-                                label: '编辑',
-                            },
-                            {
-                                name: 'remove',
-                                label: '删除'
-                            }
-                        ]
-                    }
-                ],
-                tableData: []
             }
         },
         computed: {
@@ -82,7 +41,6 @@
             }
         },
         created: function () {
-            console.log('获取语言' + this.$route.params.lang);
             this.tableData = [
                 {
                     "id": 1,

@@ -1,23 +1,10 @@
-/*
-import uiGoback from './vueGoback/index.js'
 
-const install = function(Vue) {
-    Vue.component('uiGoback', uiGoback)
-}
-
-if (typeof window !== 'undefined' && window.vue) {
-    install(window.Vue)
-}
-
-module.exports = {
-    install,
-    uiGoback
-}*/
-
-// import uiGoback from './vueGoback/index.js'
 import uiIcon from './icon'
 import goback from './goback'
 import file from './file'
+import page from './page'
+import empty from './empty'
+import canlendar from './vueCalendar'
 
 // 这里是重点
 const Loading = {
@@ -25,6 +12,9 @@ const Loading = {
         Vue.component('uiGoback', goback)
         Vue.component('uiIcon', uiIcon)
         Vue.component('uiFile', file)
+        Vue.component('uiPage', page)
+        Vue.component('uiEmpty', empty)
+        Vue.component('uiCalendar', canlendar)
     }
 }
 

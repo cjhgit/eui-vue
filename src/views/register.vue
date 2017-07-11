@@ -1,56 +1,38 @@
 <template>
     <div class="wrap">
         <div class="container">
-            <div class="row">
-                <div class="col-sm-6">
-                    <router-link to="/">返回首页</router-link>
-                    <h1>注册</h1>
-                    <!--<validator name="validation">
-                        <input type="text" v-model='comment' id='comment' v-validate:comment="{ minlength: 3, maxlength: 15 }">
-                        <div>
-                            <span v-show="$validation.comment.minlength">不得少于3个字符</span>
-                            <span v-show="$validation.comment.maxlength">不得大于15个字符</span>
+            <div class="register-box">
+                <h1 class="register-title">注册</h1>
+                <div class="form-horizontal">
+                    <div class="form-group">
+                        <!--<label class="control-label col-sm-3">账号：</label>-->
+                        <div class="col-sm-12">
+                            <input v-model="name" v-validate="'required'" :class="{'form-control': true, 'is-danger': errors.has('name') }" name="name" placeholder="用户名">
+                            <div v-show="errors.has('name')" class="help-block is-danger">{{ errors.first('name') }}</div>
                         </div>
-                    </validator>-->
-
-                    <vue-panel>
-                            <vue-form>
-                                <vue-form-item>
-                                    <label slot="label">用户名</label>
-                                    <vue-vinput v-model="name"   :class="{'input': true, 'is-danger': errors.has('email') }" placeholder="账号"></vue-vinput>
-                                    <!--<vue-vinput id="cell_phone" v-model="phone" placeholder="请输入手机号" v-validate="{rules:'required|cell_phone',scope:'phoneLogin'}" :msg="errors.first('phoneLogin.cell_phone')"></vue-vinput>
-                                    -->
-                                </vue-form-item>
-                                <vue-form-item>
-                                    <label slot="label">手机号</label>
-                                    <vue-vinput v-model="phone"   :class="{'input': true, 'is-danger': errors.has('email') }" placeholder="账号"></vue-vinput>
-                                    <!--<vue-vinput id="cell_phone" v-model="phone" placeholder="请输入手机号" v-validate="{rules:'required|cell_phone',scope:'phoneLogin'}" :msg="errors.first('phoneLogin.cell_phone')"></vue-vinput>
-                                    -->
-                                </vue-form-item>
-                                <vue-form-item>
-                                    <label slot="label">密码</label>
-                                    <vue-vinput v-model="password" placeholder="密码"></vue-vinput>
-                                    <a href="javascript:;" style="color: #b0afaf;margin-left: 5px;" tabindex="-1" @click="findPass">忘记密码?</a>
-                                </vue-form-item>
-
-                            </vue-form>
-
-                            <!--<div>
-                                <p v-if="$validation1.message.required">Required your message.</p>
-                                <p v-if="$validation1.message.minlength">Too short message.</p>
-                            </div>-->
-
-                        <div slot="pfooter" class="login-footer">
-                            <button class="btn btn-blue" @click="login">登录</button>
-                            <a href="javascript:;" class="btn-register" @click="goRegister">注册>></a>
+                    </div>
+                    <div class="form-group">
+                        <!--<label class="control-label col-sm-3">账号：</label>-->
+                        <div class="col-sm-12">
+                            <input v-model="phone" v-validate="'required'" :class="{'form-control': true, 'is-danger': errors.has('phone') }" name="phone" placeholder="手机号">
+                            <div v-show="errors.has('phone')" class="help-block is-danger">{{ errors.first('phone') }}</div>
                         </div>
-                    </vue-panel>
-
-
-                    <div class="tip" v-if="tip">{{ tip }}</div>
+                    </div>
+                    <div class="form-group">
+                        <!--<label class="control-label col-sm-3">密码：</label>-->
+                        <div class="col-sm-12">
+                            <input v-model="password" v-validate="'required'" :class="{'form-control': true, 'is-danger': errors.has('password') }" name="name" placeholder="密码">
+                            <div v-show="errors.has('password')" class="help-block is-danger">{{ errors.first('password') }}</div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <button class="btn btn-blue" @click="register">注册</button>
+                    </div>
                 </div>
-            </div>
 
+                <div class="tip" v-if="tip">{{ tip }}</div>
+            </div>
+            <img class="bg-img" src="/static/img/bg-bottom.png">
         </div>
     </div>
 </template>
@@ -75,11 +57,8 @@
         mounted: function () {
             document.addEventListener('keydown', this.handlerEnter)
         },
-        beforeDestroy () {
-            document.removeEventListener('keydown', this.handlerEnter);
-        },
         methods: {
-            login: function () {
+            register: function () {
                 if (!this.name) {
                     this.tip = '请输入用户名'
                     return;
@@ -154,13 +133,27 @@
         height: 100%;
     }
     .wrap {
-        position: relative;
+        position: absolute;
         width: 100%;
         height: 100%;
-        min-height: 678px;
         text-align: center;
         background-color: #2974b5;
-        background: url(/dist/41a0498bb2971d4386468304d9002514.png) no-repeat #2974b5;
-        background-position: 50% 250px;
+    }
+    .register-box {
+        width: 400px;
+        padding: 16px 32px;
+        margin: 160px auto;
+        background-color: #fff;
+        border-radius: 4px;
+    }
+    .register-box .register-title {
+        margin-bottom: 16px;
+        font-size: 18px;
+    }
+    .bg-img {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
     }
 </style>

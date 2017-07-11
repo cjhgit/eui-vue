@@ -16,6 +16,7 @@
             <li class="col-operate">操作</li>
         </ul>
         <div class="container">
+            <ui-empty v-if="!courses.length"></ui-empty>
             <ul class="course-list">
                 <li class="course-item" v-for="course in courses">
                     <div class="item-header">
@@ -40,6 +41,7 @@
                     </div>
                 </li>
             </ul>
+            <ui-page :page="page" :total="totalPage" :gotoPage="gotoPage"></ui-page>
         </div>
 
     </div>
@@ -51,14 +53,10 @@
     export default {
         data () {
             return {
-                key: '1223',
-                search: function () {
+                page: 1,
+                totalPage: 1,
+                pageSize: 12,
 
-                    //this
-                },
-                addArticle: function () {
-
-                },
                 courses: [],
             }
         },
@@ -71,11 +69,18 @@
             },
         },
         mounted() {
-            this.getData();
+            this.getData(1);
         },
         methods: {
-            getData(lang) {
-                this.$http.get(domainUrl + '/admin/course/all', {
+            gotoPage(page) {
+                this.page = page
+                this.getData(page)
+            },
+            getData(page) {
+                this.$http.post(domainUrl + '/admin/course/list', {
+                    page: page,
+                    pageSize: this.pageSize
+                }, {
                     headers: {
                         'Lc-Lang': this.$route.params.lang === 'en' ? 'en' : 'zh',
                         'X-Auth-Token': localStorage.mytoken
@@ -83,11 +88,12 @@
                 }).then(response => {
                     let body = response.body
                     console.log(body)
-                    this.courses = body
+                    this.courses = body.data
+                    this.totalPage = Math.ceil(body.total / this.pageSize)
                 }, response => {
                     let body = response.body
                     console.log(body);
-                    if (body.code === 101) {
+                    if (body.code === 101 || body.code === 103) {
                         localStorage.mytoken = ''
                         this.$router.push('/login') // TODO
                     }
@@ -108,7 +114,7 @@
                 }, response => {
                     let body = response.body
                     console.log(body)
-                    if (body.code === 101) {
+                    if (body.code === 101 || body.code === 103) {
                         localStorage.mytoken = ''
                         this.$router.push('/login') // TODO
                     }

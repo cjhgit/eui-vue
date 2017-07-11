@@ -14,14 +14,13 @@
                 <h1 class="article-title">{{ article.title }}</h1>
                 <div class="article-time">{{ article.time }}</div>
             </div>
-            <article class="article-content">
+            <article class="ui-article">
                 <div v-html="article.content"></div>
             </article>
 
         </div>
     </div>
 </template>
-
 
 <script>
     import Vue from 'vue'

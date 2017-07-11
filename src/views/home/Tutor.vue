@@ -3,7 +3,6 @@
         <div class="container">
 
             <div class="bread-nav">
-                <ui-icon><b>哈哈哈</b></ui-icon>
                 <ui-goback></ui-goback>
                 <ol class="breadcrumb">
                     <li><router-link :to="routeUrl">{{ $t('home') }}</router-link></li>
@@ -25,6 +24,8 @@
                     </div>
                 </li>
             </ul>
+
+            <ui-page :page="page" :total="totalPage" :gotoPage="gotoPage"></ui-page>
         </div>
     </div>
 </template>
@@ -38,9 +39,11 @@
         i18n,
         data () {
             return {
-                tutors: [
+                page: 1,
+                totalPage: 1,
+                pageSize: 12,
 
-                ]
+                tutors: []
             }
         },
         computed: {
@@ -52,14 +55,17 @@
             }
         },
         mounted: function () {
-            console.log('获取语言' + this.$route.params.lang);
-            this.getData();
+            this.getData(1);
         },
         methods: {
-            getData() {
+            gotoPage(page) {
+                this.page = page
+                this.getData(page)
+            },
+            getData(page) {
                 this.$http.post(domainUrl + '/teacher/list', {
-                    page: 1,
-                    pageSize: 12
+                    page: page,
+                    pageSize: this.pageSize
                 }, {
                     headers: {
                         'Lc-Lang': this.$route.params.lang === 'en' ? 'en' : 'zh'
@@ -68,6 +74,7 @@
                     let body = response.body
                     console.log(body)
                     this.tutors = body.data
+                    this.totalPage = Math.ceil(body.total / this.pageSize)
                 }, response => {
                     let body = response.body
                     console.log(body);

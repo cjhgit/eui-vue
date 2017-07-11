@@ -42,14 +42,6 @@
     export default {
         data () {
             return {
-                key: '1223',
-                search: function () {
-
-                    //this
-                },
-                addArticle: function () {
-
-                },
                 files: [],
             }
         },
@@ -78,7 +70,7 @@
                 }, response => {
                     let body = response.body
                     console.log(body);
-                    if (body.code === 101) {
+                    if (body.code === 101 || body.code === 103) {
                         localStorage.mytoken = ''
                         this.$router.push('/login') // TODO
                     }
@@ -99,7 +91,7 @@
                 }, response => {
                     let body = response.body
                     console.log(body)
-                    if (body.code === 101) {
+                    if (body.code === 101 || body.code === 103) {
                         localStorage.mytoken = ''
                         this.$router.push('/login') // TODO
                     }

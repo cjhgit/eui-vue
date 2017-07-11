@@ -18,14 +18,14 @@
                     <div class="form-group">
                         <label class="control-label col-sm-3">名称：</label>
                         <div class="col-sm-9">
-                            <input class="form-control" v-model="courseName" name="courseName" v-validate="'required'">
+                            <input class="form-control" v-model="course.name" name="courseName" v-validate="'required'">
                             <div v-show="errors.has('courseName')" class="help-block is-danger">{{ errors.first('courseName') }}</div>
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="control-label col-sm-3">介绍：</label>
                         <div class="col-sm-9">
-                            <textarea class="form-control" v-model="courseDesc" rows="3" name="courseDesc" v-validate="'required'"></textarea>
+                            <textarea class="form-control" v-model="course.introduction" rows="3" name="courseDesc" v-validate="'required'"></textarea>
                             <div v-show="errors.has('courseName')" class="help-block is-danger">{{ errors.first('courseName') }}</div>
                         </div>
                     </div>
@@ -40,7 +40,6 @@
         </div>
 
         <div class="layout-footer-btn">
-            <!--<vue-button type="primary">212</vue-button>-->
             <button class="btn btn-default" @click="cancel">取消</button>
             <button class="btn btn-primary" @click="save">保存</button>
         </div>
@@ -53,19 +52,14 @@
     export default {
         data () {
             return {
+                course: {
+                    name: '',
+                    introduction: '',
+
+                },
                 myfile: null,
                 input: null,
-                courseName: '',
-                courseDesc: '',
                 uploadUrl: null,
-                key: '1223',
-                search: function () {
-
-                    //this
-                },
-                addArticle: function () {
-
-                },
             }
         },
         computed: {
@@ -77,7 +71,6 @@
             },
         },
         mounted() {
-            console.log('获取语言' + this.$route.params.lang)
         },
         methods: {
             save() {

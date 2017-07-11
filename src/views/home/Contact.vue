@@ -11,20 +11,20 @@
             </div>
 
             <div class="map-box">
-                <baidu-map class="map" :center="{lng: 113.382832, lat: 23.109058}" :zoom="16">
+                <baidu-map class="map" :center="{lng: 113.378461, lat: 22.507475}" :zoom="18">
                     <bm-navigation anchor="BMAP_ANCHOR_TOP_RIGHT"></bm-navigation>
+                    <bm-marker :position="{lng: 113.378461, lat: 22.507475}" :dragging="true"></bm-marker>
                 </baidu-map>
                 <div class="contact-info">
-                    <h2 class="title">紫然肌专业普拉提会馆</h2>
-                    <div class="info">地址：广东省中山市石歧区悦来南路37号正和中州54/55卡</div>
+                    <h2 class="title">{{ $t('playgroundName') }}</h2>
+                    <div class="info">{{ $t('address') }}：{{ $t('addressDetail') }}</div>
                     <div class="info">WECHAT: LILIPILATES</div>
-                    <div class="info">联系电话：0760-88831122</div>
-                    <div>客服号二维码：
-                        <img class="qrcode" src="http://www.8008mp.com/erweima/upload/28946/com/%B3%C2%D3%C2_RJ36988.png" alt="二维码">
+                    <div class="info">{{ $t('contactPhone') }}：0760-88831122</div>
+                    <div>{{ $t('qrcode') }}：
+                        <img class="qrcode" src="http://www.8008mp.com/erweima/upload/28946/com/%B3%C2%D3%C2_RJ36988.png" :alt="$t('qrcode')">
                     </div>
                 </div>
             </div>
-
         </div>
     </div>
 </template>
@@ -35,7 +35,6 @@
     import i18n from '@/i18n'
 
     Vue.use(BaiduMap, {
-        /* Visit http://lbsyun.baidu.com/apiconsole/key for details about app key. */
         ak: 'qX1AZ35BaN9TLHd0Gu6YG9qd47T8eXgX'
     })
 
@@ -43,8 +42,6 @@
         i18n,
         data () {
             return {
-                //zoom: 16,
-                //center: {lng: 113.382832, lat: 23.109058}
             }
         },
         computed: {
@@ -57,14 +54,12 @@
         methods: {
             handler ({BMap, map}) {
                 console.log('1212121212121')
-                //this.lng = 113.382832
-                //this.lat = 23.109058
             }
         }
     }
 </script>
 
-<style>
+<style scoped>
     .map-box {
         position: relative;
         height: 400px;
@@ -83,7 +78,6 @@
         background-color: rgba(187, 195, 126, .9);
     }
     .contact-info .title {
-        font-weight: bold;
         font-size: 18px;
         margin-bottom: 16px;
     }

@@ -4,6 +4,7 @@ import Router from 'vue-router'
 
 //
 import Error404 from '@/views/error404'
+import Home404 from '@/views/home/404'
 import Test from '@/views/tmp/Test' // 测试页面
 import Demo from '@/views/tmp/Demo' // demo 页面
 import App from '@/App'
@@ -21,8 +22,6 @@ import TutorDetail from '@/views/home/tutorDetail'
 import Playground from '@/views/home/Playground'
 import Order from '@/views/home/Order'
 import Contact from '@/views/home/Contact'
-import Login from '@/views/login'
-import Register from '@/views/register'
 // 前台文章模块
 import ArticleList from '@/views/home/articleList'
 import ArticleDetail from '@/views/home/articleDetail'
@@ -31,30 +30,47 @@ import ArticleDetail from '@/views/home/articleDetail'
 // 后台模块
 import Admin from '@/views/admin/base'
 import AdminIndex from '@/views/admin/index'
+import Admin404 from '@/views/admin/404'
+
 // 后台用户模块
 import UserSetting from '@/views/user/userSetting'
 import UserInfo from '@/views/user/userInfo'
+
+import Login from '@/views/login'
+import Register from '@/views/register'
+import FindPwd from '@/views/findPwd'
 
 import AdminResource from '@/views/admin/resources'
 import AdminBanner from '@/views/admin/banner'
 import AdminPlayground from '@/views/admin/playground'
 // 后台文章模块
 import AdminArticle from '@/views/admin/articleList'
-import AdminArticleDetail from '@/views/admin/articleDetail'
 import AdminArticleAdd from '@/views/admin/articleAdd'
+import AdminArticleEdit from '@/views/admin/articleEdit'
 // 课程
 import AdminCourse from '@/views/admin/courseList'
 import AdminCourseAdd from '@/views/admin/courseAdd'
 import AdminCourseEdit from '@/views/admin/courseEdit'
 // 导师
 import AdminTutor from '@/views/admin/tutorList'
-import AdminTutorDetail from '@/views/admin/tutorDetail'
 import AdminTutorEdit from '@/views/admin/tutorEdit'
 import AdminTutorAdd from '@/views/admin/tutorAdd'
+// 用户
+import AdminUser from '@/views/admin/userList'
+import AdminUserAdd from '@/views/admin/userAdd'
+import AdminUserEdit from '@/views/admin/userEdit'
+import AdminUserEditPwd from '@/views/admin/userEditPwd'
+import AdminUserPwd from '@/views/admin/userPwd'
+
+import AdminProfile from '@/views/admin/profile'
+//import AdminProfile from '@/views/admin/profile'
+import AdminUserProfile from '@/views/admin/userProfile'
+
 
 import AdminFile from '@/views/admin/file'
 //
 import AdminOrder from '@/views/admin/orderList'
+import AdminOrderFinished from '@/views/admin/orderFinishedList'
 import AdminOrderDetail from '@/views/admin/orderDetail'
 import AdminOrderNew from '@/views/admin/orderNew'
 import AdminOrderFinish from '@/views/admin/orderFinish'
@@ -127,8 +143,8 @@ let adminMap = [
         component: AdminArticleAdd
     },
     {
-        path: 'articles/:id',
-        component: AdminArticleDetail
+        path: 'articles/:id/edit',
+        component: AdminArticleEdit
     },
     // 后台导师模块
     {
@@ -140,10 +156,6 @@ let adminMap = [
         component: AdminTutorAdd
     },
     {
-        path: 'tutors/:id',
-        component: AdminTutorDetail
-    },
-    {
         path: 'tutors/:id/edit',
         component: AdminTutorEdit
     },
@@ -151,6 +163,10 @@ let adminMap = [
     {
         path: 'orders',
         component: AdminOrder,
+    },
+    {
+        path: 'orders/finished',
+        component: AdminOrderFinished,
     },
     {
         path: 'orders/:id',
@@ -161,6 +177,39 @@ let adminMap = [
         path: 'files',
         component: AdminFile
     },
+    // 用户管理模块
+    {
+        path: 'users',
+        component: AdminUser
+    },
+    {
+        path: 'users/add',
+        component: AdminUserAdd
+    },
+    {
+        path: 'users/:id/edit',
+        component: AdminUserEdit
+    },
+    {
+        path: 'users/:id/password',
+        component: AdminUserEditPwd
+    },
+    {
+        path: 'profile',
+        component: AdminProfile
+    },
+    {
+        path: 'user/profile',
+        component: AdminUserProfile
+    },
+    {
+        path: 'user/password',
+        component: AdminUserPwd
+    },
+    {
+        path: '*',
+        component: Admin404
+    }
 ];
 
 let homeMap = [
@@ -214,11 +263,6 @@ let homeMap = [
         component: ArticleDetail
     },
     {
-        path: '404',
-        component: Error404
-    },
-
-    {
         path: 'admin',
         component: Admin,
         meta: {
@@ -239,18 +283,28 @@ let homeMap = [
             }
         ]
     },
+    {
+        path: '404',
+        component: Home404
+    },
+    {
+        path: '*',
+        component: Home404
+    }
 ];
 
 let routerMap = [
     {
         path: '/',
         redirect: '/cn/home'
-        //component: Main,
-        //children: homeMap
     },
     {
         path: '/login',
         component: Login
+    },
+    {
+        path: '/find_password',
+        component: FindPwd
     },
     {
         path: '/register',
@@ -300,7 +354,8 @@ let routerMap = [
     },*/
     {
         path: '*',
-        component: Error404
+        //component: Home404
+        redirect: '/cn/home/404'
     }
 ];
 
@@ -335,29 +390,22 @@ let router = new Router({
 });
 
 router.beforeEach((to, from, next) => {
-    console.log('直接权限',localStorage.mytoken)
-
     if (/login/.test(to.path)) {
         if (localStorage.mytoken) {
             router.push('/admin');
-            console.log('跳转了')
         } else {
-            console.log('继续')
             next();
         }
     } else if (to.matched.some(record => record.meta.requiresAuth)) {
-        console.log('权限判断'+localStorage.mytoken)
         window.redirect = encodeURIComponent(to.path)
         let redirect = encodeURIComponent(to.path)
 
         if (localStorage.mytoken) {
-            console.log('已获得权限')
             next();
         } else {
             router.push({ path: '/login', query: {redirect: redirect}});
         }
     } else{
-        console.log('直接继续')
         next()
     }
 

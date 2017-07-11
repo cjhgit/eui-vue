@@ -83,14 +83,6 @@
                     return location.pathname === ('/' + this.$route.params.lang + '/home')
                 }
             },
-            login: function () {
-                alert('登录成功');
-                localStorage.token = '123456';
-                localStorage.username = '陈建杭';
-
-                //location.href = '/home';
-//                this.$router.push('/home');
-            },
             changeLanguage(lang) {
                 console.log(location.href);
                 location.href = location.href.replace(/en|cn/, lang);
@@ -264,16 +256,19 @@
         background-color: transparent;
     }
     .bread-nav .breadcrumb li a {
-        color: #666;
+        color: #888;
     }
     .bread-nav .icon-back {
         float: left;
         padding-top: 16px;
         margin-right: 8px;
+        color: #888;
         font-size: 20px;
     }
-
-    /**/
+    .bread-nav .breadcrumb>.active {
+        color: #333;
+    }
+        /**/
     .form-control {
         border-radius: 0;
     }
@@ -303,14 +298,45 @@
         color: #000;
         border-bottom: 2px solid #A9517A;
     }
-    .article-box .article-content h2 {
+
+    /**/
+    .ui-article {
+        color: #333;
+    }
+    .ui-article h1 {
+        margin: 16px 0;
+        font-size: 24px;
+        font-weight: bold;
+    }
+    .ui-article h2 {
+        margin: 8px 0;
+        font-size: 22px;
+        font-weight: bold;
+    }
+    .ui-article h3 {
         margin: 8px 0;
         font-size: 18px;
         font-weight: bold;
     }
-    .article-box .article-content p {
+    .ui-article h4 {
+        margin: 8px 0;
+        font-size: 16px;
+        font-weight: bold;
+    }
+    .ui-article p {
         line-height: 1.6;
-        margin-bottom: 24px;
+        margin-bottom: 16px;
+    }
+    .ui-article ul {
+        padding-left: 16px;
+        list-style: disc;
+    }
+    .ui-article ol {
+        padding-left: 16px;
+        list-style: decimal;
+    }
+    .ui-article li {
+        list-style: inherit;
     }
 
 

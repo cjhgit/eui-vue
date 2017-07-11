@@ -127,7 +127,6 @@
             }
         },
         mounted: function () {
-            console.log(this.$i18n);
             this.getData()
         },
         methods: {
@@ -139,7 +138,6 @@
                     },
                 }).then(response => {
                     let body = response.body
-                    console.log('场地')
                     console.log(body)
                     this.playgrounds = body
                 }, response => {
