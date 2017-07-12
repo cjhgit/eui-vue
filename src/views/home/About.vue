@@ -22,11 +22,11 @@
 </template>
 
 <script>
-    import i18n from '@/i18n'
-
     import Vue from 'vue'
     import Vuex from 'vuex'
     import store from '@/store'
+    import i18n from '@/i18n'
+    import Util from '@/util/util'
 
     Vue.use(Vuex);
 
@@ -59,6 +59,10 @@
         },
         mounted() {
             this.getData()
+
+            console.log('测试开始')
+            let html = '<img src="aaa"/> <img asd="asasa" src="bbb"> <p>12121212121212212</p> '
+            console.log(Util.getImagesFromHtml(html))
         },
         methods: {
             getData() {
@@ -87,16 +91,7 @@
 //        }
     }
 </script>
-<!--
 
-<style lang="sass">
-    .demo {
-        margin-top: 60px;
-        padding: 20px;
-        background-color: #f00;
-    }
-    select {
-        border: solid 1px #000;
-    }
+<style scoped>
+
 </style>
--->

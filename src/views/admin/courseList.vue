@@ -27,7 +27,7 @@
                         <div class="couse-img-box col-image">
                             <img class="course-image" :src="domainUrl + '/' + course.media">
                         </div>
-                        <div class="course-content col-desc">{{ course.introduction }}</div>
+                        <div class="course-content col-desc">{{ removeHtmlTag(course.introduction) }}</div>
                         <div class="col-operate btns">
                             <div class="btns-inbox">
                                 <a class="btn" href="javascript:;" @click="update(course, 2)"
@@ -35,7 +35,7 @@
                                 <a class="btn" href="javascript:;" @click="update(course, 3)"
                                    :class="{'btn-link': course.status !== 3, 'btn-primary': course.status === 3}">下架</a>
                                 <router-link class="btn btn-link" :to="routeUrl + '/courses/' + course.id + '/edit'">编辑</router-link>
-                                <a class="btn" href="javascript:;" @click="remove(course.id)">删除</a>
+                                <a class="btn btn-link" href="javascript:;" @click="remove(course.id)">删除</a>
                             </div>
                         </div>
                     </div>
@@ -49,6 +49,7 @@
 
 <script>
     import {domainUrl} from 'CONFIG/config'
+    import Util from '@/util/util'
 
     export default {
         data () {
@@ -134,7 +135,10 @@
                     console.log(body)
 
                 })
-            }
+            },
+            removeHtmlTag(str) {
+                return Util.removeHtmlTag(str)
+            },
         }
     }
 </script>
@@ -144,17 +148,6 @@
     .course-box {
         height: 500px;
         overflow: auto;
-    }
-    .admin-header {
-        background-color: #F1EFF1;
-        margin-bottom: 24px;
-        overflow: hidden;
-    }
-    .admin-header li {
-        display: inline-block;
-        float: left;
-        text-align: center;
-        padding: 16px 24px;
     }
     .col-image {
         width: 20%;
@@ -208,5 +201,8 @@
     }
     .course-list .btns .btn {
         display: inline-block;
+    }
+    .course-list .btn-link {
+        color: #666
     }
 </style>

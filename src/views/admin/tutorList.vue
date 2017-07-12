@@ -43,7 +43,7 @@
                                 <a class="btn" href="javascript:;" @click="update(tutor, 3)"
                                    :class="{'btn-link': tutor.status !== 3, 'btn-primary': tutor.status === 3}">下架</a>
                                 <router-link class="btn btn-link" :to="routeUrl + '/tutors/' + tutor.id + '/edit'">编辑</router-link>
-                                <a class="btn" href="javascript:;" @click="remove(tutor.id)">删除</a>
+                                <a class="btn btn-link" href="javascript:;" @click="remove(tutor.id)">删除</a>
                             </div>
                         </div>
                     </div>
@@ -176,17 +176,18 @@
     .tutor-list .tutor-sex {
         float: left;
         text-align: center;
-        line-height: 120px;
+        line-height: 160px;
     }
     .tutor-list .tutor-tel {
         float: left;
         text-align: center;
-        line-height: 120px;
+        line-height: 160px;
     }
     .tutor-list .tutor-desc {
         float: left;
         height: 60px;
-        margin-top: 30px;
+        padding: 0 16px;
+        margin-top: 50px;
         text-align: center;
         overflow: hidden;
     }
@@ -213,29 +214,21 @@
     .tutor-list .btns .btn {
         display: inline-block;
     }
-    /**/
-    .admin-header {
-        background-color: #F1EFF1;
-        margin-bottom: 24px;
-        overflow: hidden;
+    .tutor-list .btn-link {
+        color: #666;
     }
-    .admin-header li {
-        display: inline-block;
-        float: left;
-        text-align: center;
-        padding: 16px 24px;
-    }
+        /**/
     .col-image {
         width: 20%;
     }
     .col-sex {
-        width: 20%;
+        width: 15%;
     }
     .col-tel {
-        width: 20%;
+        width: 15%;
     }
     .col-desc {
-        width: 20%;
+        width: 30%;
     }
     .col-operate {
         width: 20%;

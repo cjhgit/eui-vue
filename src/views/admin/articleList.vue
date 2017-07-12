@@ -17,24 +17,32 @@
             <ul class="row article-list">
                 <li class="col-sm-4 article-item" v-for="article in articles">
                     <div class="card-box">
-                        <div class="card-header">
-                            <!--<input type="checkbox">-->
-                            <span class="card-title">{{ article.title }}</span>
-                        </div>
-                        <img class="article-image" :src="domainUrl + '/' + article.medias">
+                        <!--<div class="card-header">
+                            &lt;!&ndash;<input type="checkbox">&ndash;&gt;
+
+                        </div>-->
                         <div class="box-body">
+                            <span class="card-title">{{ article.title }}</span>
+                            <div class="article-time">日期：{{ simpleDate(article.time) }}</div>
+                            <div class="img-box">
+                                <img class="article-image" :src="domainUrl + '/' + article.medias">
+                                <div class="mask" @click="view(article)">
+                                    <div class="mask-text">预览全文</div>
+                                </div>
+                            </div>
                             <div class="article-content">{{ removeHtmlTag(article.content) }}</div>
                         </div>
                         <div class="box-footer">
                             <span class="left">
-                                <ui-icon type="edit" v-tooltip="'2121ewd21212'"></ui-icon>
+                                <a class="publish" href="#" @click="update(article, 2)" v-if="article.status !== 2">发布</a>
+                                <a href="#" @click="update(article, 1)" v-if="article.status === 2">已发布</a>
                             </span>
                             <span class="center">
-                            <router-link class="btn btn-link" :to="routeUrl + '/articles/' + article.id + '/edit'">编辑</router-link>
-                        </span>
+                                <router-link :to="routeUrl + '/articles/' + article.id + '/edit'">编辑</router-link>
+                            </span>
                             <span class="right">
-                            <a href="#" @click="remove(article.id)">删除</a>
-                        </span>
+                                <a href="#" @click="remove(article.id)">删除</a>
+                            </span>
                         </div>
                     </div>
 
@@ -49,6 +57,7 @@
 
 <script>
     import {domainUrl} from 'CONFIG/config'
+    import Util from '@/util/util'
 
     export default {
         data () {
@@ -99,6 +108,23 @@
                     }
                 })
             },
+            update(article, status) {
+                article.status = status;
+                this.$http.post(domainUrl + '/admin/news/' + article.id + '/update', article, {
+                    headers: {
+                        'Lc-Lang': this.$route.params.lang === 'en' ? 'en' : 'zh',
+                        'X-Auth-Token': localStorage.mytoken
+                    }
+                }).then(response => {
+
+                }, response => {
+                    let body = response.body
+                    console.log(body)
+                })
+            },
+            view(article) {
+                window.open('/' + this.$route.params.lang + '/home/articles/' + article.id)
+            },
             remove(id) {
                 this.$http.delete(domainUrl + '/admin/news/' + id + '/delete', {
                     headers: {
@@ -123,13 +149,11 @@
             edit: function () {
                 alert('编辑');
             },
+            simpleDate(str) {
+                return str.split(' ')[0]
+            },
             removeHtmlTag(str) {
-                str = str.replace(/<\/?[^>]*>/g,''); //去除HTML tag
-                str = str.replace(/[ | ]*\n/g,'\n'); //去除行尾空白
-                //str = str.replace(/\n[\s| | ]*\r/g,'\n'); //去除多余空行
-                str=str.replace(/&nbsp;/ig,'');//去掉&nbsp;
-                str=str.replace(/\s/g,''); //将空格去掉
-                return str;
+                return Util.removeHtmlTag(str)
             },
         }
     }
@@ -157,17 +181,41 @@
         height: 40px;
         overflow: hidden;
     }
-    .article-list .article-image {
-        float: left;
+    .article-list .article-time {
+        margin-bottom: 8px;
+        color: #999;
+    }
+    .article-list .img-box {
+        position: relative;
         width: 100%;
-        height: 120px;
+        height: 160px;
         margin-right: 20px;
+        margin-bottom: 16px;
     }
-    .article-list .btns {
-
+    .article-list .article-image {
+        width: 100%;
+        height: 100%;
     }
-    .article-list .btns .btn {
+    .article-list .mask {
+        display: none;
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: #666;
+        cursor: pointer;
+    }
+    .article-list .img-box:hover .mask {
         display: block;
+    }
+    .article-list .mask-text {
+        color: #fff;
+        line-height: 160px;
+        text-align: center;
+    }
+    .article-list .publish {
+        color: #333 !important;
     }
 
     /**/
@@ -176,22 +224,30 @@
         border: 1px solid #ccc;
     }
     .card-box .card-header {
-        padding: 8px;
+        padding: 16px;
     }
     .card-box .box-body {
-        padding: 8px;
+        padding: 16px;
+        overflow: hidden;
     }
     .card-box .card-title {
-        font-size: 18px;
-        height: 22px;
-        overflow: hidden;
         display: block;
+        padding-bottom: 8px;
+        font-size: 18px;
+        overflow: hidden;
         white-space: nowrap;
+        margin-bottom: 8px;
         text-overflow: ellipsis;
+        border-bottom: 1px solid #ccc;
     }
     .card-box .box-footer {
-        padding: 8px;
+        padding: 16px;
         background-color: #F3F1F3;
+        overflow: hidden;
+    }
+    .card-box .box-footer a {
+        color: #999;
+        font-size: 18px;
     }
     .card-box .box-footer .icon {
         color: #999;

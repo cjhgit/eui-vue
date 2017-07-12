@@ -15,7 +15,7 @@
                         <img class="course-img" :src="domainUrl + '/' + course.media">
                         <div class="hr"></div>
                         <div class="course-name">{{ course.name }}</div>
-                        <div class="course-desc">{{ course.introduction }}</div>
+                        <div class="course-desc">{{ removeHtmlTag(course.introduction) }}</div>
                         <router-link class="btn course-link" :to="routeUrl + '/courses/' + course.id">{{ $t('detail') }}</router-link>
                     </div>
                 </li>
@@ -29,6 +29,7 @@
 <script>
     import i18n from '@/i18n'
     import {domainUrl} from 'CONFIG/config'
+    import Util from '@/util/util'
 
     export default {
         i18n,
@@ -78,6 +79,9 @@
                         this.$router.push('/login') // TODO
                     }
                 })
+            },
+            removeHtmlTag(str) {
+                return Util.removeHtmlTag(str)
             },
         }
     }

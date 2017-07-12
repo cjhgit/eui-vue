@@ -42,7 +42,7 @@
                     <div class="form-group">
                         <label class="control-label col-sm-3">介绍：</label>
                         <div class="col-sm-9">
-                            <textarea class="form-control" v-model="tutor.introduction" rows="3" name="introduction" v-validate="'required'"></textarea>
+                            <textarea class="form-control" v-model="tutor.introduction" rows="5" name="introduction" v-validate="'required|max:400'"></textarea>
                             <div v-show="errors.has('introduction')" class="help-block is-danger">{{ errors.first('introduction') }}</div>
                         </div>
                     </div>

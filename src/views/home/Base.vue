@@ -1,6 +1,6 @@
 <template>
-    <div class="main">
-        <header id="app2" class="layout-header">
+    <div class="main" :class="{'home-url': isHome}">
+        <header class="layout-header">
             <div class="container">
                 <img class="logo" src="/static/img/logo.png" :alt="$t('siteName')">
                 <ul class="header-nav-list">
@@ -41,7 +41,7 @@
                 <img class="qrcode" src="http://www.8008mp.com/erweima/upload/28946/com/%B3%C2%D3%C2_RJ36988.png">
                 <div class="info">{{ $t('qrcode') }}</div>
                 <div class="info">{{ $t('contactPhone') }}：0760-88831122</div>
-                <div class="info">{{ $t('address') }}：{{ address }}</div>
+                <div class="info">{{ $t('address') }}：{{ $t('addressDetail') }}</div>
             </div>
         </footer>
     </div>
@@ -55,22 +55,20 @@
         i18n,
         data () {
             return {
-                address: '广东省广州市花都区新华镇XXX',
             }
         },
-        mounted: function () {
-            i18n.locale = this.$route.params.lang;
-            console.log('挂债')
-        },
         computed: {
+            isHome() {
+                return this.$route.path === '/cn/home' || this.$route.path === '/en/home'
+            },
             routeUrl () {
-                return '/' + this.$route.params.lang + '/home';
+                return '/' + this.$route.params.lang + '/home'
             },
             isChinese() {
-                return this.$route.params.lang === 'cn';
+                return this.$route.params.lang === 'cn'
             },
             isEnglish() {
-                return this.$route.params.lang === 'en';
+                return this.$route.params.lang === 'en'
             }
         },
         methods: {
@@ -84,9 +82,7 @@
                 }
             },
             changeLanguage(lang) {
-                console.log(location.href);
-                location.href = location.href.replace(/en|cn/, lang);
-                //this.$router.replace();
+                location.href = location.href.replace(/en|cn/, lang)
             },
             setActive(index) {
                 var menu = ['/', 'courses', 'tutors', 'playground', 'order', 'articles', 'contact']
@@ -96,7 +92,7 @@
             $route: {
                 immediate: true,
                 handler (val, oldVal) {
-                    var linkList = ['/', 'courses', 'tutors', 'playground', 'order', 'articles', 'contact']
+                    /*var linkList = ['/', 'courses', 'tutors', 'playground', 'order', 'articles', 'contact']
                     console.log(val);
                     const links = linkList.join('|')
                     const reg = new RegExp(links)
@@ -107,7 +103,9 @@
                         localStorage.from = oldVal === undefined ? localStorage.from : oldVal.path
                     } else {
                         console.log('不需要')
-                    }
+                    }*/
+                    console.log('处理==========')
+                    document.documentElement.scrollTop = 0
                 }
             }
         }
@@ -142,6 +140,15 @@
         display: table;
         content: " ";
         clear: both;
+    }
+    .home-url .layout-header {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        background-color: rgba(169,81,122,.8);
+        border-bottom: transparent;
+        z-index: 100;
     }
     .layout-header .container {
         height: 100%;
@@ -338,6 +345,8 @@
     .ui-article li {
         list-style: inherit;
     }
-
+    .ui-article img {
+        max-width: 100%;
+    }
 
 </style>

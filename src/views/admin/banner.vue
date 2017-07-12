@@ -33,20 +33,26 @@
                 <li class="col-sm-3" v-for="banner in banners">
                     <div class="card-box">
                         <img class="card-image" :src="domainUrl + '/' + banner.url">
-                        <div class="box-body">
-                            <input type="checkbox" v-model="checkboxModel" :value="banner.id"> {{ banner.name }}
-                        </div>
+                        <!--<div class="box-body">-->
+                            <!--<input type="checkbox" v-model="checkboxModel" :value="banner.id"> {{ banner.name }}-->
+                        <!--</div>-->
                         <div class="box-footer">
                             <span class="left">
-                                <ui-icon type="edit" v-tooltip="'2121ewd21212'"></ui-icon>
+                                <i class="icon icon-sort" @click="sort(banner.id)"></i>
+                                <ui-tooltip content="删除" placement="top">
+
+                                </ui-tooltip>
                             </span>
                             <span class="center">
-                                <i data-v-47dbc752="" class="icon icon-sort" @click="sort(banner.id)"></i>
+                                <!--<ui-tooltip content="删除" placement="top">
+                                    <ui-icon type="edit" v-tooltip="'2121ewd21212'"></ui-icon>
+                                </ui-tooltip>-->
                                 <!--<ui-icon type="sort" v-tooltip="'排序'" ></ui-icon>-->
                             </span>
                             <span class="right">
-                                <i data-v-47dbc752="" class="icon icon-remove" @click="remove(banner.id)"></i>
-                                <!--<ui-icon type="remove" v-tooltip="'删除'" @click="remove(banner.id)"></ui-icon>-->
+                                <ui-tooltip content="删除" placement="top">
+                                    <i class="icon icon-remove" @click="remove(banner.id)"></i>
+                                </ui-tooltip>
                             </span>
                         </div>
                     </div>
@@ -59,6 +65,7 @@
 
 <script>
     import {domainUrl} from 'CONFIG/config'
+    import {Tooltip} from 'element-ui'
 
     export default {
         data () {
@@ -79,6 +86,9 @@
         },
         mounted() {
             this.getData()
+        },
+        components: {
+            'ui-tooltip': Tooltip
         },
         methods: {
             getData() {

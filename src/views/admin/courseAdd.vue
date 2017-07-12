@@ -1,38 +1,42 @@
 <template>
     <div class="layout-body">
-        <div class="admin-nav border-bottom">
-            <div class="container">
-                <div class="bread-nav">
-                    <ui-goback></ui-goback>
-                    <ol class="breadcrumb">
-                        <li><router-link :to="routeUrl + '/'">管理</router-link></li>
-                        <li class="active">添加课程</li>
-                    </ol>
+        <div class="layout-body-content">
+            <div class="admin-nav border-bottom">
+                <div class="container">
+                    <div class="bread-nav">
+                        <ui-goback></ui-goback>
+                        <ol class="breadcrumb">
+                            <li><router-link :to="routeUrl + '/'">管理</router-link></li>
+                            <li class="active">添加课程</li>
+                        </ol>
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <div class="container">
-            <div class="admin-form">
-                <div class="form-horizontal" style="width: 500px">
-                    <div class="form-group">
-                        <label class="control-label col-sm-3">名称：</label>
-                        <div class="col-sm-9">
-                            <input class="form-control" v-model="course.name" name="courseName" v-validate="'required'">
-                            <div v-show="errors.has('courseName')" class="help-block is-danger">{{ errors.first('courseName') }}</div>
+            <div class="container">
+                <div class="admin-form">
+                    <div class="form-horizontal" style="width: 500px">
+                        <div class="form-group">
+                            <label class="control-label col-sm-3">名称：</label>
+                            <div class="col-sm-9">
+                                <input class="form-control" v-model="course.name" name="courseName" v-validate="'required'">
+                                <div v-show="errors.has('courseName')" class="help-block is-danger">{{ errors.first('courseName') }}</div>
+                            </div>
                         </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="control-label col-sm-3">介绍：</label>
-                        <div class="col-sm-9">
-                            <textarea class="form-control" v-model="course.introduction" rows="3" name="courseDesc" v-validate="'required'"></textarea>
-                            <div v-show="errors.has('courseName')" class="help-block is-danger">{{ errors.first('courseName') }}</div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-3">图片：</label>
+                            <div class="col-sm-9">
+                                <img class="course-img" :src="domainUrl + '/' + course.media" v-if="course.media">
+                                <ui-file :url="domainUrl + '/admin/file/save?'" :success="uploadSuccess">本地上传</ui-file>
+                            </div>
                         </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="control-label col-sm-3">图片：</label>
-                        <div class="col-sm-9">
-                            <ui-file :url="domainUrl + '/admin/file/save?'" :success="uploadSuccess">本地上传</ui-file>
+                        <div class="form-group">
+                            <label class="control-label col-sm-3">介绍：</label>
+                            <div class="col-sm-9">
+                                <script id="editor" type="text/plain"></script>
+                                <!--<textarea class="form-control" v-model="course.introduction" rows="3" name="courseDesc" v-validate="'required'"></textarea>-->
+                                <!--<div v-show="errors.has('courseName')" class="help-block is-danger">{{ errors.first('courseName') }}</div>-->
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -55,11 +59,10 @@
                 course: {
                     name: '',
                     introduction: '',
-
+                    media: '',
+                    status: 0
                 },
-                myfile: null,
-                input: null,
-                uploadUrl: null,
+                editor: null
             }
         },
         computed: {
@@ -67,20 +70,31 @@
                 return domainUrl
             },
             routeUrl () {
-                return '/' + this.$route.params.lang + '/admin';
+                return '/' + this.$route.params.lang + '/admin'
             },
         },
         mounted() {
+            this.editor = UE.getEditor('editor', {
+                initialFrameWidth: 800,
+                initialFrameHeight: 300,
+                scaleEnabled: false
+            })
+
+            var _this = this
+            setTimeout(() => {
+                _this.editor.setHeight(300) // TODO 这段代码必须延迟执行，否则异常，原因不明
+            }, 500)
+        },
+        destroyed: function () {
+            this.editor.destroy()
         },
         methods: {
             save() {
                 this.$validator.validateAll().then(() => {
-                    this.$http.post(domainUrl + '/admin/course/create', {
-                            name: this.courseName,
-                            media: this.uploadUrl,
-                            introduction: this.courseDesc,
-                            status: 2
-                        },
+
+                    this.course.introduction = this.editor.getContent()
+
+                    this.$http.post(domainUrl + '/admin/course/create', this.course,
                         {
                             headers: {
                                 'Lc-Lang': this.$route.params.lang === 'en' ? 'en' : 'zh',
@@ -89,12 +103,18 @@
                         }
                     ).then(response => {
                         this.$router.push(this.routeUrl + '/courses')
+                    }, response => {
+                        let body = response.body
+                        console.log(body);
+                        if (body.code === 101 || body.code === 103) {
+                            localStorage.mytoken = ''
+                            this.$router.push('/login') // TODO
+                        }
                     });
                 });
             },
             uploadSuccess(url) {
-                console.log('成功了' + url);
-                this.uploadUrl = url
+                this.course.media = url
             },
             cancel() {
                 this.$router.go(-1)
@@ -113,7 +133,16 @@
 </script>
 
 <style scoped>
-    .footer-btn {
+    .layout-body-content {
+        position: absolute;
+        top: 0;
+        bottom: 80px;
+        width: 100%;
+        overflow: auto;
+    }
 
+    .course-img {
+        width: 120px;
+        height: 120px;
     }
 </style>

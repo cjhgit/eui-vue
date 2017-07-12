@@ -23,6 +23,7 @@
                     <ul>
                         <li :class="{active: isActive('resources') }"><router-link :to="routeUrl + '/resources'">素材管理</router-link></li>
                         <li :class="{active: isActive('articles') }"><router-link :to="routeUrl + '/articles'">文章管理</router-link></li>
+                        <li :class="{active: isActive('files') }"><router-link :to="routeUrl + '/files'">媒体中心</router-link></li>
                     </ul>
                 </li>
             </ul>
@@ -62,7 +63,6 @@
                 username: '',
                 uid: '1231212',
                 appKey: 'asd123456',
-                editor: null
             }
         },
         computed: {
@@ -84,28 +84,8 @@
             },
         },
         mounted() {
-            this.getData()
         },
         methods: {
-            getData() {
-                this.$http.get(domainUrl + '/admin/news/all', {
-                    headers: {
-                        'Lc-Lang': this.$route.params.lang === 'en' ? 'en' : 'zh',
-                        'X-Auth-Token': localStorage.mytoken
-                    },
-                }).then(response => {
-                    let body = response.body
-                    console.log(body)
-                    this.articles = body
-                }, response => {
-                    let body = response.body
-                    console.log(body);
-                    if (body.code === 101 || body.code === 103) {
-                        localStorage.mytoken = ''
-                        this.$router.push('/login') // TODO
-                    }
-                })
-            },
             isActive(url) {
                 if (url) {
                     return location.pathname.indexOf('/' + this.$route.params.lang + '/admin/' + url) !== -1
@@ -375,5 +355,16 @@
     }
 
     /**/
-
+    .admin-header {
+        background-color: #F1EFF1;
+        margin-bottom: 24px;
+        overflow: hidden;
+    }
+    .admin-header li {
+        display: inline-block;
+        float: left;
+        text-align: center;
+        padding: 16px 24px;
+        color: #888;
+    }
 </style>

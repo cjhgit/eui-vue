@@ -14,7 +14,7 @@
                 <div class="article-header">
                     <h1 class="article-title">{{ article.name }}</h1>
                 </div>
-                <div class="article-content">
+                <div class="ui-article">
                     <div v-html="article.introduction"></div>
                 </div>
             </article>

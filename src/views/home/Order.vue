@@ -83,6 +83,7 @@
 <script>
     import i18n from '@/i18n'
     import {domainUrl} from 'CONFIG/config'
+    import {vueCalendarInput} from '@liangchuan/liangchuan-ui'
 
     export default {
         i18n,
@@ -107,6 +108,9 @@
             console.log(this.$i18n);
             console.log('create')
 
+        },
+        components: {
+            'vueCalendarInput': vueCalendarInput
         },
         methods: {
             submit() {

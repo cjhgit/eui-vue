@@ -1,6 +1,6 @@
 <template>
     <div class="layout-body">
-        <div class="asd">
+        <div class="layout-body-content">
             <div class="admin-nav border-bottom">
                 <div class="container">
                     <div class="bread-nav">
@@ -52,13 +52,12 @@
 
 <script>
     import {domainUrl} from 'CONFIG/config'
+    import Util from '@/util/util'
 
     export default {
         data () {
             return {
-                article: {
-                    title: ''
-                },
+                article: {},
                 editor: null
             }
         },
@@ -84,8 +83,8 @@
 
             this.getData()
         },
-        destroy() {
-
+        destroyed: function () {
+            this.editor.destroy()
         },
         methods: {
             getData() {
@@ -117,12 +116,15 @@
                 })
             },
             save() {
-                this.$http.post(domainUrl + '/admin/news/' + this.article.id + '/update', {
-                        title: this.article.title,
-                        medias: this.article.medias,
-                        content: this.editor.getContent(),
-                        status: 2
-                    },
+                this.article.content = this.editor.getContent()
+
+                // 解析文章中的所有图片
+                let urls = Util.getImagesFromHtml(this.article.content)
+                let mediaList = []
+                urls.forEach(url => mediaList.push({url: url}))
+                this.article.mediaList = mediaList
+
+                this.$http.post(domainUrl + '/admin/news/' + this.article.id + '/update', this.article,
                     {
                         headers: {
                             'Lc-Lang': this.$route.params.lang === 'en' ? 'en' : 'zh',
@@ -131,6 +133,13 @@
                     }
                 ).then(response => {
                     this.$router.push(this.routeUrl + '/articles')
+                }, response => {
+                    let body = response.body
+                    console.log(body);
+                    if (body.code === 101 || body.code === 103) {
+                        localStorage.mytoken = ''
+                        this.$router.push('/login') // TODO
+                    }
                 });
             },
             cancel() {
@@ -140,16 +149,13 @@
                 this.article.medias = url
             },
         },
-        destroyed: function () {
-            this.editor.destroy()
-        },
     }
 </script>
 
 <style scoped>
-    .asd {
-        position: absolute;
-        top: 0;
+    .layout-body-content {
+            position: absolute;
+            top: 0;
         bottom: 80px;
         width: 100%;
         overflow: auto;

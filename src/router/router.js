@@ -66,8 +66,8 @@ import AdminProfile from '@/views/admin/profile'
 //import AdminProfile from '@/views/admin/profile'
 import AdminUserProfile from '@/views/admin/userProfile'
 
-
 import AdminFile from '@/views/admin/file'
+import AdminFileDetail from '@/views/admin/fileDetail'
 //
 import AdminOrder from '@/views/admin/orderList'
 import AdminOrderFinished from '@/views/admin/orderFinishedList'
@@ -176,6 +176,10 @@ let adminMap = [
     {
         path: 'files',
         component: AdminFile
+    },
+    {
+        path: 'files/:id',
+        component: AdminFileDetail
     },
     // 用户管理模块
     {
@@ -386,7 +390,10 @@ let router = new Router({
     //history: true,
     routes: routerMap,
     //linkActiveClass: 'active'
-    saveScrollPosition: true,
+    //saveScrollPosition: true,
+    scrollBehavior (to, from, savedPosition) {
+        return { x: 0, y: 0 }
+    }
 });
 
 router.beforeEach((to, from, next) => {

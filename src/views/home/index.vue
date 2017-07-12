@@ -21,7 +21,7 @@
                 <ul class="tutor-list row">
                     <li class="col-sm-4" v-for="tutor in tutors">
                         <div class="tutor-item">
-                            <img class="avatar" src="/static/img/avatar.jpg">
+                            <img class="avatar" :src="domainUrl + '/' + tutor.media">
                             <div class="tutor-info">
                                 <div class="clearfix">
                                     <div class="tutor-name">{{ tutor.name }}</div>
@@ -44,20 +44,20 @@
                             <h3 class="title">教室环境</h3>
                             <ui-icon type="playground"></ui-icon>
                         </div>
-                        <div class="col-sm-4"><img class="classroom-img" :src="domainUrl + '/' + playgrounds[0].url"></div>
-                        <div class="col-sm-4"><img class="classroom-img" :src="domainUrl + '/' + playgrounds[1].url"></div>
+                        <div class="col-sm-4"><img class="classroom-img" :src="domainUrl + '/' + playgrounds[0].url"  v-if="playgrounds[0]"></div>
+                        <div class="col-sm-4"><img class="classroom-img" :src="domainUrl + '/' + playgrounds[1].url" v-if="playgrounds[1]"></div>
                     </div>
                     <div class="row">
                         <div class="col-sm-4">
-                            <img class="classroom-img" :src="domainUrl + '/' + playgrounds[2].url">
-                            <img class="classroom-img" :src="domainUrl + '/' + playgrounds[3].url">
+                            <img class="classroom-img" :src="domainUrl + '/' + playgrounds[2].url"  v-if="playgrounds[2]">
+                            <img class="classroom-img" :src="domainUrl + '/' + playgrounds[3].url"  v-if="playgrounds[3]">
                         </div>
                         <div class="col-sm-4">
-                            <img class="classroom-img-lg" :src="domainUrl + '/' + playgrounds[4].url">
+                            <img class="classroom-img-lg" :src="domainUrl + '/' + playgrounds[4].url" v-if="playgrounds[4]">
                         </div>
                         <div class="col-sm-4">
-                            <img class="classroom-img" :src="domainUrl + '/' + playgrounds[5].url">
-                            <img class="classroom-img" :src="domainUrl + '/' + playgrounds[6].url">
+                            <img class="classroom-img" :src="domainUrl + '/' + playgrounds[5].url" v-if="playgrounds[5]">
+                            <img class="classroom-img" :src="domainUrl + '/' + playgrounds[6].url" v-if="playgrounds[6]">
                         </div>
                     </div>
 
@@ -78,7 +78,7 @@
                             <div class="content">
                                 <router-link :to="routeUrl + '/courses/' + course.id">
                                     <div class="course-name">{{ course.name }}</div>
-                                    <img class="course-img" src="/static/img/avatar.jpg">
+                                    <img class="course-img" :src="domainUrl + '/' + course.media">
                                     <div class="course-desc">{{ course.introduction }}</div>
                                 </router-link>
                             </div>
@@ -209,56 +209,6 @@
                         this.$router.push('/login') // TODO
                     }
                 })
-
-                this.playgrounds = [
-                    {
-                        image: 'http://pic.58pic.com/58pic/11/77/72/58PIC9w58PICC9P.jpg'
-                    },
-                    {
-                        image: 'http://s16.sinaimg.cn/mw690/b3b843e0gdf408436f34f&690'
-                    },
-                    {
-                        image: 'http://s11.sinaimg.cn/mw690/0046logVty6LEhJixDQca&690'
-                    },
-                    {
-                        image: '/static/img/avatar.jpg'
-                    },
-                    {
-                        image: '/static/img/avatar.jpg'
-                    },
-                    {
-                        image: '/static/img/avatar.jpg'
-                    },
-                    {
-                        image: '/static/img/avatar.jpg'
-                    },
-                ];
-                this.banners = [
-                    {
-                        "id": 1,
-                        "name": "图片1",
-                        "url": "upload/123456",
-                        "sort": 1,
-                        "time": "2017-07-05 18:34:20",
-                        "lang": "zh"
-                    },
-                    {
-                        "id": 2,
-                        "name": "图片1",
-                        "url": "upload/123456",
-                        "sort": 2,
-                        "time": "2017-07-05 18:37:32",
-                        "lang": "zh"
-                    },
-                    {
-                        "id": 3,
-                        "name": "图片1",
-                        "url": "upload/123456",
-                        "sort": 3,
-                        "time": "2017-07-05 18:37:33",
-                        "lang": "zh"
-                    }
-                ];
             }
         },
         components: {
@@ -308,14 +258,14 @@
     }
     /**/
     .index-box {
-        padding: 32px 0;
+        padding: 40px 0;
     }
     .index-box .title {
         text-align: center;
         font-size: 20px;
     }
     .index-box .sub-title {
-        margin-bottom: 36px;
+        margin-bottom: 40px;
         color: #999;
         font-size: 14px;
     }
@@ -442,7 +392,7 @@
         background: url("/static/img/playground.jpg");
         background-size: 100% 100%;
         background-color: #ccc;
-        height: 320px;
+        height: 360px;
     }
     .course-list .course-item:hover .mask {
         background-color: rgba(174, 173, 100, .8);

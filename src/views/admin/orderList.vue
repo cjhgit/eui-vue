@@ -74,6 +74,10 @@
             this.getData(1)
         },
         methods: {
+            gotoPage(page) {
+                this.page = page
+                this.getData(page)
+            },
             getData(page) {
                 this.$http.post(domainUrl + '/admin/reserve/list', {
                     page: page,

@@ -11,7 +11,6 @@ import auth from './directives/auth'
 import './validators/validators'
 
 // UI
-import liangchuanUi from '@liangchuan/liangchuan-ui'
 import { Message, Loading, Tree, Dropdown, DropdownMenu, DropdownItem } from 'element-ui'
 //import vueModal from 'COMPONENT/vueModal'
 //import './sass/main.scss'
@@ -33,7 +32,6 @@ import { VTooltip } from 'v-tooltip'
 
 Vue.use(VueI18n);
 Vue.use(VueResource);
-Vue.use(liangchuanUi);
 //Vue.use(element-ui);
 Vue.use(ziranjiUi);
 

@@ -1,37 +1,39 @@
 <template>
     <div class="layout-body">
-        <div class="admin-nav border-bottom">
-            <div class="container">
-                <div class="bread-nav">
-                    <ui-goback></ui-goback>
-                    <ol class="breadcrumb">
-                        <li><router-link :to="routeUrl + '/'">管理</router-link></li>
-                        <li class="active">新建文章</li>
-                    </ol>
+        <div class="layout-body-content">
+            <div class="admin-nav border-bottom">
+                <div class="container">
+                    <div class="bread-nav">
+                        <ui-goback></ui-goback>
+                        <ol class="breadcrumb">
+                            <li><router-link :to="routeUrl + '/'">管理</router-link></li>
+                            <li class="active">新建文章</li>
+                        </ol>
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <div class="container">
-            <div class="admin-form">
-                <div class="form-horizontal" style="width: 500px">
-                    <div class="form-group">
-                        <label class="control-label col-sm-3">标题：</label>
-                        <div class="col-sm-9">
-                            <input class="form-control" v-model="article.title" name="courseName" v-validate="'required'">
-                            <div v-show="errors.has('title')" class="help-block is-danger">{{ errors.first('title') }}</div>
+            <div class="container">
+                <div class="admin-form">
+                    <div class="form-horizontal" style="width: 500px">
+                        <div class="form-group">
+                            <label class="control-label col-sm-3">标题：</label>
+                            <div class="col-sm-9">
+                                <input class="form-control" v-model="article.title" name="courseName" v-validate="'required'">
+                                <div v-show="errors.has('title')" class="help-block is-danger">{{ errors.first('title') }}</div>
+                            </div>
                         </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="control-label col-sm-3">封面：</label>
-                        <div class="col-sm-9">
-                            <img class="article-img" :src="domainUrl + '/' + article.medias" v-if="article.medias">
-                            <ui-file :url="domainUrl + '/admin/file/save?'" :success="uploadSuccess">本地上传</ui-file>
+                        <div class="form-group">
+                            <label class="control-label col-sm-3">封面：</label>
+                            <div class="col-sm-9">
+                                <img class="article-img" :src="domainUrl + '/' + article.medias" v-if="article.medias">
+                                <ui-file :url="domainUrl + '/admin/file/save?'" :success="uploadSuccess">本地上传</ui-file>
+                            </div>
                         </div>
                     </div>
                 </div>
+                <script id="editor" type="text/plain"></script>
             </div>
-            <script id="editor" type="text/plain"></script>
         </div>
 
         <div class="layout-footer-btn">
@@ -50,7 +52,8 @@
             return {
                 article: {
                     title: '',
-                    medias: ''
+                    medias: '',
+                    status: 0
                 },
                 editor: null
             }
@@ -70,7 +73,7 @@
             })
             var _this = this
             setTimeout(() => {
-                _this.editor.setHeight(500) // TODO 这段代码必须延迟执行，否则异常，原因不明
+                _this.editor.setHeight(300) // TODO 这段代码必须延迟执行，否则异常，原因不明
             }, 500)
         },
         methods: {
@@ -100,13 +103,8 @@
                     return
                 }
 
-
-                this.$http.post(domainUrl + '/admin/news/create', {
-                        title: this.article.title,
-                        medias: this.article.medias,
-                        content: content,
-                        status: 2
-                    },
+                this.article.content = content
+                this.$http.post(domainUrl + '/admin/news/create', this.article,
                     {
                         headers: {
                             'Lc-Lang': this.$route.params.lang === 'en' ? 'en' : 'zh',
@@ -115,6 +113,13 @@
                     }
                 ).then(response => {
                     this.$router.push(this.routeUrl + '/articles')
+                }, response => {
+                    let body = response.body
+                    console.log(body);
+                    if (body.code === 101 || body.code === 103) {
+                        localStorage.mytoken = ''
+                        this.$router.push('/login') // TODO
+                    }
                 });
             },
             cancel() {
@@ -131,6 +136,14 @@
 </script>
 
 <style scoped>
+    .layout-body-content {
+        position: absolute;
+        top: 0;
+        bottom: 80px;
+        width: 100%;
+        overflow: auto;
+    }
+
     .article-img {
         width: 120px;
         height: 120px;

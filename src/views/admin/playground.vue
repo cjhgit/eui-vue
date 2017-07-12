@@ -28,23 +28,14 @@
 
         <div class="container">
             <ui-empty v-if="!playgrounds.length"></ui-empty>
-
             <ul class="row playground-list">
                 <li class="col-sm-3" v-for="playground in playgrounds">
                     <div class="card-box">
                         <img class="card-image" :src="domainUrl + '/' + playground.url">
                         <div class="box-body">
-                            <input type="checkbox"> {{ playground.name }}
+                            <!--<input type="checkbox"> -->
+                            {{ playground.name }}
                         </div>
-
-                        <ui-popover
-                                ref="popover4"
-                                placement="right"
-                                width="400"
-                                trigger="click">
-                            <div>12121212</div>
-                        </ui-popover>
-
                         <div class="box-footer">
                             <span class="left">
                                 <ui-popover
@@ -54,16 +45,19 @@
                                         trigger="click">
                                         <div class="popover-box">
                                             <div class="title">编辑名称</div>
-                                            <input class="form-control" :value="playground.name">
+                                            <input class="form-control" v-model="input">
                                             <div>
-                                                <button class="btn btn-primary btn-xs" @click="update">确定</button>
-                                                <button class="btn btn-default btn-xs" @click="playground.visible = false">取消</button>
+                                                <button class="btn btn-primary btn-xs"
+                                                        @click="modify(playground)">确定</button>
+                                                <button class="btn btn-default btn-xs"
+                                                        @click="playground.visible = false">取消</button>
                                             </div>
                                         </div>
+                                    <ui-tooltip content="删除" placement="top">
+
+                                </ui-tooltip>
                                     <i class="icon icon-edit" v-tooltip="'2121ewd21212'" type="warning"
-                                       slot="reference"></i>
-                                    <!--<ui-button type="warning" icon="delete" size="mini"-->
-                                    <!--slot="reference">删除</ui-button>-->
+                                       slot="reference" @click="edit(playground)"></i>
                                 </ui-popover>
 
                                 <!--<ui-icon type="edit"></ui-icon>-->
@@ -72,8 +66,9 @@
                                 <!--<ui-icon type="sort" v-tooltip="'排序'"></ui-icon>-->
                             </span>
                             <span class="right">
-                                <i data-v-47dbc752="" class="icon icon-remove" @click="remove(playground.id)"></i>
-                                <!--<ui-icon type="remove" v-tooltip="'删除'" @click="remove(playground.id)"></ui-icon>-->
+                                <ui-tooltip content="删除" placement="top">
+                                    <i data-v-47dbc752="" class="icon icon-remove" @click="remove(playground.id)"></i>
+                                </ui-tooltip>
                             </span>
                         </div>
                     </div>
@@ -86,12 +81,13 @@
 
 <script>
     import {domainUrl} from 'CONFIG/config'
-    import { Button } from 'element-ui'
-    import { Popover } from 'element-ui'
+    import {Button, Tooltip, Popover} from 'element-ui'
 
     export default {
         data () {
             return {
+                input: '',
+
                 playgrounds: [],
             }
         },
@@ -108,9 +104,40 @@
         },
         components: {
             'ui-button': Button,
+            'ui-tooltip': Tooltip,
             'ui-popover': Popover
         },
         methods: {
+            modify(playground) {
+                playground.visible = false
+
+                this.$http.post(domainUrl + '/admin/location/' + playground.id + '/updateName', {
+                    name: this.input
+                }, {
+                    headers: {
+                        'Lc-Lang': this.$route.params.lang === 'en' ? 'en' : 'zh',
+                        'X-Auth-Token': localStorage.mytoken
+                    },
+                    emulateJSON: true
+                }).then(response => {
+                    let body = response.body
+                    console.log(body)
+                    playground.name = this.input
+                }, response => {
+                    let body = response.body
+                    console.log(body);
+                    if (body.code === 101) {
+                        localStorage.mytoken = ''
+                        this.$router.push('/login') // TODO
+                    }
+                })
+            },
+            edit(playground) {
+                this.input = playground.name
+            },
+            cancel(playground) {
+                playground.visible = false
+            },
             getData() {
                 this.$http.get(domainUrl + '/admin/location/all', {
                     headers: {
@@ -120,7 +147,13 @@
                 }).then(response => {
                     let body = response.body
                     console.log(body)
+
+//                    body.forEach(function (item) {
+//                        item.visible = false
+//                    })
+                    body.forEach(item => item.visible = false)
                     this.playgrounds = body
+                    console.log(this.playgrounds)
                 }, response => {
                     let body = response.body
                     console.log(body);
@@ -172,9 +205,6 @@
                     }
                 })
             },
-            edit: function () {
-                alert('编辑');
-            }
         }
     }
 </script>
