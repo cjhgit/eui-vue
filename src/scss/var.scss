@@ -1,0 +1,5 @@
+$primary: #f8b920;
+
+@function px2rem($px) {
+    @return $px / 100 * 1rem;
+}

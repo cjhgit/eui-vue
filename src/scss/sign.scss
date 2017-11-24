@@ -1,0 +1,103 @@
+@import "var";
+
+.page-sign {
+    color: #fff;
+    background-color: #fff;
+    //background-image: url("/static/img/sign-bg.png");
+    //background-size: 100% 100%;
+    .page-header {
+        height: px2rem(480);
+        background-image: url("/static/img/sign-header.png");
+        background-size: 100% 100%;
+    }
+    .page-body {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding-top: px2rem(42);
+    }
+    .page-title {
+        position: relative;
+        width: px2rem(166);
+        height: px2rem(60);
+        margin-bottom: px2rem(62);
+        color: #fff;
+        font-size: px2rem(26);
+        background-color: $primary;
+        text-align: center;
+        line-height: px2rem(60);
+        border-radius: px2rem(30);
+        &:before {
+            position: absolute;
+            top: px2rem(30);
+            left: px2rem(-266);
+            content: "  ";
+            display: table-cell;
+            width: px2rem(266);
+            height: px2rem(1);
+            background-color: $primary;
+        }
+        &:after {
+            position: absolute;
+            top: px2rem(30);
+            right: px2rem(-266);
+            content: "  ";
+            display: table-cell;
+            width: px2rem(266);
+            height: px2rem(1);
+            background-color: $primary;
+        }
+    }
+    .input {
+        width: px2rem(483);
+        height: px2rem(62);
+        margin-bottom: px2rem(32);
+        padding: 0 px2rem(24);
+        line-height: px2rem(62);
+        border: 1px solid $primary;
+        border-radius: px2rem(31);
+        outline: none;
+    }
+    .sign {
+        width: px2rem(483);
+    }
+    .logo {
+        position: absolute;
+        top: px2rem(20);
+        left: px2rem(26);
+        width: px2rem(207);
+    }
+    .company {
+        position: absolute;
+        bottom: px2rem(30);
+        text-align: center;
+        color: #999;
+    }
+    .success-box {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        padding-top: px2rem(254);
+        background-color: rgba(51, 51, 51, .8);
+        .success {
+            width: px2rem(608);
+            margin-bottom: px2rem(120);
+        }
+        .go-award {
+            width: px2rem(484);
+        }
+    }
+}
+
+.page-inputing {
+    .page-sign {
+        .page-header {
+            display: none;
+        }
+    }
+}
