@@ -3,17 +3,10 @@
 import Vue from 'vue'
 import App from './App'
 import router from './router'
-
-const Home = { template: '<p>home page</p>' }
-const About = { template: '<p>about page</p>' }
-const routes = {
-    '/': Home,
-    '/about': About
-}
-const Foo = { template: '<div>foo</div>' }
-const Bar = { template: '<div>bar</div>' }
+import ui from './components/index'
 
 Vue.config.productionTip = false
+Vue.use(ui)
 
 /* eslint-disable no-new */
 new Vue({
