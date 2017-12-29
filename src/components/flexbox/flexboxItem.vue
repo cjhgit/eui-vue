@@ -6,7 +6,7 @@
 
 <script>
 export default {
-  name: 'mu-flexbox-item',
+  name: 'ui-flexbox-item',
   props: {
     order: {
       type: [Number, String],

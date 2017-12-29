@@ -6,7 +6,7 @@
 
 <script>
 export default {
-  name: 'mu-grid-list',
+  name: 'ui-grid-list',
   props: {
     cellHeight: {
       type: Number,

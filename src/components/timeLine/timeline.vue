@@ -6,7 +6,7 @@
 <script>
 import {oneOf} from './assist.js'
 export default {
-  name: 'mu-timeline',
+  name: 'ui-timeline',
   props: {
     lineType: {
       type: String,

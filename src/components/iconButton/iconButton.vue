@@ -21,7 +21,7 @@
     import tooltip from '../tooltip'
 
     export default {
-        name: 'mu-icon-button',
+        name: 'ui-icon-button',
         mixins: [routerMixin],
         props: {
             icon: {

@@ -8,6 +8,7 @@
 
 <script>
     export default {
+        name: 'ui-footer',
         data() {
             return {
             }

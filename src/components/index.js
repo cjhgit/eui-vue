@@ -1,5 +1,6 @@
 import header from './header'
 import footer from './footer'
+import container from './container'
 import icon from './icon'
 import raisedButton from './raisedButton'
 import appBar from './appBar'
@@ -17,6 +18,8 @@ import bottomSheet from './bottomSheet'
 import flatButton from './flatButton'
 import floatButton from './floatButton'
 import dialog from './dialog'
+import drawer from './drawer'
+import container from './container'
 import {bottomNav, bottomNavItem} from './bottomNav'
 import {tab, tabs} from './tabs'
 // import pagination from './pagination'
@@ -55,5 +58,7 @@ export default {
         Vue.component('ui-flat-button', flatButton)
         Vue.component('ui-float-button', floatButton)
         Vue.component('ui-dialog', dialog)
+        Vue.component('ui-drawer', drawer)
+        Vue.component('ui-container', container)
     }
 }

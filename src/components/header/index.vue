@@ -15,6 +15,7 @@
 
 <script>
     export default {
+        name: 'ui-header',
         data() {
             return {
             }

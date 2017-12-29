@@ -13,7 +13,7 @@
     import popup from '../internal/popup'
     import resize from '../internal/resize'
     export default {
-        name: 'mu-popover',
+        name: 'ui-popover',
         mixins: [scroll, resize, popup],
         props: {
             overlay: {

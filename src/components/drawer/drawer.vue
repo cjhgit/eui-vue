@@ -12,7 +12,7 @@ import {getWidth} from '../utils'
 const transitionEvents = ['msTransitionEnd', 'mozTransitionEnd', 'oTransitionEnd', 'webkitTransitionEnd', 'transitionend']
 
 export default {
-  name: 'mu-drawer',
+  name: 'ui-drawer',
   props: {
     right: {
       type: Boolean,

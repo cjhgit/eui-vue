@@ -11,7 +11,7 @@
 
 <script>
 export default {
-  name: 'mu-card-title',
+  name: 'ui-card-title',
   props: {
     title: {
       type: String

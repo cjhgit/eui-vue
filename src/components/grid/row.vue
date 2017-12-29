@@ -5,7 +5,7 @@
 </template>
 <script>
   export default {
-    name: 'mu-row',
+    name: 'ui-row',
     props: {
       gutter: {
         type: Boolean,

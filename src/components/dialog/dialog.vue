@@ -26,7 +26,7 @@ import PopupManager from '../internal/popup/manager'
 import {convertClass} from '../utils'
 export default {
   mixins: [Popup],
-  name: 'mu-dialog',
+  name: 'ui-dialog',
   props: {
     dialogClass: {
       type: [String, Array, Object]

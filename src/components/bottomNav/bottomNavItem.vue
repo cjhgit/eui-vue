@@ -15,7 +15,7 @@
     import icon from '../icon'
     import {isNotNull} from '../utils'
     export default {
-        name: 'mu-bottom-nav-item',
+        name: 'ui-bottom-nav-item',
         mixins: [routerMixin],
         props: {
             icon: {

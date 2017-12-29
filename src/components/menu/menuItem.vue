@@ -43,7 +43,7 @@
     import popover from '../popover'
     import menu from './menu'
     export default {
-        name: 'mu-menu-item',
+        name: 'ui-menu-item',
         mixins: [routerMixin],
         props: {
             href: {

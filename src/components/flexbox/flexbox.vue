@@ -6,7 +6,7 @@
 
 <script>
 export default {
-  name: 'mu-flexbox',
+  name: 'ui-flexbox',
   props: {
     gutter: {
       type: Number,

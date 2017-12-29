@@ -32,7 +32,7 @@ import textFieldLabel from './textFieldLabel'
 import {getColor} from '../utils'
 import textFieldHint from './textFieldHint'
 export default {
-  name: 'mu-text-field',
+  name: 'ui-text-field',
   props: {
     name: {
       type: String

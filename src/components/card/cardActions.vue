@@ -6,7 +6,7 @@
 
 <script>
 export default {
-  name: 'mu-card-actions'
+  name: 'ui-card-actions'
 }
 </script>
 

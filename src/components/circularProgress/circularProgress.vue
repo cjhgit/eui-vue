@@ -17,7 +17,7 @@
 import circular from '../internal/circular'
 import {getColor} from '../utils'
 export default {
-  name: 'mu-circular-progress',
+  name: 'ui-circular-progress',
   props: {
     max: {
       type: Number,

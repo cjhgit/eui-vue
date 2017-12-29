@@ -6,7 +6,7 @@
 
 <script>
 export default {
-  name: 'mu-content-block'
+  name: 'ui-content-block'
 }
 </script>
 

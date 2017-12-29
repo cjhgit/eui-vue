@@ -1,7 +1,4 @@
 @import "var";
-* {
-    box-sizing: border-box;
-}
 html,
 body,
 .page {
@@ -9,7 +6,31 @@ body,
     height: 100%;
     overflow: hidden;
 }
-
+.page-content {
+    position: absolute;
+    top: 0;
+    left: 256px;
+    bottom: 0;
+    right: 0;
+    overflow: auto;
+    //padding-left: 256px;
+    transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+}
+.page-header {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+}
+.page-body {
+    position: absolute;
+    top: 64px;
+    left: 0;
+    right: 0;
+    width: 100%;
+    bottom: 0;
+    overflow: auto;
+}
 .btn {
     width: px2rem(483);
     height: px2rem(68);

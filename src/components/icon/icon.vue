@@ -1,7 +1,7 @@
 <script>
     import {getColor} from '../utils'
     export default {
-        name: 'mu-icon',
+        name: 'ui-icon',
         props: {
             value: {
                 type: String

@@ -6,7 +6,7 @@
 
 <script>
 export default {
-  name: 'mu-card-text'
+  name: 'ui-card-text'
 }
 </script>
 

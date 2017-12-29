@@ -9,7 +9,7 @@
 import circular from '../internal/circular'
 import Scroll from '../internal/scroll'
 export default {
-  name: 'mu-infinite-scroll',
+  name: 'ui-infinite-scroll',
   mixins: [Scroll],
   props: {
     loading: {

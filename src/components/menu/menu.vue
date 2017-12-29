@@ -13,7 +13,7 @@
     import keycode from 'keycode'
     import clickoutside from '../internal/clickoutside'
     export default {
-        name: 'mu-menu',
+        name: 'ui-menu',
         props: {
             desktop: {
                 type: Boolean,

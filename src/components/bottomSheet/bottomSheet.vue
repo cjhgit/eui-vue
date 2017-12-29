@@ -11,7 +11,7 @@
 <script>
 import Popup from '../internal/popup'
 export default {
-  name: 'mu-bottom-sheet',
+  name: 'ui-bottom-sheet',
   mixins: [Popup],
   props: {
     sheetClass: {

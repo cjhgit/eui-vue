@@ -15,7 +15,7 @@
 
 <script>
 export default {
-  name: 'mu-card-header',
+  name: 'ui-card-header',
   props: {
     title: {
       type: String

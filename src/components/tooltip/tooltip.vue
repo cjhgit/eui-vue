@@ -8,7 +8,7 @@
 
 <script>
     export default {
-        name: 'mu-tooltip',
+        name: 'ui-tooltip',
         props: {
             label: {
                 type: String

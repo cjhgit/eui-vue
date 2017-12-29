@@ -12,7 +12,7 @@
 <script>
     import {getColor, convertClass} from '../utils'
     export default {
-        name: 'mu-badge',
+        name: 'ui-badge',
         props: {
             content: {
                 type: String,

@@ -16,7 +16,7 @@
 
 <script>
     export default {
-        name: 'mu-appbar',
+        name: 'ui-appbar',
         props: {
             title: {
                 type: String,

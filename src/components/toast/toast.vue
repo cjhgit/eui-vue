@@ -10,7 +10,7 @@
     import {getZIndex} from '../internal/popup/utils'
     import clickoutside from '../internal/clickoutside'
     export default {
-        name: 'mu-toast',
+        name: 'ui-toast',
         props: {
             message: {
                 type: String

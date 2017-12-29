@@ -4,7 +4,7 @@
 
 <script>
 export default {
-  name: 'mu-divider',
+  name: 'ui-divider',
   props: {
     inset: {
       type: Boolean,

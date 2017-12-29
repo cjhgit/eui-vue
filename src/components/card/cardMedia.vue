@@ -14,7 +14,7 @@
 
 <script>
 export default {
-  name: 'mu-card-media',
+  name: 'ui-card-media',
   props: {
     title: {
       type: String

@@ -14,7 +14,7 @@
 <script>
     const cssPrefix = 'mu-breadcrumb-item'
     export default {
-        name: 'mu-breadcrumb-item',
+        name: 'ui-breadcrumb-item',
         data () {
             return {
                 separator: ''

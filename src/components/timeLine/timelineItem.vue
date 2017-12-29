@@ -23,7 +23,7 @@
 <script>
 import {oneOf} from './assist.js'
 export default {
-  name: 'mu-timeline-item',
+  name: 'ui-timeline-item',
   props: {
     iconColor: {
       type: String,

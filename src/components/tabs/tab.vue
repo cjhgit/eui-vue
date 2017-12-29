@@ -15,7 +15,7 @@ import routerMixin from '../internal/routerMixin'
 import icon from '../icon'
 import {isNotNull, convertClass} from '../utils'
 export default {
-  name: 'mu-tab',
+  name: 'ui-tab',
   mixins: [routerMixin],
   props: {
     icon: {

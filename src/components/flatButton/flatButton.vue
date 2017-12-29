@@ -20,7 +20,7 @@ import routerMixin from '../internal/routerMixin'
 import icon from '../icon'
 import {getColor} from '../utils'
 export default {
-  name: 'mu-flat-button',
+  name: 'ui-flat-button',
   mixins: [routerMixin],
   props: {
     icon: {

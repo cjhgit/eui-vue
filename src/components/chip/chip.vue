@@ -13,7 +13,7 @@
 <script>
 import {isPc, getColor} from '../utils'
 export default {
-  name: 'mu-chip',
+  name: 'ui-chip',
   props: {
     showDelete: {
       type: Boolean,

@@ -5,7 +5,7 @@
 </template>
 <script>
 export default {
-  name: 'mu-card'
+  name: 'ui-card'
 }
 </script>
 <style lang="less">

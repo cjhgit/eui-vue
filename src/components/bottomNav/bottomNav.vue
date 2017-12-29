@@ -1,7 +1,7 @@
 <script>
     import abstractButton from '../internal/abstractButton'
     export default {
-        name: 'mu-bottom-nav',
+        name: 'ui-bottom-nav',
         props: {
             shift: {
                 type: Boolean,

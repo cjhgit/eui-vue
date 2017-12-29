@@ -25,7 +25,7 @@
     import {isNull} from '../utils'
     import resize from '../internal/resize'
     export default {
-        name: 'mu-dropDown-menu',
+        name: 'ui-dropDown-menu',
         mixins: [resize],
         props: {
             value: {},

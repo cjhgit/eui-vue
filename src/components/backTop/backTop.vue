@@ -12,7 +12,7 @@
     import icon from '../icon'
 
     export default {
-        name: 'mu-back-top',
+        name: 'ui-back-top',
         data () {
             return {
                 backShow: false

@@ -18,7 +18,7 @@ import iconButton from '../iconButton'
 import popover from '../popover'
 import {menu} from '../menu'
 export default {
-  name: 'mu-icon-menu',
+  name: 'ui-icon-menu',
   props: {
     icon: {
       type: String,

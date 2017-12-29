@@ -48,7 +48,7 @@
     import icon from '../icon'
     import touchRipple from '../internal/touchRipple'
     export default {
-        name: 'mu-checkbox',
+        name: 'ui-checkbox',
         props: {
             name: {
                 type: String
