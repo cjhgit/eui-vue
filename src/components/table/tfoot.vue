@@ -6,7 +6,7 @@
 
 <script>
 export default {
-  name: 'mu-tfoot',
+  name: 'ui-tfoot',
   created () {
     this.isTfoot = true
   },

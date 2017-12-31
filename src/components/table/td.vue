@@ -6,7 +6,7 @@
 
 <script>
 export default {
-  name: 'mu-td',
+  name: 'ui-td',
   props: {
     name: {
       type: String

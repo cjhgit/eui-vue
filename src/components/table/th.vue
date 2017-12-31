@@ -15,7 +15,7 @@
 import tooltip from '../tooltip'
 let uuid = 0
 export default {
-  name: 'mu-th',
+  name: 'ui-th',
   props: {
     tooltip: {
       type: String

@@ -37,7 +37,7 @@
     import textField from '../textField'
     import menuItem from '../menu/menuItem'
     export default{
-        name: 'mu-pagination',
+        name: 'ui-pagination',
         props: {
             total: {
                 type: Number,

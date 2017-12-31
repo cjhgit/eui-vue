@@ -23,7 +23,7 @@
 <script>
 let uuid = 0
 export default {
-  name: 'mu-table',
+  name: 'ui-table',
   props: {
     fixedFooter: {
       type: Boolean,

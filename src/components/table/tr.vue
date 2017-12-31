@@ -18,7 +18,7 @@ import th from './th'
 import checkbox from '../checkbox'
 let uuid = 1
 export default {
-  name: 'mu-tr',
+  name: 'ui-tr',
   props: {
     selectable: {
       type: Boolean,
