@@ -1,16 +1,20 @@
 <template>
-  <span>
-    <a :href="href" v-if="href" :class="linkClass">
-      <slot></slot>
-    </a>
-    <span v-else :class="currentClass">
-      <slot></slot>
-    </span>
-    <span v-if="href" :class="separatorClass">
-      {{this.separator}}
-    </span>
-  </span>
+    <span>
+        <router-link :to="to" v-if="to" :class="linkClass">
+            <slot></slot>
+        </router-link>
+        <a :href="href" v-else-if="href" :class="linkClass">
+            <slot></slot>
+        </a>
+        <span v-else :class="currentClass">
+            <slot></slot>
+        </span>
+        <span v-if="href || to" :class="separatorClass">
+            {{this.separator}}
+        </span>
+      </span>
 </template>
+
 <script>
     const cssPrefix = 'mu-breadcrumb-item'
     export default {
@@ -22,6 +26,10 @@
         },
         props: {
             href: {
+                type: String,
+                default: ''
+            },
+            to: {
                 type: String,
                 default: ''
             }

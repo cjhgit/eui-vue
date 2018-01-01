@@ -1,10 +1,12 @@
 <template>
 <span>
-  <transition name="mu-popover" @after-enter="show()" @after-leave="hide()">
-    <div class="mu-popover" :class="popoverClass" ref="popup" v-if="open" :style="{'z-index': zIndex}">
-      <slot></slot>
-    </div>
-  </transition>
+    <transition name="mu-popover" @after-enter="show()" @after-leave="hide()">
+        <div class="mu-popover" :class="popoverClass" ref="popup" v-if="open"
+             @mouseenter.native="mouseenter"
+             :style="{'z-index': zIndex}">
+            <slot></slot>
+        </div>
+    </transition>
 </span>
 </template>
 
@@ -50,6 +52,9 @@
             }
         },
         methods: {
+            mouseenter() {
+                alert('enter')
+            },
             getAnchorPosition (el) {
                 const rect = el.getBoundingClientRect()
                 const a = {
@@ -96,7 +101,7 @@
                     left: anchor[anchorOrigin.horizontal] - target[targetOrigin.horizontal]
                 }
                 if (anchor.top < 0 || anchor.top > window.innerHeight ||
-                    anchor.left < 0 || anchor.left > window.innerWidth) {
+                        anchor.left < 0 || anchor.left > window.innerWidth) {
                     this.close('overflow')
                     return
                 }
@@ -194,6 +199,7 @@
         },
         mounted () {
             this.setStyle()
+            console.log('create')
         },
         updated () {
             setTimeout(() => {

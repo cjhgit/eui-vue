@@ -1,7 +1,7 @@
 <template>
     <header class="page-header">
         <mu-appbar title="微信管理系统 v1.0">
-            <mu-icon-button icon="menu" slot="left"/>
+            <mu-icon-button icon="menu2" slot="left"/>
             <mu-icon-menu icon="more_vert" slot="right">
                 <mu-menu-item title="菜单 1"/>
                 <mu-menu-item title="菜单 2"/>
