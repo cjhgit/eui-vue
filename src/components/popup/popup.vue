@@ -1,10 +1,11 @@
 <template>
 <span>
-  <transition :name="transition" @after-enter="show()" @after-leave="hide()">
-    <div class="mu-popup" ref="popup" v-if="open" :class="popupCss" :style="{'z-index': zIndex}">
-      <slot></slot>
-    </div>
-  </transition>
+    <transition :name="transition" @after-enter="show()" @after-leave="hide()">
+        <div class="mu-popup" ref="popup" v-if="open" :class="popupCss"
+             :style="{'z-index': zIndex}">
+            <slot></slot>
+        </div>
+    </transition>
 </span>
 </template>
 
@@ -33,6 +34,7 @@
             }
         },
         created () {
+            console.log('create')
             if (!this.popupTransition) {
                 this.transition = `popup-slide-${this.position}`
             }

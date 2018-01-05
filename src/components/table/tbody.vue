@@ -6,7 +6,7 @@
 
 <script>
 export default {
-  name: 'mu-tbody',
+  name: 'ui-tbody',
   data () {
     return {
       selectedRows: []

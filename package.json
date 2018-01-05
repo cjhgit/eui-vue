@@ -1,6 +1,6 @@
 {
   "name": "yunser-ui-vue",
-  "version": "0.1.2",
+  "version": "0.1.6",
   "description": "eui for vue",
   "author": "cjhgit",
   "main": "dist/yunser-ui.js",

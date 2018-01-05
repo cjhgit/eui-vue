@@ -133,6 +133,8 @@
             },
             handleActive () {
                 window.alert('tab active')
+            },
+            close() {
             }
         }
     }

@@ -6,7 +6,7 @@
 
 <script>
 export default {
-  name: 'mu-thead',
+  name: 'ui-thead',
   created () {
     this.isThead = true
   },

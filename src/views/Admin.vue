@@ -22,17 +22,21 @@
                 <ui-appbar title="Menu233">
                     <ui-icon-button icon="menu" slot="left" @click.native="drawerVisible = !drawerVisible"/>
 
-                    <ui-flat-button label="expand_more" slot="right">
-                        <!--<ui-popover :trigger="false" :open="true">-->
+                    <ui-flat-button slot="right" label="expand_more" ref="button" @click="toggle">
+                        <ui-popover :trigger="trigger" :open="open" @close="handleClose">
+                            <div>1212</div>
+                            <div>1212</div>
+                            <div>1212</div>
                             <!--<ui-menu>-->
-                                <!--<ui-menu-item title="Refresh" />-->
-                                <!--<ui-menu-item title="Send feedback" />-->
-                                <!--<ui-menu-item title="Settings" />-->
-                                <!--<ui-menu-item title="Help" />-->
-                                <!--<ui-menu-item title="Sign out" />-->
+                                <!--<ui-menu-item title="Refresh"/>-->
+                                <!--<ui-menu-item title="Send feedback"/>-->
+                                <!--<ui-menu-item title="Settings"/>-->
+                                <!--<ui-menu-item title="Help"/>-->
+                                <!--<ui-menu-item title="Sign out"/>-->
                             <!--</ui-menu>-->
-                        <!--</ui-popover>-->
+                        </ui-popover>
                     </ui-flat-button>
+
                     <ui-icon-button icon="expand_more" slot="right"/>
                     <ui-icon-menu icon="more_vert" slot="right">
                         <ui-menu-item title="菜单 1"/>
@@ -46,12 +50,13 @@
             </header>
             <div class="page-body">
                 <ui-container top>
+
                     <ui-card class="admin-card">
                         <ui-card-header title="Myron Avatar" subTitle="sub title">
                         </ui-card-header>
                         <ui-card-title title="1212" subTitle="Content Title"/>
                         <ui-card-text>
-                            散落222在指尖的阳222光，我试着轻轻抓住光影的踪迹，它却在眉宇间投下一片淡淡的阴影。
+                            232散2落222在指尖的阳222光，我试着轻轻抓住光影的踪迹，它却在眉宇间投下一片淡淡的阴影。
                             调皮的阳光掀动了四月的心帘，温暖如约的歌声渐起。
                             似乎在诉说着，我也2222可以在漆黑的角落里，找到阴影背后的阳光，
                             找到阳光与阴影奏出和谐的旋律。我要用一颗敏感赤诚的心迎接每一缕滑过指尖的阳光！
@@ -76,10 +81,21 @@
                 drawerVisible: true,
                 activeTab: 'tab1',
                 boolValue: true,
-                value1: 50
+                value1: 50,
+                open: false,
+                trigger: null
             }
         },
+        mounted() {
+            this.trigger = this.$refs.button.$el
+        },
         methods: {
+            toggle () {
+                this.open = !this.open
+            },
+            handleClose (e) {
+                this.open = false
+            },
             changeTheme() {
 
             },
