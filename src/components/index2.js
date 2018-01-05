@@ -1,4 +1,4 @@
-import './styles/base.less'
+import './styles2/base.scss'
 import {retina} from './utils'
 import icon from './icon'
 import backTop from './backTop'
