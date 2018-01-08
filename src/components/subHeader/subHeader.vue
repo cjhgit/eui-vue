@@ -6,7 +6,7 @@
 
 <script>
 export default {
-  name: 'mu-sub-header',
+  name: 'ui-sub-header',
   props: {
     inset: {
       type: Boolean,
