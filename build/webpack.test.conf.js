@@ -24,7 +24,7 @@ var banner =
 delete baseWebpackConfig.entry
 var webpackConfig = merge(baseWebpackConfig, {
     entry: {
-        app: './src/components/index2.js'
+        app: './doc/components/index2.js'
     },
     module: {
         rules: utils.styleLoaders({
